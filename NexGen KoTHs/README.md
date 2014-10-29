@@ -1,5 +1,3 @@
-NexGen KoTHs
-========
 # NexGen KoTHs
 
 
