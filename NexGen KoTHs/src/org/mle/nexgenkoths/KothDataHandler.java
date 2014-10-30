@@ -27,9 +27,8 @@ public enum KothDataHandler {;
     
     
     public static void saveAllKoths() {
-        for(Koth koth : NexGenKoths.loadedKoths) {
+        for(Koth koth : NexGenKoths.loadedKoths)
             saveKoth(koth);
-        }
     }
     
     

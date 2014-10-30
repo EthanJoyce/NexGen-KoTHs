@@ -426,6 +426,11 @@ public class KothCommandExecutor implements CommandExecutor {
 	        return true;
 	    }
 	    
+	    if(koth.getLootTable() == null) {
+	        sender.sendMessage(ChatColor.RED + "That KoTH doesn't have an assigned loot table.");
+	        return true;
+	    }
+	    
 	    
 	    sender.sendMessage(ChatColor.GREEN + koth.getName() + "'s LootTable: " + ChatColor.RED + koth.getLootTable().getName());
 	    
@@ -474,7 +479,7 @@ public class KothCommandExecutor implements CommandExecutor {
 	    StringBuilder contentsList = new StringBuilder(ChatColor.AQUA.toString() + ChatColor.BOLD + lootTable.getName() + "'s Contents:\n");
 	    
 	    for(LootTableItem item : lootTable.getItems())
-	        contentsList.append(String.format(" %sItem: %s, %sAmount: %s, %sChance: %s\n", ChatColor.LIGHT_PURPLE, ChatColor.GREEN + item.getType().toString(), ChatColor.RED, ChatColor.GREEN.toString() + item.getAmountRange().getMin() + "-" + item.getAmountRange().getMax(), ChatColor.BLUE, ChatColor.GREEN.toString() + item.getChance()));
+	        contentsList.append(String.format(" %sItem: %s, %sAmount: %s, %sChance: %s\n", ChatColor.LIGHT_PURPLE, ChatColor.GREEN + item.getItemStack().getType().toString(), ChatColor.RED, ChatColor.GREEN.toString() + item.getAmountRange().getMin() + "-" + item.getAmountRange().getMax(), ChatColor.BLUE, ChatColor.GREEN.toString() + item.getChance()));
 	    
 	    sender.sendMessage(contentsList.toString());
 	    return true;

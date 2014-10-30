@@ -1,27 +1,27 @@
 package org.mle.nexgenkoths.loottables;
 
-import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 public class LootTableItem {
     
-    private Material type;
+    private ItemStack itemStack;
     private AmountRange amtRange;
     private float chance;
     
     private short durability;
     
     
-    public LootTableItem(Material type, AmountRange amtRange, float chance) {
-        this.type = type;
+    public LootTableItem(ItemStack itemStack, AmountRange amtRange, float chance) {
+        this.itemStack = itemStack;
         this.amtRange = amtRange;
         this.chance = chance;
         
-        this.durability = 0;
+        this.durability = itemStack.getDurability();
     }
     
     
-    public Material getType() {
-        return type;
+    public ItemStack getItemStack() {
+        return itemStack;
     }
     
     public AmountRange getAmountRange() {
@@ -37,8 +37,8 @@ public class LootTableItem {
     }
     
     
-    public void setType(Material type) {
-        this.type = type;
+    public void setItemStack(ItemStack itemStack) {
+        this.itemStack = itemStack;
     }
     
     public void setAmountRange(AmountRange amtRange) {

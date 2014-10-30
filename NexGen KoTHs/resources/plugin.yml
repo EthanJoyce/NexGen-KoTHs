@@ -1,6 +1,6 @@
 name: NexGen_KoTHs
 main: org.mle.nexgenkoths.NexGenKoths
-version: 0.1
+version: 0.2
 author: MrLolEthan
 
 commands:

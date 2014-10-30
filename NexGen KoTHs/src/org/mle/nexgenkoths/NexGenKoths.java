@@ -1,5 +1,6 @@
 package org.mle.nexgenkoths;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +21,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.nexgenkoths.Metrics;
 import org.mle.nexgenkoths.commands.KothCommandExecutor;
+import org.mle.nexgenkoths.customitems.CustomItem;
+import org.mle.nexgenkoths.customitems.CustomItemsDataHandler;
 import org.mle.nexgenkoths.listeners.NexGenListener;
 import org.mle.nexgenkoths.loottables.LootTable;
 import org.mle.nexgenkoths.loottables.LootTableDataHandler;
@@ -32,6 +35,8 @@ public class NexGenKoths extends JavaPlugin {
     
     public static List<Koth> loadedKoths = new ArrayList<Koth>();
     public static List<LootTable> loadedLootTables = new ArrayList<LootTable>();
+    public static List<CustomItem> loadedCustomItems = new ArrayList<CustomItem>();
+    
     
     public static Map<UUID, Long> zoneEnterCooldownPlayers = new HashMap<UUID, Long>();
     
@@ -52,6 +57,7 @@ public class NexGenKoths extends JavaPlugin {
     public static String scoreboardObjDisplayName = ChatColor.LIGHT_PURPLE + "NexGen KoTHs";
     public static Map<UUID, Map<String, Integer>> playerScoreboardsMap = new HashMap<UUID, Map<String, Integer>>();
     public static Map<String, Integer> globalScoreboardsMap = new HashMap<String, Integer>();
+    public static long scoreboardUpdateFrequency = 10;
     
     public static boolean autoUpdate = true;
     public static boolean sendMetrics = true;
@@ -61,12 +67,18 @@ public class NexGenKoths extends JavaPlugin {
         instance = this;
         tag = "[" + getDescription().getName() + "]";
         
+        CustomItemsDataHandler.initDirectories();
         LootTableDataHandler.initDirectories();
         KothDataHandler.initDirectories();
         
         getCommand("koth").setExecutor(new KothCommandExecutor());
         
         Bukkit.getPluginManager().registerEvents(new NexGenListener(), this);
+        
+        if(!(new File(getDataFolder(), "config.yml")).exists()) {
+            CustomItemsDataHandler.createExampleCustomItems();
+            LootTableDataHandler.createExampleTable();
+        }
         
         try {
             initConfiguration();
@@ -76,8 +88,7 @@ public class NexGenKoths extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
         }
         
-        LootTableDataHandler.createExampleTable();
-        
+        CustomItemsDataHandler.loadAllCustomItems();
         LootTableDataHandler.loadAllLootTables();
         KothDataHandler.loadAllKoths();
         startTimers();
@@ -139,7 +150,7 @@ public class NexGenKoths extends JavaPlugin {
                         ScoreboardUtil.updateScoreboard(player, entry.getValue());
                     }
                 }
-            }, 10, 10);
+            }, scoreboardUpdateFrequency, scoreboardUpdateFrequency);
     }
     
     
@@ -158,6 +169,7 @@ public class NexGenKoths extends JavaPlugin {
         
         getConfig().addDefault("KoTHs.Scoreboard.Use", useScoreboard);
         getConfig().addDefault("KoTHs.Scoreboard.DisplayName", scoreboardObjDisplayName);
+        getConfig().addDefault("KoTHs.Scoreboard.UpdateFrequency", scoreboardUpdateFrequency);
         
         getConfig().addDefault("AutoUpdate", autoUpdate);
         getConfig().addDefault("SendMetrics", sendMetrics);
@@ -190,6 +202,7 @@ public class NexGenKoths extends JavaPlugin {
         
         useScoreboard = getConfig().getBoolean("KoTHs.Scoreboard.Use", useScoreboard);
         scoreboardObjDisplayName = getConfig().getString("KoTHs.Scoreboard.DisplayName", scoreboardObjDisplayName);
+        scoreboardUpdateFrequency = getConfig().getLong("KoTHs.Scoreboard.UpdateFrequency", scoreboardUpdateFrequency);
         
         autoUpdate = getConfig().getBoolean("AutoUpdate", autoUpdate);
         sendMetrics = getConfig().getBoolean("SendMetrics", sendMetrics);
@@ -210,6 +223,16 @@ public class NexGenKoths extends JavaPlugin {
         for(LootTable table : loadedLootTables) {
             if(table.getName().equalsIgnoreCase(name))
                 return table;
+        }
+        
+        return null;
+    }
+    
+    
+    public static CustomItem getCustomItemByName(String name) {
+        for(CustomItem customItem : loadedCustomItems) {
+            if(customItem.getName().equalsIgnoreCase(name))
+                return customItem;
         }
         
         return null;
@@ -251,8 +274,15 @@ public class NexGenKoths extends JavaPlugin {
     
     
     public static void onPlayerCaptureKoth(Player player, Koth koth) {
-        if(koth.getFlags().containsKey(KothFlag.USE_LOOT_TABLE) && koth.getFlags().get(KothFlag.USE_LOOT_TABLE) != 0) {
-            for(ItemStack is : koth.getRandomLoot())
+        if(koth.getFlags().containsKey(KothFlag.USE_LOOT_TABLE) && koth.getFlags().get(KothFlag.USE_LOOT_TABLE) != 0 && koth.getLootTable() != null) {
+            List<ItemStack> randomLoot = koth.getRandomLoot();
+            
+            if(randomLoot == null) {
+                Bukkit.getLogger().warning(tag + " Error giving player \"" + player.getName() + "\" KoTH loot: KoTH \"" + koth.getName() + "\"'s random loot list returned null.");
+                return;
+            }
+            
+            for(ItemStack is : randomLoot)
                 player.getInventory().addItem(is);
         }
         

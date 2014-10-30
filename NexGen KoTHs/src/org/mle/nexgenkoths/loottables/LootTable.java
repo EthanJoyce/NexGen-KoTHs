@@ -27,7 +27,7 @@ public class LootTable {
         for(LootTableItem item : items) {
             if(!(random.nextFloat() <= item.getChance())) continue;
             
-            ItemStack itemStack = new ItemStack(item.getType());
+            ItemStack itemStack = new ItemStack(item.getItemStack());
             itemStack.setDurability(item.getDurability());
             
             AmountRange range = item.getAmountRange();

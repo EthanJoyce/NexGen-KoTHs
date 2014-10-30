@@ -10,11 +10,13 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.mle.nexgenkoths.NexGenKoths;
+import org.mle.nexgenkoths.customitems.CustomItem;
 import org.mle.nexgenkoths.loottables.LootTableItem.AmountRange;
 import org.mle.nexgenkoths.util.NumberUtils;
 
-public class LootTableDataHandler {
+public enum LootTableDataHandler {;
     
     private static File dataDir = new File(NexGenKoths.instance.getDataFolder(), "LootTables");
     
@@ -27,9 +29,8 @@ public class LootTableDataHandler {
     public static void loadAllLootTables() {
         NexGenKoths.loadedLootTables.clear();
         
-        for(File file : dataDir.listFiles()) {
+        for(File file : dataDir.listFiles())
             loadLootTable(file);
-        }
     }
     
     
@@ -56,34 +57,45 @@ public class LootTableDataHandler {
                 
                 short dura;
                 
+                CustomItem customItem = NexGenKoths.getCustomItemByName(split[0]);
+                boolean isCustomItem = false;
+                
                 if(itemName.contains(":")) {
-                    String[] itemIdSplit = itemName.split("\\:");
+                    String[] itemNameSplit = itemName.split("\\:");
                     
-                    if(itemIdSplit.length != 2) {
+                    if(itemNameSplit.length != 2) {
                         Bukkit.getLogger().warning(NexGenKoths.tag + " Length of string \"" + itemName + "\" when split by \"\\:\" isn't 2. Ignoring line.");
                         continue;
                     }
                     
-                    material = Material.getMaterial(itemIdSplit[0]);
+                    material = Material.getMaterial(itemNameSplit[0]);
                     
                     if(material == null) {
-                        Bukkit.getLogger().warning(NexGenKoths.tag + " Item ID \"" + itemName + " is not valid. Ignoring line.");
+                        if(customItem == null) {
+                            Bukkit.getLogger().warning(NexGenKoths.tag + " Item Name \"" + split[0] + " is not valid. Ignoring line.");
+                            continue;
+                        } else {
+                            isCustomItem = true;
+                        }
+                    }
+                    
+                    if(!NumberUtils.isShort(itemNameSplit[1])) {
+                        Bukkit.getLogger().warning(NexGenKoths.tag + " String \"" + itemNameSplit[1] + " is not a valid short. Ignoring line.");
                         continue;
                     }
                     
-                    if(!NumberUtils.isShort(itemIdSplit[1])) {
-                        Bukkit.getLogger().warning(NexGenKoths.tag + " String \"" + itemIdSplit[1] + " is not a valid short. Ignoring line.");
-                        continue;
-                    }
-                    
-                    dura = Short.parseShort(itemIdSplit[1]);
+                    dura = Short.parseShort(itemNameSplit[1]);
                 } else {
                     material = Material.getMaterial(itemName);
                     dura = 0;
                     
                     if(material == null) {
-                        Bukkit.getLogger().warning(NexGenKoths.tag + " Item ID \"" + itemName + "\" is not valid. Ignoring line.");
-                        continue;
+                        if(customItem == null) {
+                            Bukkit.getLogger().warning(NexGenKoths.tag + " Item Name \"" + split[0] + " is not valid. Ignoring line.");
+                            continue;
+                        } else {
+                            isCustomItem = true;
+                        }
                     }
                 }
                 
@@ -117,9 +129,14 @@ public class LootTableDataHandler {
                 chance = Float.parseFloat(chanceStr);
                 
                 
-                LootTableItem item = new LootTableItem(material, amtRange, chance);
-                item.setDurability(dura);
-                items.add(item);
+                if(!isCustomItem) { // Item is NOT a custom item
+                    LootTableItem item = new LootTableItem(new ItemStack(material), amtRange, chance);
+                    item.setDurability(dura);
+                    items.add(item);
+                } else { // Item is a custom item
+                    LootTableItem item = new LootTableItem(customItem.getItemStack(), amtRange, chance);
+                    items.add(item);
+                }
             }
             
             LootTable lootTable = new LootTable(file.getName(), items);
@@ -144,6 +161,14 @@ public class LootTableDataHandler {
             out.newLine();
             
             out.append("golden_apple:1 1 0.1");
+            
+            out.newLine();
+            
+            out.append("BowOfExamples 1 0.25");
+            
+            out.newLine();
+            
+            out.append("PureGold 4-32 1");
         } catch(Exception ex) {
             ex.printStackTrace();
             Bukkit.getLogger().severe(NexGenKoths.tag + " Exception thrown while writing to file \"" + file.getAbsolutePath() + "\": " + ex.getMessage());
