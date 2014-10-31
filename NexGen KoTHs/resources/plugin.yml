@@ -66,3 +66,6 @@ permissions:
         nexgenkoths.viewtimers:
                 description: Allows the player to view the timers on a KoTH using the "viewtimers" Sub-Command.
                 default: op
+        nexgenkoths.update:
+                description: Allows the player to update the plugin using the "update" Sub-Command.
+                default: op

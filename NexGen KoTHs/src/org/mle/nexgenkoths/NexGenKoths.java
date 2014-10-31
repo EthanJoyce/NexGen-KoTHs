@@ -32,6 +32,7 @@ public class NexGenKoths extends JavaPlugin {
     
     public static NexGenKoths instance;
     public static String tag;
+    public static File pluginFile;
     
     public static List<Koth> loadedKoths = new ArrayList<Koth>();
     public static List<LootTable> loadedLootTables = new ArrayList<LootTable>();
@@ -66,6 +67,7 @@ public class NexGenKoths extends JavaPlugin {
     public void onEnable() {
         instance = this;
         tag = "[" + getDescription().getName() + "]";
+        pluginFile = getFile();
         
         CustomItemsDataHandler.initDirectories();
         LootTableDataHandler.initDirectories();

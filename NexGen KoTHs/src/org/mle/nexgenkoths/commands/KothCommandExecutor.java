@@ -2,6 +2,8 @@ package org.mle.nexgenkoths.commands;
 
 import java.util.Map.Entry;
 
+import net.gravitydevelopment.updater.nexgenkoths.Updater;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -56,6 +58,8 @@ public class KothCommandExecutor implements CommandExecutor {
 		        return onVersionCommand(sender, cmd, label, args);
 		    else if(args[0].equalsIgnoreCase("viewtimers"))
 		        return onViewTimersCommand(sender, cmd, label, args);
+		    else if(args[0].equalsIgnoreCase("updater"))
+		        return onUpdateCommand(sender, cmd, label, args);
 		    else {
 		        sender.sendMessage(ChatColor.RED + "Unknown Sub-Command. Type \"/" + label + " help\" for help.");
 		        return true;
@@ -92,6 +96,7 @@ public class KothCommandExecutor implements CommandExecutor {
 	    helpMessage.append(String.format(ChatColor.GREEN + " /%s loottablecontents <Name> %s- Shows the contents of the specified LootTable.\n", label, ChatColor.RED));
 	    helpMessage.append(String.format(ChatColor.GREEN + " /%s version %s- Shows the current plugin version.\n", label, ChatColor.RED));
 	    helpMessage.append(String.format(ChatColor.GREEN + " /%s viewtimers <Name> %s- Shows the timers on a KoTH.\n", label, ChatColor.RED));
+	    helpMessage.append(String.format(ChatColor.GREEN + " /%s update %s- Checks Bukkit Dev for an update.\n", label, ChatColor.RED));
 	    
 	    helpMessage.append(ChatColor.GOLD + "---------------------------");
 	    
@@ -492,7 +497,10 @@ public class KothCommandExecutor implements CommandExecutor {
 	        return true;
 	    }
 	    
-	    sender.sendMessage(ChatColor.GREEN + "Version: " + NexGenKoths.instance.getDescription().getVersion());
+	    Updater updater  = new Updater(NexGenKoths.instance, 86133, NexGenKoths.pluginFile, Updater.UpdateType.NO_DOWNLOAD, false);
+	    boolean isUpToDate = updater.getLatestVersion().equals(NexGenKoths.instance.getDescription().getVersion());
+	    
+	    sender.sendMessage(ChatColor.GREEN + "Version: " + NexGenKoths.instance.getDescription().getVersion() + ChatColor.GOLD +  ", " + (isUpToDate ? ChatColor.GREEN : ChatColor.RED) + "Latest Version: " + updater.getLatestVersion());
 	    
 	    return true;
 	}
@@ -523,6 +531,39 @@ public class KothCommandExecutor implements CommandExecutor {
 	    sender.sendMessage(ChatColor.GREEN + " Auto End: " + ChatColor.RED + koth.getAutoEndTimer());
 	    
 	    return true;
+	}
+	
+	
+	private static boolean onUpdateCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	    if(!sender.hasPermission("nexgenkoths.update")) {
+	        sender.sendMessage(ChatColor.RED + "You don't have permission to do that.");
+	        return true;
+	    }
+	    
+	    Updater updater  = new Updater(NexGenKoths.instance, 86133, NexGenKoths.pluginFile, Updater.UpdateType.DEFAULT, false);
+	    
+	    switch(updater.getResult()) {
+	    
+	    case NO_UPDATE:
+	        sender.sendMessage(ChatColor.GREEN + "No update was found.");
+	        return true;
+	    case SUCCESS:
+	        sender.sendMessage(ChatColor.GREEN + "An update was found and will be installed next restart/reload. New version: " + updater.getLatestVersion());
+	        return true;
+	    case UPDATE_AVAILABLE:
+	        sender.sendMessage(ChatColor.GREEN + "An update is available! Download it at \"" + updater.getLatestFileLink() + "\". New version: " + updater.getLatestVersion());
+	        return true;
+	    case FAIL_DOWNLOAD:
+	        sender.sendMessage(ChatColor.RED + "An update was found, but wasn't downloaded successfully. New version: " + updater.getLatestVersion());
+	        return true;
+	    case DISABLED:
+	        sender.sendMessage(ChatColor.RED + "The updater for this server is disabled.");
+	        return true;
+	    default:
+	        sender.sendMessage(ChatColor.RED + "Unexpected update result: " + updater.getResult().toString());
+	        return true;
+	    
+	    }
 	}
     
     
