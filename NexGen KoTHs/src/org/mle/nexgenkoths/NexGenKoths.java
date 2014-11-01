@@ -19,10 +19,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.mcstats.nexgenkoths.Metrics;
 import org.mle.nexgenkoths.commands.KothCommandExecutor;
 import org.mle.nexgenkoths.customitems.CustomItem;
 import org.mle.nexgenkoths.customitems.CustomItemsDataHandler;
+import org.mle.nexgenkoths.kothlists.KothList;
+import org.mle.nexgenkoths.kothlists.KothListsDataHandler;
 import org.mle.nexgenkoths.listeners.NexGenListener;
 import org.mle.nexgenkoths.loottables.LootTable;
 import org.mle.nexgenkoths.loottables.LootTableDataHandler;
@@ -37,6 +41,7 @@ public class NexGenKoths extends JavaPlugin {
     public static List<Koth> loadedKoths = new ArrayList<Koth>();
     public static List<LootTable> loadedLootTables = new ArrayList<LootTable>();
     public static List<CustomItem> loadedCustomItems = new ArrayList<CustomItem>();
+    public static List<KothList> loadedKothLists = new ArrayList<KothList>();
     
     
     public static Map<UUID, Long> zoneEnterCooldownPlayers = new HashMap<UUID, Long>();
@@ -53,6 +58,8 @@ public class NexGenKoths extends JavaPlugin {
     public static String kothCapturedMsg = ChatColor.LIGHT_PURPLE + "[KoTH] " + ChatColor.GREEN.toString() + ChatColor.BOLD + "{PLAYER} has captured {KOTH_NAME}!";
     
     public static long zoneEnterCooldown = 15;
+    
+    public static boolean canCaptureWhileInvis = false;
     
     public static boolean useScoreboard = true;
     public static String scoreboardObjDisplayName = ChatColor.LIGHT_PURPLE + "NexGen KoTHs";
@@ -72,6 +79,7 @@ public class NexGenKoths extends JavaPlugin {
         CustomItemsDataHandler.initDirectories();
         LootTableDataHandler.initDirectories();
         KothDataHandler.initDirectories();
+        KothListsDataHandler.initDirectories();
         
         getCommand("koth").setExecutor(new KothCommandExecutor());
         
@@ -93,6 +101,7 @@ public class NexGenKoths extends JavaPlugin {
         CustomItemsDataHandler.loadAllCustomItems();
         LootTableDataHandler.loadAllLootTables();
         KothDataHandler.loadAllKoths();
+        KothListsDataHandler.loadAllKothLists();
         startTimers();
         
         if(sendMetrics) {
@@ -165,6 +174,7 @@ public class NexGenKoths extends JavaPlugin {
         getConfig().addDefault("KoTHs.KoTH_Capture.KoTH_Capture_Start_Message", kothCapStartMsg.replace(ChatColor.COLOR_CHAR, '&'));
         getConfig().addDefault("KoTHs.KoTH_Capture.KoTH_Capture_Stop_Message", kothCapStopMsg.replace(ChatColor.COLOR_CHAR, '&'));
         getConfig().addDefault("KoTHs.KoTH_Capture.KoTH_Captured_Message", kothCapturedMsg.replace(ChatColor.COLOR_CHAR, '&'));
+        getConfig().addDefault("KoTHs.KoTH_Capture.CanPlayerCaptureWhileInvisible", canCaptureWhileInvis);
         
         getConfig().addDefault("KoTHs.KoTH_Start_Message", kothStartMsg.replace(ChatColor.COLOR_CHAR, '&'));
         getConfig().addDefault("KoTHs.KoTH_Stop_Message", kothStopMsg.replace(ChatColor.COLOR_CHAR, '&'));
@@ -198,6 +208,7 @@ public class NexGenKoths extends JavaPlugin {
         kothCapStartMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Capture.KoTH_Capture_Start_Message", kothCapStartMsg));
         kothCapStopMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Capture.KoTH_Capture_Stop_Message", kothCapStopMsg));
         kothCapturedMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Capture.KoTH_Captured_Message", kothCapturedMsg));
+        canCaptureWhileInvis = getConfig().getBoolean("KoTHs.KoTH_Capture.CanPlayerCaptureWhileInvisible", canCaptureWhileInvis);
         
         kothStartMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Start_Message", kothStartMsg));
         kothStopMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Stop_Message", kothStopMsg));
@@ -256,6 +267,13 @@ public class NexGenKoths extends JavaPlugin {
         if(!koth.isActive()) return;
         
         if(!koth.isBeingCaptured()) {
+            if(!canCaptureWhileInvis) {
+                for(PotionEffect pe : player.getActivePotionEffects()) {
+                    if(pe.getType().equals(PotionEffectType.INVISIBILITY))
+                        return;
+                }
+            }
+            
             koth.startCaptureTimer(player);
             Bukkit.broadcastMessage(kothCapStartMsg.replace("{KOTH_NAME}", koth.getName()).replace("{PLAYER}", player.getName()));
         }
