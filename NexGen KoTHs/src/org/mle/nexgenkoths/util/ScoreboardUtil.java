@@ -41,4 +41,9 @@ public enum ScoreboardUtil {;
     }
     
     
+    public static void clearScoreboard(Player player) {
+        player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+    }
+    
+    
 }
