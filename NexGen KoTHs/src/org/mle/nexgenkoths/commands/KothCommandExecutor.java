@@ -25,44 +25,47 @@ import org.mle.nexgenkoths.util.NumberUtils;
 public class KothCommandExecutor implements CommandExecutor {
     
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		if(args.length > 0) { // Using if/else statement to support Java 1.6
-		    if(args[0].equalsIgnoreCase("help"))
+		if(args.length > 0) {
+		    switch(args[0].toLowerCase()) {
+		    
+		    case "help":
 		        return onHelpCommand(sender, cmd, label, args);
-		    else if(args[0].equalsIgnoreCase("create"))
+		    case "create":
 		        return onCreateCommand(sender, cmd, label, args);
-		    else if(args[0].equalsIgnoreCase("wand"))
+		    case "wand":
 		        return onWandCommand(sender, cmd, label, args);
-		    else if(args[0].equalsIgnoreCase("list"))
+		    case "list":
 		        return onListCommand(sender, cmd, label, args);
-		    else if(args[0].equalsIgnoreCase("setflag"))
+		    case "setflag":
 		        return onSetFlagCommand(sender, cmd, label, args);
-		    else if(args[0].equalsIgnoreCase("viewflags"))
+		    case "viewflags":
 		        return onViewFlagsCommand(sender, cmd, label, args);
-		    else if(args[0].equalsIgnoreCase("delete"))
+		    case "delete":
 		        return onDeleteCommand(sender, cmd, label, args);
-		    else if(args[0].equalsIgnoreCase("saveall"))
+		    case "saveall":
 		        return onSaveAllCommand(sender, cmd, label, args);
-		    else if(args[0].equalsIgnoreCase("start"))
+		    case "start":
 		        return onStartCommand(sender, cmd, label, args);
-		    else if(args[0].equalsIgnoreCase("reload"))
+		    case "reload":
 		        return onReloadCommand(sender, cmd, label, args);
-		    else if(args[0].equalsIgnoreCase("setloottable"))
+		    case "setloottable":
 		        return onSetLootTableCommand(sender, cmd, label, args);
-		    else if(args[0].equalsIgnoreCase("viewloottable"))
+		    case "viewloottable":
 		        return onViewLootTableCommand(sender, cmd, label, args);
-		    else if(args[0].equalsIgnoreCase("listloottables"))
+		    case "listloottables":
 		        return onListLootTablesCommand(sender, cmd, label, args);
-		    else if(args[0].equalsIgnoreCase("loottablecontents"))
+		    case "loottablecontents":
 		        return onLootTableContentsCommand(sender, cmd, label, args);
-		    else if(args[0].equalsIgnoreCase("version"))
+		    case "version":
 		        return onVersionCommand(sender, cmd, label, args);
-		    else if(args[0].equalsIgnoreCase("viewtimers"))
+		    case "viewtimers":
 		        return onViewTimersCommand(sender, cmd, label, args);
-		    else if(args[0].equalsIgnoreCase("updater"))
+		    case "updater":
 		        return onUpdateCommand(sender, cmd, label, args);
-		    else {
+		    default:
 		        sender.sendMessage(ChatColor.RED + "Unknown Sub-Command. Type \"/" + label + " help\" for help.");
 		        return true;
+		    
 		    }
 		} else {
 		    sender.sendMessage(ChatColor.RED + "Type \"/" + label + " help\" for help.");
