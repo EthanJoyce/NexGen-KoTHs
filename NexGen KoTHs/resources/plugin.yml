@@ -1,6 +1,6 @@
 name: NexGen_KoTHs
 main: org.mle.nexgenkoths.NexGenKoths
-version: 0.2
+version: 0.3
 author: MrLolEthan
 
 commands:
@@ -10,7 +10,6 @@ commands:
                 permission: nexgenkoths.main
                 permission-message: You don't have permission to do that.
                 aliases: [k, nexgenkoth, koths, nexgenkoths]
-
 permissions:
         nexgenkoths.entercooldown.bypass:
                 description: Allows the player to bypass the KoTH enter cooldown.
