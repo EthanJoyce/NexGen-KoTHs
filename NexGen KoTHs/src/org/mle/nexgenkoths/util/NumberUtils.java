@@ -32,4 +32,14 @@ public class NumberUtils {
     }
     
     
+    public static boolean isDouble(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException ex) {
+            return false;
+        }
+    }
+    
+    
 }
