@@ -86,8 +86,9 @@ public class NexGenKoths extends JavaPlugin {
             LootTableDataHandler.createExampleTable();
         }
         
+        initConfiguration();
+        
         try {
-            initConfiguration();
             loadConfiguration();
         } catch(InvalidConfigurationException ex) {
             Bukkit.getLogger().severe(tag + " Error loading config: " + ex.getMessage());
@@ -199,17 +200,17 @@ public class NexGenKoths extends JavaPlugin {
         
         
         zoneEnterCooldown = getConfig().getLong("KoTHs.KoTH_Capture.ZoneEnterCooldown", zoneEnterCooldown);
-        zoneEnterCooldownMsg = getConfig().getString("KoTHs.KoTH_Capture.ZoneEnterCooldown_Message", zoneEnterCooldownMsg).replace('&', ChatColor.COLOR_CHAR);
-        kothCapStartMsg = getConfig().getString("KoTHs.KoTH_Capture.KoTH_Capture_Start_Message", kothCapStartMsg).replace('&', ChatColor.COLOR_CHAR);
-        kothCapStopMsg = getConfig().getString("KoTHs.KoTH_Capture.KoTH_Capture_Stop_Message", kothCapStopMsg).replace('&', ChatColor.COLOR_CHAR);
-        kothCapturedMsg = getConfig().getString("KoTHs.KoTH_Capture.KoTH_Captured_Message", kothCapturedMsg).replace('&', ChatColor.COLOR_CHAR);
+        zoneEnterCooldownMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Capture.ZoneEnterCooldown_Message", zoneEnterCooldownMsg));
+        kothCapStartMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Capture.KoTH_Capture_Start_Message", kothCapStartMsg));
+        kothCapStopMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Capture.KoTH_Capture_Stop_Message", kothCapStopMsg));
+        kothCapturedMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Capture.KoTH_Captured_Message", kothCapturedMsg));
         canCaptureWhileInvis = getConfig().getBoolean("KoTHs.KoTH_Capture.CanPlayerCaptureWhileInvisible", canCaptureWhileInvis);
         
-        kothStartMsg = getConfig().getString("KoTHs.KoTH_Start_Message", kothStartMsg).replace('&', ChatColor.COLOR_CHAR);
-        kothStopMsg = getConfig().getString("KoTHs.KoTH_Stop_Message", kothStopMsg).replace('&', ChatColor.COLOR_CHAR);
+        kothStartMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Start_Message", kothStartMsg));
+        kothStopMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Stop_Message", kothStopMsg));
         
         useScoreboard = getConfig().getBoolean("KoTHs.Scoreboard.Use", useScoreboard);
-        scoreboardObjDisplayName = getConfig().getString("KoTHs.Scoreboard.DisplayName", scoreboardObjDisplayName).replace('&', ChatColor.COLOR_CHAR);
+        scoreboardObjDisplayName = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.Scoreboard.DisplayName", scoreboardObjDisplayName));
         scoreboardUpdateFrequency = getConfig().getLong("KoTHs.Scoreboard.UpdateFrequency", scoreboardUpdateFrequency);
         
         autoUpdate = getConfig().getBoolean("AutoUpdate", autoUpdate);
