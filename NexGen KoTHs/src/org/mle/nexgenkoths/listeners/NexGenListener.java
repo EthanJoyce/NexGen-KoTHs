@@ -11,6 +11,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.mle.nexgenkoths.Koth;
 import org.mle.nexgenkoths.LocationPair;
 import org.mle.nexgenkoths.NexGenKoths;
@@ -90,6 +91,29 @@ public class NexGenListener implements Listener {
         
         if(NexGenKoths.playerSelections.containsKey(e.getPlayer().getUniqueId()))
             NexGenKoths.playerSelections.remove(e.getPlayer().getUniqueId());
+    }
+    
+    
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerTeleport(PlayerTeleportEvent e) {
+        for(Koth koth : NexGenKoths.loadedKoths) {
+            if(!koth.isActive()) continue;
+            
+            if(LocationUtils.isLocationInside(e.getTo(), koth.getCapZoneLocations())) { // Player teleported into the KoTH capture zone
+                if(NexGenKoths.zoneEnterCooldownPlayers.containsKey(e.getPlayer().getUniqueId())) {
+                    e.setTo(e.getFrom());
+                    
+                    e.getPlayer().sendMessage(NexGenKoths.zoneEnterCooldownMsg.replace("{PLAYER}", e.getPlayer().getName()).replace("{KOTH_NAME}", koth.getName()).replace("{SECONDS}", NexGenKoths.zoneEnterCooldownPlayers.get(e.getPlayer().getUniqueId()).toString()));
+                    
+                    return;
+                }
+                
+                NexGenKoths.onPlayerEnterKoth(e.getPlayer(), koth, e);
+            }
+            else if(koth.isBeingCaptured() && koth.getCappingPlayer().equals(e.getPlayer())) { // Player teleported out of the KoTH capture zone
+                NexGenKoths.onPlayerExitKoth(e.getPlayer(), koth, e);
+            }
+        }
     }
     
     
