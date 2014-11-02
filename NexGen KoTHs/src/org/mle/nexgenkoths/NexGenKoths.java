@@ -25,6 +25,9 @@ import org.mcstats.nexgenkoths.Metrics;
 import org.mle.nexgenkoths.commands.KothCommandExecutor;
 import org.mle.nexgenkoths.customitems.CustomItem;
 import org.mle.nexgenkoths.customitems.CustomItemsDataHandler;
+import org.mle.nexgenkoths.events.PlayerCaptureKothEvent;
+import org.mle.nexgenkoths.integration.Factions;
+import org.mle.nexgenkoths.integration.Vault;
 import org.mle.nexgenkoths.listeners.NexGenListener;
 import org.mle.nexgenkoths.loottables.LootTable;
 import org.mle.nexgenkoths.loottables.LootTableDataHandler;
@@ -73,6 +76,9 @@ public class NexGenKoths extends JavaPlugin {
         tag = "[" + getDescription().getName() + "]";
         pluginFile = getFile();
         
+        if(!Vault.setupEconomy())
+            Bukkit.getLogger().info(tag + " Vault economy setup failed; Vault features will not be present.");
+        
         CustomItemsDataHandler.initDirectories();
         LootTableDataHandler.initDirectories();
         KothDataHandler.initDirectories();
@@ -116,6 +122,9 @@ public class NexGenKoths extends JavaPlugin {
     
     public void onDisable() {
         KothDataHandler.saveAllKoths();
+        
+        for(Player player : Bukkit.getServer().getOnlinePlayers())
+            ScoreboardUtil.clearScoreboard(player);
     }
     
     
@@ -289,20 +298,57 @@ public class NexGenKoths extends JavaPlugin {
     }
     
     
-    public static void onPlayerCaptureKoth(Player player, Koth koth) {
+    public static boolean onPlayerCaptureKoth(Player player, Koth koth) {
+        List<ItemStack> loot = new ArrayList<ItemStack>();
+        Map<String, Double> nonItemLoot = new HashMap<String, Double>();
+        
         if(koth.getFlags().containsKey(KothFlag.USE_LOOT_TABLE) && koth.getFlags().get(KothFlag.USE_LOOT_TABLE) != 0 && koth.getLootTable() != null) {
-            List<ItemStack> randomLoot = koth.getRandomLoot();
+            loot = koth.getRandomLoot();
+            nonItemLoot = koth.getRandomNonItemLoot();
             
-            if(randomLoot == null) {
+            if(loot == null) {
                 Bukkit.getLogger().warning(tag + " Error giving player \"" + player.getName() + "\" KoTH loot: KoTH \"" + koth.getName() + "\"'s random loot list returned null.");
-                return;
+                return false;
             }
             
-            for(ItemStack is : randomLoot)
-                player.getInventory().addItem(is);
+            if(nonItemLoot == null) {
+                Bukkit.getLogger().warning(tag + " Error giving player \"" + player.getName() + "\" KoTH loot: KoTH \"" + koth.getName() + "\"'s random NON-ITEM loot list returned null.");
+                return false;
+            }
+        }
+        
+        PlayerCaptureKothEvent event = new PlayerCaptureKothEvent(player, koth, loot, nonItemLoot);
+        Bukkit.getPluginManager().callEvent(event);
+        
+        
+        if(event.isCancelled())
+            return false;
+        
+        for(ItemStack is : loot)
+            player.getInventory().addItem(is);
+        
+        for(Entry<String, Double> entry : nonItemLoot.entrySet()) {
+            switch(entry.getKey().toLowerCase()) {
+            
+            case "money":
+                Vault.givePlayerMoney(player, entry.getValue());
+                break;
+            case "factionspower":
+                Factions.addPower(player, entry.getValue());
+                break;
+            case "exp":
+                player.giveExp(entry.getValue().intValue());
+                break;
+            default:
+                Bukkit.getLogger().warning("Unknown non-item loot: " + entry.getKey());
+                break;
+            
+            }
         }
         
         Bukkit.broadcastMessage(kothCapturedMsg.replace("{KOTH_NAME}", koth.getName()).replace("{PLAYER}", player.getName()));
+        
+        return true;
     }
     
     

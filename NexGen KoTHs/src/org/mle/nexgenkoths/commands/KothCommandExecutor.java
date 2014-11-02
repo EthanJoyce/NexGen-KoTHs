@@ -20,6 +20,7 @@ import org.mle.nexgenkoths.NexGenKoths;
 import org.mle.nexgenkoths.loottables.LootTable;
 import org.mle.nexgenkoths.loottables.LootTableDataHandler;
 import org.mle.nexgenkoths.loottables.LootTableItem;
+import org.mle.nexgenkoths.loottables.NonItemLoot;
 import org.mle.nexgenkoths.util.NumberUtils;
 
 public class KothCommandExecutor implements CommandExecutor {
@@ -488,6 +489,11 @@ public class KothCommandExecutor implements CommandExecutor {
 	    
 	    for(LootTableItem item : lootTable.getItems())
 	        contentsList.append(String.format(" %sItem: %s, %sAmount: %s, %sChance: %s\n", ChatColor.LIGHT_PURPLE, ChatColor.GREEN + item.getItemStack().getType().toString(), ChatColor.RED, ChatColor.GREEN.toString() + item.getAmountRange().getMin() + "-" + item.getAmountRange().getMax(), ChatColor.BLUE, ChatColor.GREEN.toString() + item.getChance()));
+	    
+	    contentsList.append(ChatColor.LIGHT_PURPLE.toString() + ChatColor.BOLD + "Non-Item Loot:\n");
+	    
+	    for(NonItemLoot loot : lootTable.getNonItemLootList())
+	        contentsList.append(String.format(" %sName: %s, %sAmount: %s, %sChance: %s\n", ChatColor.LIGHT_PURPLE, ChatColor.GREEN + loot.getName(), ChatColor.RED, ChatColor.GREEN.toString() + loot.getAmountRange().getMin() + "-" + loot.getAmountRange().getMax(), ChatColor.BLUE, ChatColor.GREEN.toString() + loot.getChance()));
 	    
 	    sender.sendMessage(contentsList.toString());
 	    return true;

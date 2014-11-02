@@ -158,9 +158,8 @@ public class Koth {
     
     
     public void playerCapturedKoth(Player player) {
-        stopKoth(false);
-        
-        NexGenKoths.onPlayerCaptureKoth(player, this);
+        if(NexGenKoths.onPlayerCaptureKoth(player, this))
+            stopKoth(false);
     }
     
     
@@ -211,6 +210,14 @@ public class Koth {
     public List<ItemStack> getRandomLoot() {
         if(lootTable != null)
             return lootTable.getRandomLoot();
+        else
+            return null;
+    }
+    
+    
+    public Map<String, Double> getRandomNonItemLoot() {
+        if(lootTable != null)
+            return lootTable.getRandomNonItemLoot();
         else
             return null;
     }

@@ -37,6 +37,7 @@ public enum LootTableDataHandler {;
     public static void loadLootTable(File file) {
         try(BufferedReader in = new BufferedReader(new FileReader(file))) {
             List<LootTableItem> items = new ArrayList<LootTableItem>();
+            List<NonItemLoot> nonItemLootList = new ArrayList<NonItemLoot>();
             
             String line;
             while((line = in.readLine()) != null) {
@@ -52,13 +53,16 @@ public enum LootTableDataHandler {;
                 String chanceStr = split[2];
                 
                 Material material;
-                AmountRange amtRange;
+                LootTableItem.AmountRange amtRange = null;
+                NonItemLoot.AmountRange nonItemLootAmtRange = null;
                 float chance;
                 
                 short dura;
                 
                 CustomItem customItem = NexGenKoths.getCustomItemByName(split[0]);
                 boolean isCustomItem = false;
+                
+                boolean isNonItemLoot = false;
                 
                 if(itemName.contains(":")) {
                     String[] itemNameSplit = itemName.split("\\:");
@@ -91,8 +95,7 @@ public enum LootTableDataHandler {;
                     
                     if(material == null) {
                         if(customItem == null) {
-                            Bukkit.getLogger().warning(NexGenKoths.tag + " Item Name \"" + split[0] + " is not valid. Ignoring line.");
-                            continue;
+                            isNonItemLoot = true;
                         } else {
                             isCustomItem = true;
                         }
@@ -101,25 +104,55 @@ public enum LootTableDataHandler {;
                 
                 if(amtRangeStr.contains("-")) {
                     String[] amtRangeSplit = amtRangeStr.split("\\-");
+                    
                     if(amtRangeSplit.length != 2) {
                         Bukkit.getLogger().warning(NexGenKoths.tag + " Length of string \"" + amtRangeStr + "\" when split by \"\\-\" isn't 2. Ignoring line.");
                         continue;
                     }
                     
-                    if(!NumberUtils.isInteger(amtRangeSplit[0]) || !NumberUtils.isInteger(amtRangeSplit[1])) {
-                        Bukkit.getLogger().warning(NexGenKoths.tag + " String \"" + amtRangeSplit[0] + "\" isn't a valid integer. Ignoring line.");
-                        continue;
+                    if(!isNonItemLoot) { // Isn't a non-item loot
+                        if(!NumberUtils.isInteger(amtRangeSplit[0]) || !NumberUtils.isInteger(amtRangeSplit[1])) {
+                            Bukkit.getLogger().warning(NexGenKoths.tag + " String \"" + amtRangeSplit[0] + "\" isn't a valid integer. Ignoring line.");
+                            continue;
+                        }
+                        
+                        amtRange = new AmountRange(Integer.parseInt(amtRangeSplit[0]), Integer.parseInt(amtRangeSplit[1]));
+                    } else { // Isn't a non-item loot
+                        if(!NumberUtils.isDouble(amtRangeSplit[0]) || !NumberUtils.isDouble(amtRangeSplit[1])) {
+                            Bukkit.getLogger().warning(NexGenKoths.tag + " String \"" + amtRangeSplit[0] + "\" isn't a valid double. Ignoring line.");
+                            continue;
+                        }
+                        
+                        nonItemLootAmtRange = new NonItemLoot.AmountRange(Double.parseDouble(amtRangeSplit[0]), Double.parseDouble(amtRangeSplit[1]));
                     }
-                    
-                    amtRange = new AmountRange(Integer.parseInt(amtRangeSplit[0]), Integer.parseInt(amtRangeSplit[1]));
                 } else {
-                    if(!NumberUtils.isInteger(amtRangeStr)) {
-                        Bukkit.getLogger().warning(NexGenKoths.tag + " String \"" + amtRangeStr + "\" isn't a valid integer. Ignoring line.");
-                        continue;
-                    }
                     
-                    amtRange = new AmountRange(Integer.parseInt(amtRangeStr), Integer.parseInt(amtRangeStr));
+                    if(!isNonItemLoot) { // Isn't a non-item loot
+                        if(!NumberUtils.isInteger(amtRangeStr)) {
+                            Bukkit.getLogger().warning(NexGenKoths.tag + " String \"" + amtRangeStr + "\" isn't a valid integer. Ignoring line.");
+                            continue;
+                        }
+                        
+                        amtRange = new AmountRange(Integer.parseInt(amtRangeStr), Integer.parseInt(amtRangeStr));
+                    } else { // IS a non-item loot
+                        if(!NumberUtils.isDouble(amtRangeStr)) {
+                            Bukkit.getLogger().warning(NexGenKoths.tag + " String \"" + amtRangeStr + "\" isn't a valid double. Ignoring line.");
+                            continue;
+                        }
+                        
+                        nonItemLootAmtRange = new NonItemLoot.AmountRange(Double.parseDouble(amtRangeStr), Double.parseDouble(amtRangeStr));
+                    }
                 }
+                
+                if(isNonItemLoot && nonItemLootAmtRange == null) {
+                    Bukkit.getLogger().warning(NexGenKoths.tag + " nonItemLootAmtRange is null. Ignoring line.");
+                    continue;
+                }
+                else if(!isNonItemLoot && amtRange == null) {
+                    Bukkit.getLogger().warning(NexGenKoths.tag + " amtRange is null. Ignoring line.");
+                    continue;
+                }
+                
                 
                 if(!NumberUtils.isFloat(chanceStr)) {
                     Bukkit.getLogger().warning(NexGenKoths.tag + " String \"" + chanceStr + "\" isn't a valid float. Ignoring line.");
@@ -129,17 +162,21 @@ public enum LootTableDataHandler {;
                 chance = Float.parseFloat(chanceStr);
                 
                 
-                if(!isCustomItem) { // Item is NOT a custom item
+                if(!isCustomItem && !isNonItemLoot) { // Item is NOT a custom item or nonItemLoot
                     LootTableItem item = new LootTableItem(new ItemStack(material), amtRange, chance);
                     item.setDurability(dura);
                     items.add(item);
-                } else { // Item is a custom item
+                }
+                else if(isCustomItem) { // Item is a custom item
                     LootTableItem item = new LootTableItem(customItem.getItemStack(), amtRange, chance);
                     items.add(item);
                 }
+                else if(isNonItemLoot) { // Item is a non-item loot
+                    nonItemLootList.add(new NonItemLoot(split[0], nonItemLootAmtRange, chance));
+                }
             }
             
-            LootTable lootTable = new LootTable(file.getName(), items);
+            LootTable lootTable = new LootTable(file.getName(), items, nonItemLootList);
             NexGenKoths.loadedLootTables.add(lootTable);
         } catch(Exception ex) {
             ex.printStackTrace();
@@ -169,6 +206,18 @@ public enum LootTableDataHandler {;
             out.newLine();
             
             out.append("PureGold 4-32 1");
+            
+            out.newLine();
+            
+            out.append("factionspower 1.30-5.12 1");
+            
+            out.newLine();
+            
+            out.append("exp 100-200 1");
+            
+            out.newLine();
+            
+            out.append("money 10.46-1000.94 1");
         } catch(Exception ex) {
             ex.printStackTrace();
             Bukkit.getLogger().severe(NexGenKoths.tag + " Exception thrown while writing to file \"" + file.getAbsolutePath() + "\": " + ex.getMessage());
