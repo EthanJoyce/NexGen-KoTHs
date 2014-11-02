@@ -2,6 +2,7 @@ name: NexGen_KoTHs
 main: org.mle.nexgenkoths.NexGenKoths
 version: 0.3
 author: MrLolEthan
+softdepend: [Factions, Vault]
 
 commands:
         koth:
