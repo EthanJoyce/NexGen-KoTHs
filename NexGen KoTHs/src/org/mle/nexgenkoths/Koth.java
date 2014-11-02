@@ -149,14 +149,11 @@ public class Koth {
         isBeingCapped = false;
         cappingPlayer = null;
         
+        if(NexGenKoths.useScoreboard && NexGenKoths.globalScoreboardsMap.containsKey(ChatColor.GREEN + name + " Cap"))
+            NexGenKoths.globalScoreboardsMap.remove(ChatColor.GREEN + name + " Cap");
+        
         if(player == null)
             return;
-        
-        if(NexGenKoths.playerScoreboardsMap.containsKey(player.getUniqueId()))
-            NexGenKoths.globalScoreboardsMap.put(ChatColor.GREEN + name + " Cap", 0);
-        else {
-            NexGenKoths.globalScoreboardsMap.put(ChatColor.GREEN + name + " Cap", 0);
-        }
     }
     
     

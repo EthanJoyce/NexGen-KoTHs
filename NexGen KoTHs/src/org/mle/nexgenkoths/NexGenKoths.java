@@ -25,8 +25,6 @@ import org.mcstats.nexgenkoths.Metrics;
 import org.mle.nexgenkoths.commands.KothCommandExecutor;
 import org.mle.nexgenkoths.customitems.CustomItem;
 import org.mle.nexgenkoths.customitems.CustomItemsDataHandler;
-import org.mle.nexgenkoths.kothlists.KothList;
-import org.mle.nexgenkoths.kothlists.KothListsDataHandler;
 import org.mle.nexgenkoths.listeners.NexGenListener;
 import org.mle.nexgenkoths.loottables.LootTable;
 import org.mle.nexgenkoths.loottables.LootTableDataHandler;
@@ -41,7 +39,6 @@ public class NexGenKoths extends JavaPlugin {
     public static List<Koth> loadedKoths = new ArrayList<Koth>();
     public static List<LootTable> loadedLootTables = new ArrayList<LootTable>();
     public static List<CustomItem> loadedCustomItems = new ArrayList<CustomItem>();
-    public static List<KothList> loadedKothLists = new ArrayList<KothList>();
     
     
     public static Map<UUID, Long> zoneEnterCooldownPlayers = new HashMap<UUID, Long>();
@@ -79,7 +76,6 @@ public class NexGenKoths extends JavaPlugin {
         CustomItemsDataHandler.initDirectories();
         LootTableDataHandler.initDirectories();
         KothDataHandler.initDirectories();
-        KothListsDataHandler.initDirectories();
         
         getCommand("koth").setExecutor(new KothCommandExecutor());
         
@@ -101,7 +97,6 @@ public class NexGenKoths extends JavaPlugin {
         CustomItemsDataHandler.loadAllCustomItems();
         LootTableDataHandler.loadAllLootTables();
         KothDataHandler.loadAllKoths();
-        KothListsDataHandler.loadAllKothLists();
         startTimers();
         
         if(sendMetrics) {
@@ -204,17 +199,17 @@ public class NexGenKoths extends JavaPlugin {
         
         
         zoneEnterCooldown = getConfig().getLong("KoTHs.KoTH_Capture.ZoneEnterCooldown", zoneEnterCooldown);
-        zoneEnterCooldownMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Capture.ZoneEnterCooldown_Message", zoneEnterCooldownMsg));
-        kothCapStartMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Capture.KoTH_Capture_Start_Message", kothCapStartMsg));
-        kothCapStopMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Capture.KoTH_Capture_Stop_Message", kothCapStopMsg));
-        kothCapturedMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Capture.KoTH_Captured_Message", kothCapturedMsg));
+        zoneEnterCooldownMsg = getConfig().getString("KoTHs.KoTH_Capture.ZoneEnterCooldown_Message", zoneEnterCooldownMsg).replace('&', ChatColor.COLOR_CHAR);
+        kothCapStartMsg = getConfig().getString("KoTHs.KoTH_Capture.KoTH_Capture_Start_Message", kothCapStartMsg).replace('&', ChatColor.COLOR_CHAR);
+        kothCapStopMsg = getConfig().getString("KoTHs.KoTH_Capture.KoTH_Capture_Stop_Message", kothCapStopMsg).replace('&', ChatColor.COLOR_CHAR);
+        kothCapturedMsg = getConfig().getString("KoTHs.KoTH_Capture.KoTH_Captured_Message", kothCapturedMsg).replace('&', ChatColor.COLOR_CHAR);
         canCaptureWhileInvis = getConfig().getBoolean("KoTHs.KoTH_Capture.CanPlayerCaptureWhileInvisible", canCaptureWhileInvis);
         
-        kothStartMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Start_Message", kothStartMsg));
-        kothStopMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Stop_Message", kothStopMsg));
+        kothStartMsg = getConfig().getString("KoTHs.KoTH_Start_Message", kothStartMsg).replace('&', ChatColor.COLOR_CHAR);
+        kothStopMsg = getConfig().getString("KoTHs.KoTH_Stop_Message", kothStopMsg).replace('&', ChatColor.COLOR_CHAR);
         
         useScoreboard = getConfig().getBoolean("KoTHs.Scoreboard.Use", useScoreboard);
-        scoreboardObjDisplayName = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.Scoreboard.DisplayName", scoreboardObjDisplayName));
+        scoreboardObjDisplayName = getConfig().getString("KoTHs.Scoreboard.DisplayName", scoreboardObjDisplayName).replace('&', ChatColor.COLOR_CHAR);
         scoreboardUpdateFrequency = getConfig().getLong("KoTHs.Scoreboard.UpdateFrequency", scoreboardUpdateFrequency);
         
         autoUpdate = getConfig().getBoolean("AutoUpdate", autoUpdate);
