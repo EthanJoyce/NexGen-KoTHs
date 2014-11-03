@@ -20,10 +20,12 @@ public class Koth {
     
     private boolean active = false;
     
+    private long lastAutoStartDelay = -1;
     private long autoStartTimer = 0;
     private long autoEndTimer = 0;
     private long capTimer = 0;
     
+    private long lastAutoEndDelay = -1;
     private int autoStartTimerID = -1;
     private int autoEndTimerID = -1;
     private int capTimerID = -1;
@@ -58,6 +60,7 @@ public class Koth {
             autoStartDelay = flags.get(KothFlag.AUTO_START_DELAY);
         
         final long AUTO_START_DELAY = autoStartDelay;
+        lastAutoStartDelay = autoStartDelay;
         
         autoStartTimerID = Bukkit.getScheduler().scheduleSyncRepeatingTask(NexGenKoths.instance, new Runnable() {
             public void run() {
@@ -67,6 +70,7 @@ public class Koth {
                     Bukkit.getScheduler().cancelTask(autoStartTimerID);
                     autoStartTimerID = -1;
                     autoStartTimer = 0;
+                    lastAutoStartDelay = -1;
                     
                     long minPlayersToStart = KothFlag.MIN_PLAYERS_TO_START.getDefaultValue();
                     if(flags.containsKey(KothFlag.MIN_PLAYERS_TO_START))
@@ -95,6 +99,7 @@ public class Koth {
             autoEndDelay = flags.get(KothFlag.AUTO_END_DELAY);
         
         final long AUTO_END_DELAY = autoEndDelay;
+        lastAutoEndDelay = autoEndDelay;
         
         autoEndTimerID = Bukkit.getScheduler().scheduleSyncRepeatingTask(NexGenKoths.instance, new Runnable() {
             public void run() {
@@ -104,10 +109,6 @@ public class Koth {
                     NexGenKoths.globalScoreboardsMap.put(ChatColor.GREEN + name + " End", (int) (AUTO_END_DELAY - autoEndTimer));
                 
                 if(autoEndTimer >= AUTO_END_DELAY) {
-                    Bukkit.getScheduler().cancelTask(autoEndTimerID);
-                    autoEndTimerID = -1;
-                    autoEndTimer = 0;
-                    
                     stopKoth(true);
                 }
             }
@@ -191,6 +192,7 @@ public class Koth {
             Bukkit.getScheduler().cancelTask(autoEndTimerID);
             autoEndTimerID = -1;
             autoEndTimer = 0;
+            lastAutoEndDelay = -1;
             
             if(NexGenKoths.useScoreboard)
                 NexGenKoths.globalScoreboardsMap.put(ChatColor.GREEN + name + " End", 0);
@@ -253,16 +255,26 @@ public class Koth {
     
     public long getAutoStartTimer() {
         long autoStartDelay = KothFlag.AUTO_START_DELAY.getDefaultValue();
-        if(flags.containsKey(KothFlag.AUTO_START_DELAY))
-            autoStartDelay = flags.get(KothFlag.AUTO_START_DELAY);
+        
+        if(lastAutoStartDelay != -1) {
+            autoStartDelay = lastAutoStartDelay;
+        } else {
+            if(flags.containsKey(KothFlag.AUTO_START_DELAY))
+                autoStartDelay = flags.get(KothFlag.AUTO_START_DELAY);
+        }
         
         return autoStartDelay - autoStartTimer;
     }
     
     public long getAutoEndTimer() {
         long autoEndDelay = KothFlag.AUTO_END_DELAY.getDefaultValue();
-        if(flags.containsKey(KothFlag.AUTO_END_DELAY))
-            autoEndDelay = flags.get(KothFlag.AUTO_END_DELAY);
+        
+        if(lastAutoEndDelay != -1) {
+            autoEndDelay = lastAutoEndDelay;
+        } else {
+            if(flags.containsKey(KothFlag.AUTO_END_DELAY))
+                autoEndDelay = flags.get(KothFlag.AUTO_END_DELAY);
+        }
         
         return autoEndDelay - autoEndTimer;
     }
