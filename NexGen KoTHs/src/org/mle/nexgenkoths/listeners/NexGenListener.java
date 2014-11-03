@@ -63,7 +63,7 @@ public class NexGenListener implements Listener {
             if(!koth.isActive()) continue;
             
             if(LocationUtils.isLocationInside(e.getTo(), koth.getCapZoneLocations())) { // Player entered KoTH capture zone
-                if(NexGenKoths.zoneEnterCooldownPlayers.containsKey(e.getPlayer().getUniqueId())) {
+                if(NexGenKoths.zoneEnterCooldownPlayers.containsKey(e.getPlayer().getUniqueId()) && NexGenKoths.zoneEnterCooldownPlayers.get(e.getPlayer().getUniqueId()).longValue() > 0) {
                     e.setTo(e.getFrom());
                     
                     e.getPlayer().sendMessage(NexGenKoths.zoneEnterCooldownMsg.replace("{PLAYER}", e.getPlayer().getName()).replace("{KOTH_NAME}", koth.getName()).replace("{SECONDS}", NexGenKoths.zoneEnterCooldownPlayers.get(e.getPlayer().getUniqueId()).toString()));
