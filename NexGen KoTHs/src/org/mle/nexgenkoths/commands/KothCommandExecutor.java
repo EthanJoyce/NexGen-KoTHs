@@ -183,7 +183,7 @@ public class KothCommandExecutor implements CommandExecutor {
 	    StringBuilder listMessage = new StringBuilder(String.format(ChatColor.GOLD + "----- %sLoaded KoTHs: %s-----\n" + ChatColor.GREEN, ChatColor.AQUA, ChatColor.GOLD));
 	    
 	    for(Koth koth : NexGenKoths.loadedKoths)
-	        listMessage.append(" " + koth.getName() + ",");
+	        listMessage.append(String.format(" %s%s%s,", koth.isActive() ? ChatColor.GREEN : ChatColor.RED, koth.getName(), ChatColor.AQUA));
 	    
 	    listMessage.append(ChatColor.GOLD + "\n-----------------------");
 	    
