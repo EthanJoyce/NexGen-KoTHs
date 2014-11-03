@@ -17,6 +17,7 @@ import org.mle.nexgenkoths.KothDataHandler;
 import org.mle.nexgenkoths.KothFlag;
 import org.mle.nexgenkoths.LocationPair;
 import org.mle.nexgenkoths.NexGenKoths;
+import org.mle.nexgenkoths.customitems.CustomItemsDataHandler;
 import org.mle.nexgenkoths.loottables.LootTable;
 import org.mle.nexgenkoths.loottables.LootTableDataHandler;
 import org.mle.nexgenkoths.loottables.LootTableItem;
@@ -365,10 +366,12 @@ public class KothCommandExecutor implements CommandExecutor {
 	        return true;
 	    }
 	    
+	    CustomItemsDataHandler.loadAllCustomItems();
 	    LootTableDataHandler.loadAllLootTables();
 	    
 	    NexGenKoths.instance.reloadConfig();
 	    
+	    NexGenKoths.instance.initConfiguration();
 	    try {
 	        NexGenKoths.instance.loadConfiguration();
 	    } catch(InvalidConfigurationException ex) {
