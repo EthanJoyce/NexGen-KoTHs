@@ -41,9 +41,7 @@ public class Koth {
     }
     
     public Koth(String name, LocationPair capZoneLocations) {
-        this.name = name;
-        this.capZoneLocations = capZoneLocations;
-        this.flags = new HashMap<KothFlag, Integer>();
+        this(name, capZoneLocations, new HashMap<KothFlag, Integer>());
     }
     
     

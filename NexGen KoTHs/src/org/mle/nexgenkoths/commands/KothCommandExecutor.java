@@ -549,7 +549,7 @@ public class KothCommandExecutor implements CommandExecutor {
 	        return true;
 	    }
 	    
-	    Updater updater  = new Updater(NexGenKoths.instance, 86133, NexGenKoths.pluginFile, Updater.UpdateType.DEFAULT, false);
+	    Updater updater  = new Updater(NexGenKoths.instance, 86133, NexGenKoths.pluginFile, Updater.UpdateType.DEFAULT, true);
 	    
 	    switch(updater.getResult()) {
 	    

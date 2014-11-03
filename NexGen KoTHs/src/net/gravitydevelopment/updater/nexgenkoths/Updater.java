@@ -755,7 +755,10 @@ public class Updater {
 	    String latestVersion;
 	    String latestName = getLatestName();
 	    
-	    latestVersion = latestName.substring(latestName.indexOf("v") + 1);
+	    if(latestName != null)
+	        latestVersion = latestName.substring(latestName.indexOf("v") + 1);
+	    else
+	        return "Error";
 	    
 	    return latestVersion;
     }
