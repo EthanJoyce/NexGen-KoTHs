@@ -50,8 +50,8 @@ public class NexGenKoths extends JavaPlugin {
     public static Material selectionItem = Material.STICK;
     public static boolean selectOnlyInCreative = false;
     
-    public static String kothCapStartMsg = ChatColor.LIGHT_PURPLE + "[KoTH] " + ChatColor.RED.toString() + ChatColor.BOLD + "{PLAYER} has started to capture {KOTH_NAME}!";
-    public static String kothCapStopMsg = ChatColor.LIGHT_PURPLE + "[KoTH] " + ChatColor.GREEN.toString() + ChatColor.BOLD + "{PLAYER} has left the {KOTH_NAME} KoTH!";
+    public static String kothCapStartMsg = ChatColor.LIGHT_PURPLE + "[KoTH] " + ChatColor.GOLD + "{PLAYER} is trying to control {KOTH_NAME}!";
+    public static String kothCapStopMsg = ChatColor.LIGHT_PURPLE + "[KoTH] " + ChatColor.GOLD + ChatColor.BOLD + "{PLAYER} has lost control of {KOTH_NAME}!";
     public static String zoneEnterCooldownMsg = ChatColor.LIGHT_PURPLE + "[KoTH] " + ChatColor.RED + "You can't enter another KoTH for {SECONDS} seconds.";
     public static String kothStartMsg = ChatColor.LIGHT_PURPLE + "[KoTH] " + ChatColor.GREEN.toString() + ChatColor.BOLD + "{KOTH_NAME} is now active!";
     public static String kothStopMsg = ChatColor.LIGHT_PURPLE + "[KoTH] " + ChatColor.RED.toString() + ChatColor.BOLD + "{KOTH_NAME} is no longer active.";
@@ -293,7 +293,7 @@ public class NexGenKoths extends JavaPlugin {
             Bukkit.broadcastMessage(kothCapStopMsg.replace("{KOTH_NAME}", koth.getName()).replace("{PLAYER}", player.getName()));
         }
         
-        if(!player.hasPermission("nexgenkoths.entercooldown.bypass"))
+        if(!player.hasPermission("nexgenkoths.entercooldown.bypass") && zoneEnterCooldown > 0)
             zoneEnterCooldownPlayers.put(player.getUniqueId(), zoneEnterCooldown);
     }
     
