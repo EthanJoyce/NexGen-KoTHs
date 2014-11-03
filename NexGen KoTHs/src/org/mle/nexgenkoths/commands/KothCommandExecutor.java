@@ -61,7 +61,7 @@ public class KothCommandExecutor implements CommandExecutor {
 		        return onVersionCommand(sender, cmd, label, args);
 		    case "viewtimers":
 		        return onViewTimersCommand(sender, cmd, label, args);
-		    case "updater":
+		    case "update":
 		        return onUpdateCommand(sender, cmd, label, args);
 		    default:
 		        sender.sendMessage(ChatColor.RED + "Unknown Sub-Command. Type \"/" + label + " help\" for help.");
