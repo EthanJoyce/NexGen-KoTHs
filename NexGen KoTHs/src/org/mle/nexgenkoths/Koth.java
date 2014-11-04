@@ -54,6 +54,11 @@ public class Koth {
         final long AUTO_START_DELAY = getFlagValue(KothFlag.AUTO_START_DELAY);
         lastAutoStartDelay = AUTO_START_DELAY;
         
+        if(autoStartTimerID != -1) {
+            Bukkit.getLogger().severe(NexGenKoths.tag + " Error starting AutoStartTimer for KoTH \"" + name + "\": An AutoStartTimer task already exists.");
+            return;
+        }
+        
         autoStartTimerID = Bukkit.getScheduler().scheduleSyncRepeatingTask(NexGenKoths.instance, new Runnable() {
             public void run() {
                 autoStartTimer++;
@@ -91,6 +96,11 @@ public class Koth {
         final long AUTO_END_DELAY = getFlagValue(KothFlag.AUTO_END_DELAY);
         lastAutoEndDelay = AUTO_END_DELAY;
         
+        if(autoEndTimerID != -1) {
+            Bukkit.getLogger().severe(NexGenKoths.tag + " Error starting AutoEndTimer for KoTH \"" + name + "\": An AutoEndTimer task already exists.");
+            return;
+        }
+        
         autoEndTimerID = Bukkit.getScheduler().scheduleSyncRepeatingTask(NexGenKoths.instance, new Runnable() {
             public void run() {
                 autoEndTimer++;
@@ -99,7 +109,6 @@ public class Koth {
                     NexGenKoths.globalScoreboardsMap.put(ChatColor.GREEN + name + " End", (int) (AUTO_END_DELAY - autoEndTimer));
                 
                 if(autoEndTimer >= AUTO_END_DELAY) {
-                    stopAutoEndTimer();
                     stopKoth(true);
                 }
             }
@@ -164,12 +173,7 @@ public class Koth {
     
     
     public void startKoth() {
-        if(active) {
-            if(autoEndTimerID == -1)
-                startAutoEndTimer();
-            
-            return;
-        }
+        stopAutoStartTimer();
         
         setActive(true);
         
@@ -180,16 +184,12 @@ public class Koth {
     
     
     public void stopKoth(boolean broadcast) {
-        if(!active) {
-            if(autoStartTimerID == -1)
-                startAutoStartTimer();
-            
-            return;
-        }
+        stopAutoEndTimer();
         
         setActive(false);
         
-        stopCaptureTimer(null);
+        if(isBeingCapped)
+            stopCaptureTimer(null);
         
         if(broadcast)
             Bukkit.broadcastMessage(NexGenKoths.kothStopMsg.replace("{KOTH_NAME}", getName()));

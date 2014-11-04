@@ -45,6 +45,9 @@ permissions:
         nexgenkoths.start:
                 description: Allows the player to manually start a KoTH using the "start" Sub-Command.
                 default: op
+        nexgenkoths.stop:
+                description: Allows the player to manually stop a KoTH using the "stop" Sub-Command.
+                default: op
         nexgenkoths.reload:
                 description: Allows the player to reload the plugin using the "reload" Sub-Command.
                 default: op

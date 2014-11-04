@@ -48,6 +48,8 @@ public class KothCommandExecutor implements CommandExecutor {
 		        return onSaveAllCommand(sender, cmd, label, args);
 		    case "start":
 		        return onStartCommand(sender, cmd, label, args);
+		    case "stop":
+		        return onStopCommand(sender, cmd, label, args);
 		    case "reload":
 		        return onReloadCommand(sender, cmd, label, args);
 		    case "setloottable":
@@ -93,7 +95,8 @@ public class KothCommandExecutor implements CommandExecutor {
 	    helpMessage.append(String.format(ChatColor.GREEN + " /%s viewflags <Name> %s- View the flags of the specified KoTH.\n", label, ChatColor.RED));
 	    helpMessage.append(String.format(ChatColor.GREEN + " /%s delete <Name> %s- Deletes the specified KoTH.\n", label, ChatColor.RED));
 	    helpMessage.append(String.format(ChatColor.GREEN + " /%s saveall %s- Saves all KoTHs.\n", label, ChatColor.RED));
-	    helpMessage.append(String.format(ChatColor.GREEN + " /%s start %s- Starts the specified KoTH.\n", label, ChatColor.RED));
+	    helpMessage.append(String.format(ChatColor.GREEN + " /%s start <Name> %s- Starts the specified KoTH.\n", label, ChatColor.RED));
+	    helpMessage.append(String.format(ChatColor.GREEN + " /%s stop <Name> %s- Stops the specified KoTH.\n", label, ChatColor.RED));
 	    helpMessage.append(String.format(ChatColor.GREEN + " /%s reload %s- Reloads the plugin.\n", label, ChatColor.RED));
 	    helpMessage.append(String.format(ChatColor.GREEN + " /%s setloottable <Name> <LootTable Name> %s- Sets the LootTable that the KoTH uses.\n", label, ChatColor.RED));
 	    helpMessage.append(String.format(ChatColor.GREEN + " /%s viewloottable <Name> %s- Shows the LootTable that the KoTH uses.\n", label, ChatColor.RED));
@@ -348,14 +351,45 @@ public class KothCommandExecutor implements CommandExecutor {
 	        return true;
 	    }
 	    
-	    if(!koth.isActive())
+	    if(!koth.isActive()) {
 	        koth.startKoth();
-	    else {
+	    } else {
 	        sender.sendMessage(ChatColor.RED + "That KoTH is already active.");
 	        return true;
 	    }
 	    
 	    sender.sendMessage(ChatColor.GREEN + "Successfully started KoTH \"" + koth.getName() + "\"");
+	    return true;
+	}
+	
+	
+	private static boolean onStopCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	    if(!sender.hasPermission("nexgenkoths.stop")) {
+	        sender.sendMessage(ChatColor.RED + "You don't have permission to do that.");
+	        return true;
+	    }
+	    
+	    if(args.length != 2) {
+	        sender.sendMessage(ChatColor.RED + "Invalid command arguments.");
+	        return true;
+	    }
+	    
+	    String kothName = args[1];
+	    Koth koth = NexGenKoths.getKothByName(kothName);
+	    
+	    if(koth == null) {
+	        sender.sendMessage(ChatColor.RED + "No KoTH with name \"" + kothName + "\" exists.");
+	        return true;
+	    }
+	    
+	    if(koth.isActive()) {
+	        koth.stopKoth(true);
+	    } else {
+	        sender.sendMessage(ChatColor.RED + "That KoTH is not active.");
+	        return true;
+	    }
+	    
+	    sender.sendMessage(ChatColor.GREEN + "Successfully stopped KoTH \"" + koth.getName() + "\"");
 	    return true;
 	}
 	
