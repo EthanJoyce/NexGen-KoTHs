@@ -63,6 +63,7 @@ public class NexGenKoths extends JavaPlugin {
     
     public static boolean useScoreboard = true;
     public static String scoreboardObjDisplayName = ChatColor.LIGHT_PURPLE + "NexGen KoTHs";
+    public static String belowNameObjDisplayName  = ChatColor.GOLD + "Controller";
     public static Map<UUID, Map<String, Integer>> playerScoreboardsMap = new HashMap<UUID, Map<String, Integer>>();
     public static Map<String, Integer> globalScoreboardsMap = new HashMap<String, Integer>();
     public static long scoreboardUpdateFrequency = 10;
@@ -302,7 +303,7 @@ public class NexGenKoths extends JavaPlugin {
         List<ItemStack> loot = new ArrayList<ItemStack>();
         Map<String, Double> nonItemLoot = new HashMap<String, Double>();
         
-        if(koth.getFlags().containsKey(KothFlag.USE_LOOT_TABLE) && koth.getFlags().get(KothFlag.USE_LOOT_TABLE) != 0 && koth.getLootTable() != null) {
+        if(koth.getFlagValue(KothFlag.USE_LOOT_TABLE) != 0 && koth.getLootTable() != null) {
             loot = koth.getRandomLoot();
             nonItemLoot = koth.getRandomNonItemLoot();
             
@@ -346,7 +347,8 @@ public class NexGenKoths extends JavaPlugin {
             }
         }
         
-        Bukkit.broadcastMessage(kothCapturedMsg.replace("{KOTH_NAME}", koth.getName()).replace("{PLAYER}", player.getName()));
+        if(koth.getFlagValue(KothFlag.BROADCAST_CAPTURE) != 0)
+            Bukkit.broadcastMessage(kothCapturedMsg.replace("{KOTH_NAME}", koth.getName()).replace("{PLAYER}", player.getName()));
         
         return true;
     }

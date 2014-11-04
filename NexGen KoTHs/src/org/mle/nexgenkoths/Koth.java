@@ -46,19 +46,13 @@ public class Koth {
     
     
     public void startAutoStartTimer() {
-        long autoStart = KothFlag.AUTO_START.getDefaultValue();
-        if(flags.containsKey(KothFlag.AUTO_START))
-            autoStart = flags.get(KothFlag.AUTO_START);
+        long autoStart = getFlagValue(KothFlag.AUTO_START);
         
         if(autoStart == 0)
             return;
         
-        long autoStartDelay = KothFlag.AUTO_START_DELAY.getDefaultValue();
-        if(flags.containsKey(KothFlag.AUTO_START_DELAY))
-            autoStartDelay = flags.get(KothFlag.AUTO_START_DELAY);
-        
-        final long AUTO_START_DELAY = autoStartDelay;
-        lastAutoStartDelay = autoStartDelay;
+        final long AUTO_START_DELAY = getFlagValue(KothFlag.AUTO_START_DELAY);
+        lastAutoStartDelay = AUTO_START_DELAY;
         
         autoStartTimerID = Bukkit.getScheduler().scheduleSyncRepeatingTask(NexGenKoths.instance, new Runnable() {
             public void run() {
@@ -70,9 +64,7 @@ public class Koth {
                     autoStartTimer = 0;
                     lastAutoStartDelay = -1;
                     
-                    long minPlayersToStart = KothFlag.MIN_PLAYERS_TO_START.getDefaultValue();
-                    if(flags.containsKey(KothFlag.MIN_PLAYERS_TO_START))
-                        minPlayersToStart = flags.get(KothFlag.MIN_PLAYERS_TO_START);
+                    long minPlayersToStart = getFlagValue(KothFlag.MIN_PLAYERS_TO_START);
                     
                     if(Bukkit.getOnlinePlayers().size() >= minPlayersToStart)
                         startKoth();
@@ -85,19 +77,13 @@ public class Koth {
     
     
     public void startAutoEndTimer() {
-        long autoEnd = KothFlag.AUTO_END.getDefaultValue();
-        if(flags.containsKey(KothFlag.AUTO_END))
-            autoEnd = flags.get(KothFlag.AUTO_END);
+        long autoEnd = getFlagValue(KothFlag.AUTO_END);
         
         if(autoEnd == 0)
             return;
         
-        long autoEndDelay = KothFlag.AUTO_END_DELAY.getDefaultValue();
-        if(flags.containsKey(KothFlag.AUTO_END_DELAY))
-            autoEndDelay = flags.get(KothFlag.AUTO_END_DELAY);
-        
-        final long AUTO_END_DELAY = autoEndDelay;
-        lastAutoEndDelay = autoEndDelay;
+        final long AUTO_END_DELAY = getFlagValue(KothFlag.AUTO_END_DELAY);
+        lastAutoEndDelay = AUTO_END_DELAY;
         
         autoEndTimerID = Bukkit.getScheduler().scheduleSyncRepeatingTask(NexGenKoths.instance, new Runnable() {
             public void run() {
@@ -115,11 +101,7 @@ public class Koth {
     
     
     public void startCaptureTimer(final Player player) {
-        long capTime = KothFlag.CAPTURE_TIME.getDefaultValue();
-        if(flags.containsKey(KothFlag.CAPTURE_TIME))
-            capTime = flags.get(KothFlag.CAPTURE_TIME);
-        
-        final long CAPTURE_TIME = capTime;
+        final long CAPTURE_TIME = getFlagValue(KothFlag.CAPTURE_TIME);
         
         isBeingCapped = true;
         cappingPlayer = player;
@@ -215,6 +197,16 @@ public class Koth {
     }
     
     
+    public long getFlagValue(KothFlag flag) {
+        long value = flag.getDefaultValue();
+        
+        if(flags.containsKey(flag))
+            value = flags.get(flag);
+        
+        return value;
+    }
+    
+    
     public Map<String, Double> getRandomNonItemLoot() {
         if(lootTable != null)
             return lootTable.getRandomNonItemLoot();
@@ -252,27 +244,19 @@ public class Koth {
     }
     
     public long getAutoStartTimer() {
-        long autoStartDelay = KothFlag.AUTO_START_DELAY.getDefaultValue();
+        long autoStartDelay = getFlagValue(KothFlag.AUTO_START_DELAY);
         
-        if(lastAutoStartDelay != -1) {
+        if(lastAutoStartDelay != -1)
             autoStartDelay = lastAutoStartDelay;
-        } else {
-            if(flags.containsKey(KothFlag.AUTO_START_DELAY))
-                autoStartDelay = flags.get(KothFlag.AUTO_START_DELAY);
-        }
         
         return autoStartDelay - autoStartTimer;
     }
     
     public long getAutoEndTimer() {
-        long autoEndDelay = KothFlag.AUTO_END_DELAY.getDefaultValue();
+        long autoEndDelay = getFlagValue(KothFlag.AUTO_END_DELAY);
         
-        if(lastAutoEndDelay != -1) {
+        if(lastAutoEndDelay != -1)
             autoEndDelay = lastAutoEndDelay;
-        } else {
-            if(flags.containsKey(KothFlag.AUTO_END_DELAY))
-                autoEndDelay = flags.get(KothFlag.AUTO_END_DELAY);
-        }
         
         return autoEndDelay - autoEndTimer;
     }
