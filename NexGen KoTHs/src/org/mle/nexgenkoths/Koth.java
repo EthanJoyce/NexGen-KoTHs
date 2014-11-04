@@ -59,12 +59,9 @@ public class Koth {
                 autoStartTimer++;
                 
                 if(autoStartTimer >= AUTO_START_DELAY) {
-                    Bukkit.getScheduler().cancelTask(autoStartTimerID);
-                    autoStartTimerID = -1;
-                    autoStartTimer = 0;
-                    lastAutoStartDelay = -1;
-                    
                     long minPlayersToStart = getFlagValue(KothFlag.MIN_PLAYERS_TO_START);
+                    
+                    stopAutoStartTimer();
                     
                     if(Bukkit.getOnlinePlayers().size() >= minPlayersToStart)
                         startKoth();
@@ -73,6 +70,15 @@ public class Koth {
                 }
             }
         }, 20, 20);
+    }
+    
+    public void stopAutoStartTimer() {
+        if(autoStartTimerID != -1) {
+            Bukkit.getScheduler().cancelTask(autoStartTimerID);
+            autoStartTimerID = -1;
+            autoStartTimer = 0;
+            lastAutoStartDelay = -1;
+        }
     }
     
     
@@ -93,10 +99,23 @@ public class Koth {
                     NexGenKoths.globalScoreboardsMap.put(ChatColor.GREEN + name + " End", (int) (AUTO_END_DELAY - autoEndTimer));
                 
                 if(autoEndTimer >= AUTO_END_DELAY) {
+                    stopAutoEndTimer();
                     stopKoth(true);
                 }
             }
         }, 20, 20);
+    }
+    
+    public void stopAutoEndTimer() {
+        if(autoEndTimerID != -1) {
+            Bukkit.getScheduler().cancelTask(autoEndTimerID);
+            autoEndTimerID = -1;
+            autoEndTimer = 0;
+            lastAutoEndDelay = -1;
+            
+            if(NexGenKoths.useScoreboard && NexGenKoths.globalScoreboardsMap.containsKey(ChatColor.GREEN + name + " End"))
+                NexGenKoths.globalScoreboardsMap.remove(ChatColor.GREEN + name + " End");
+        }
     }
     
     
@@ -166,16 +185,6 @@ public class Koth {
                 startAutoStartTimer();
             
             return;
-        }
-        
-        if(autoEndTimerID != -1) {
-            Bukkit.getScheduler().cancelTask(autoEndTimerID);
-            autoEndTimerID = -1;
-            autoEndTimer = 0;
-            lastAutoEndDelay = -1;
-            
-            if(NexGenKoths.useScoreboard)
-                NexGenKoths.globalScoreboardsMap.put(ChatColor.GREEN + name + " End", 0);
         }
         
         setActive(false);
