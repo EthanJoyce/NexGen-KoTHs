@@ -1,5 +1,6 @@
 package org.mle.nexgenkoths;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ public class Koth {
 	private String name;
     private LocationPair capZoneLocations;
     private Map<KothFlag, Integer> flags;
+    private Map<Long, String> capTimeMessages;
     
     private LootTable lootTable;
     
@@ -34,10 +36,15 @@ public class Koth {
     private Player cappingPlayer;
     
     
-    public Koth(String name, LocationPair capZoneLocations, Map<KothFlag, Integer> flags) {
+    public Koth(String name, LocationPair capZoneLocations, Map<KothFlag, Integer> flags, Map<Long, String> capTimeMessages) {
         this.name = name;
         this.capZoneLocations = capZoneLocations;
         this.flags = flags;
+        this.capTimeMessages = capTimeMessages;
+    }
+    
+    public Koth(String name, LocationPair capZoneLocations, Map<KothFlag, Integer> flags) {
+        this(name, capZoneLocations, flags, new HashMap<Long, String>());
     }
     
     public Koth(String name, LocationPair capZoneLocations) {
@@ -137,6 +144,10 @@ public class Koth {
         capTimerID = Bukkit.getScheduler().scheduleSyncRepeatingTask(NexGenKoths.instance, new Runnable() {
             public void run() {
                 capTimer++;
+                
+                String capTimeMessage = getCapTimeMessage(CAPTURE_TIME - capTimer);
+                if(capTimeMessage != null && !capTimeMessage.isEmpty())
+                    Bukkit.broadcastMessage(capTimeMessage.replace("{PLAYER}", cappingPlayer.getName()).replace("{KOTH_NAME}", getName()).replace("{TIME_LEFT}", CAPTURE_TIME - capTimer + ""));
                 
                 if(NexGenKoths.useScoreboard)
                     NexGenKoths.globalScoreboardsMap.put(ChatColor.GREEN + name + " Cap", (int) (CAPTURE_TIME - capTimer));
@@ -270,6 +281,14 @@ public class Koth {
         return autoEndDelay - autoEndTimer;
     }
     
+    public Map<Long, String> getCapTimeMessages() {
+        return Collections.unmodifiableMap(capTimeMessages);
+    }
+    
+    public String getCapTimeMessage(Long time) {
+        return capTimeMessages.get(time);
+    }
+    
     
     public void setName(String name) {
         this.name = name;
@@ -300,6 +319,18 @@ public class Koth {
     
     public void setLootTable(LootTable lootTable) {
         this.lootTable = lootTable;
+    }
+    
+    public void setCapTimeMessages(Map<Long, String> capTimeMessages) {
+        this.capTimeMessages = capTimeMessages;
+    }
+    
+    public void addCapTimeMessage(Long time, String message) {
+        capTimeMessages.put(time, message);
+    }
+    
+    public void removeCapTimeMessage(Long time) {
+        capTimeMessages.remove(time);
     }
     
     

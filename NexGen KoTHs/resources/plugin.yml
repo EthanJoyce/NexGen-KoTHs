@@ -78,3 +78,12 @@ permissions:
         nexgenkoths.itemcollectioncontents:
                 description: Allows the player to view the contents of an ItemCollection using the "itemcollectioncontents" Sub-Command.
                 default: op
+        nexgenkoths.setmessage:
+                description: Allows the player to set capture time messages to be broadcast at specific times using the "setmessage" Sub-Command.
+                default: op
+        nexgenkoths.unsetmessage:
+                description: Allows the player to remove capture time messages using the "unsetmessage" Sub-Command.
+                default: op
+        nexgenkoths.viewmessages:
+                description: Allows the player to view the capture time messages to be broadcast at specific times, using the "viewmessages" Sub-Command.
+                default: op

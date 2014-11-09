@@ -73,6 +73,12 @@ public class KothCommandExecutor implements CommandExecutor {
 		        return onListItemCollectionsCommand(sender, cmd, label, args);
 		    case "itemcollectioncontents":
 		        return onItemCollectionContentsCommand(sender, cmd, label, args);
+		    case "setmessage":
+		        return onSetMessageCommand(sender, cmd, label, args);
+		    case "unsetmessage":
+		        return onUnsetMessageCommand(sender, cmd, label, args);
+		    case "viewmessages":
+		        return onViewMessagesCommand(sender, cmd, label, args);
 		    default:
 		        sender.sendMessage(ChatColor.RED + "Unknown Sub-Command. Type \"/" + label + " help\" for help.");
 		        return true;
@@ -114,6 +120,9 @@ public class KothCommandExecutor implements CommandExecutor {
 	    helpMessage.append(String.format(ChatColor.GREEN + " /%s version %s- Shows the current plugin version.\n", label, ChatColor.RED));
 	    helpMessage.append(String.format(ChatColor.GREEN + " /%s viewtimers <Name> %s- Shows the timers on a KoTH.\n", label, ChatColor.RED));
 	    helpMessage.append(String.format(ChatColor.GREEN + " /%s update %s- Checks Bukkit Dev for an update.\n", label, ChatColor.RED));
+	    helpMessage.append(String.format(ChatColor.GREEN + " /%s setmessage <Name> <Time> <Message> %s- Sets a capture time message to be broadcast at a specific time for the KoTH.\n", label, ChatColor.RED));
+	    helpMessage.append(String.format(ChatColor.GREEN + " /%s unsetmessage <Name> <Time> %s- Removes the capture time message at the given time for the specified KoTH.\n", label, ChatColor.RED));
+	    helpMessage.append(String.format(ChatColor.GREEN + " /%s viewmessages <Name> %s- Shows the capture time messages that are broadcast at specific times for the KoTH.\n", label, ChatColor.RED));
 	    
 	    helpMessage.append(ChatColor.GOLD + "---------------------------");
 	    
@@ -668,6 +677,111 @@ public class KothCommandExecutor implements CommandExecutor {
 	    sender.sendMessage(listMessage.toString());
 	    
 	    return true;
+	}
+	
+	
+	private static boolean onSetMessageCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	    if(!sender.hasPermission("nexgenkoths.setmessage")) {
+	        sender.sendMessage(ChatColor.RED + "You don't have permission to do that.");
+	        return true;
+	    }
+	    
+	    if(args.length < 4) {
+	        sender.sendMessage(ChatColor.RED + "Invalid command arguments.");
+	        return true;
+	    }
+	    
+	    String kothName = args[1];
+	    Koth koth = NexGenKoths.getKothByName(kothName);
+	    
+	    if(koth == null) {
+	        sender.sendMessage(ChatColor.RED + "No KoTH with name \"" + kothName + "\" exists.");
+	        return true;
+	    }
+	    
+	    if(!NumberUtils.isLong(args[2])) {
+            sender.sendMessage(ChatColor.RED + args[2] + " is not a valid number.");
+            return true;
+        }
+	    
+	    StringBuffer message = new StringBuffer(args[3]);
+	    for(int i = 4; i < args.length; i++)
+	        message.append(" " + args[i]);
+	    
+	    koth.addCapTimeMessage(Long.parseLong(args[2]), ChatColor.translateAlternateColorCodes('&', message.toString()));
+	    KothDataHandler.saveKoth(koth);
+	    
+	    sender.sendMessage(ChatColor.GREEN + "The message to be broadcast when the KoTH \"" + koth.getName() + "\" has " + args[2] + " seconds left until capture is now: " + ChatColor.RESET + ChatColor.translateAlternateColorCodes('&', message.toString()));
+	    return true;
+	}
+	
+	
+	private static boolean onViewMessagesCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	    if(!sender.hasPermission("nexgenkoths.viewmessages")) {
+	        sender.sendMessage(ChatColor.RED + "You don't have permission to do that.");
+	        return true;
+	    }
+	    
+	    if(args.length != 2) {
+	        sender.sendMessage(ChatColor.RED + "Invalid command arguments.");
+	        return true;
+	    }
+	    
+	    String kothName = args[1];
+	    Koth koth = NexGenKoths.getKothByName(kothName);
+	    
+	    if(koth == null) {
+	        sender.sendMessage(ChatColor.RED + "No KoTH with the name \"" + kothName + "\" exists.");
+	        return true;
+	    }
+	    
+	    StringBuilder messagesList = new StringBuilder(ChatColor.AQUA.toString() + ChatColor.BOLD + koth.getName() + "'s Messages:\n");
+	    
+	    for(Entry<Long, String> entry : koth.getCapTimeMessages().entrySet())
+	        messagesList.append(String.format(" %sBroadcast Time: %s, %sMessage: %s\n", ChatColor.LIGHT_PURPLE, ChatColor.GREEN.toString() + entry.getKey(), ChatColor.RED, ChatColor.RESET.toString() + entry.getValue()));
+	    
+	    sender.sendMessage(messagesList.toString());
+	    return true;
+	}
+	
+	
+	private static boolean onUnsetMessageCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	    if(!sender.hasPermission("nexgenkoths.unsetmessage")) {
+	        sender.sendMessage(ChatColor.RED + "You don't have permission to do that.");
+	        return true;
+	    }
+	    
+	    if(args.length != 3) {
+	        sender.sendMessage(ChatColor.RED + "Invalid command arguments.");
+	        return true;
+	    }
+	    
+	    String kothName = args[1];
+	    Koth koth = NexGenKoths.getKothByName(kothName);
+	    
+	    if(koth == null) {
+	        sender.sendMessage(ChatColor.RED + "No KoTH with the name \"" + kothName + "\" exists.");
+	        return true;
+	    }
+	    
+	    if(!NumberUtils.isLong(args[2])) {
+            sender.sendMessage(ChatColor.RED + args[2] + " is not a valid number.");
+            return true;
+        }
+	    
+	    final Long time = Long.valueOf(args[2]);
+	    
+	    
+	    if(koth.getCapTimeMessage(time) != null) {
+	        koth.removeCapTimeMessage(time);
+	        KothDataHandler.saveKoth(koth);
+	        
+	        sender.sendMessage(ChatColor.GREEN + "Successfully removed the capture time message for the time \"" + time + "\"");
+	        return true;
+	    } else {
+	        sender.sendMessage(ChatColor.RED + "No capture time message has been set for the time \"" + time + "\"");
+	        return true;
+	    }
 	}
     
     

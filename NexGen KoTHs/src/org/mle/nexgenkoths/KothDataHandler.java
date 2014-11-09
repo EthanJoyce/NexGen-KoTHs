@@ -79,9 +79,14 @@ public enum KothDataHandler {;
                 out.newLine();
                 
                 out.append("loottable=" + koth.getLootTable().getName());
-                
-                out.newLine();
             }
+            
+            out.newLine();
+            
+            out.append("capTimeMessages=");
+            for(Entry<Long, String> entry : koth.getCapTimeMessages().entrySet())
+                out.append(entry.getKey() + ":" + entry.getValue() + "|");
+            out.newLine();
             
         } catch(Exception ex) {
             ex.printStackTrace();
@@ -107,6 +112,7 @@ public enum KothDataHandler {;
             Location l1 = null;
             Location l2 = null;
             Map<KothFlag, Integer> flags = new HashMap<KothFlag, Integer>();
+            Map<Long, String> capTimeMessages = new HashMap<Long, String>();
             String lootTableName = "";
             
             String line;
@@ -214,6 +220,28 @@ public enum KothDataHandler {;
                 else if(split[0].equalsIgnoreCase("loottable")) { // LootTable
                     lootTableName = split[1];
                 }
+                else if(split[0].equalsIgnoreCase("capTimeMessages")) { // capTimeMessages
+                    String[] ctmSplit = split[1].split("\\|");
+                    
+                    for(String str : ctmSplit) {
+                        String[] sectSplit = str.split("\\:");
+                        
+                        if(sectSplit.length != 2) {
+                            Bukkit.getLogger().warning(NexGenKoths.tag + " Length of string \"" + str + "\" when split by \"\\:\" isn't 2. Ignoring line.");
+                            continue;
+                        }
+                        
+                        if(!NumberUtils.isLong(sectSplit[0])) {
+                            Bukkit.getLogger().warning(NexGenKoths.tag + " \"" + sectSplit[0] + "\" isn't a valid long. Ignoring line.");
+                            continue;
+                        }
+                        
+                        long time = Long.parseLong(sectSplit[0]);
+                        String message = sectSplit[1];
+                        
+                        capTimeMessages.put(time, message);
+                    }
+                }
             }
             
             if(name == null || l1 == null || l2 == null) {
@@ -225,7 +253,7 @@ public enum KothDataHandler {;
             
             LootTable lootTable = NexGenKoths.getLootTableByName(lootTableName);
             
-            Koth koth = new Koth(name, new LocationPair(l1, l2), flags);
+            Koth koth = new Koth(name, new LocationPair(l1, l2), flags, capTimeMessages);
             if(lootTable != null)
                 koth.setLootTable(lootTable);
             
