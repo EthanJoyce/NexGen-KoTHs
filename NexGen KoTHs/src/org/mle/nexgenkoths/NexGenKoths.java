@@ -33,6 +33,7 @@ import org.mle.nexgenkoths.itemcollections.ItemCollectionDataHandler;
 import org.mle.nexgenkoths.listeners.NexGenListener;
 import org.mle.nexgenkoths.loottables.LootTable;
 import org.mle.nexgenkoths.loottables.LootTableDataHandler;
+import org.mle.nexgenkoths.mleutils.InventoryUtils;
 import org.mle.nexgenkoths.util.ScoreboardUtil;
 
 public class NexGenKoths extends JavaPlugin {
@@ -342,7 +343,7 @@ public class NexGenKoths extends JavaPlugin {
             return false;
         
         for(ItemStack is : loot)
-            player.getInventory().addItem(is);
+            InventoryUtils.givePlayerItemStack(player, is);
         
         for(Entry<String, Double> entry : nonItemLoot.entrySet()) {
             switch(entry.getKey().toLowerCase()) {
