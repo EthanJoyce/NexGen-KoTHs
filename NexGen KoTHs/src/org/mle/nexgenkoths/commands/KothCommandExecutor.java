@@ -85,6 +85,7 @@ public class KothCommandExecutor implements CommandExecutor {
 		    
 		    }
 		} else {
+		    sender.sendMessage(ChatColor.LIGHT_PURPLE + "NexGen KoTHs" + ChatColor.GREEN + " v" + NexGenKoths.instance.getDescription().getVersion() + ", " + ChatColor.GOLD + "Authored by " + ChatColor.YELLOW + ChatColor.BOLD + "MrLolEthan");
 		    sender.sendMessage(ChatColor.RED + "Type \"/" + label + " help\" for help.");
 		}
 		
