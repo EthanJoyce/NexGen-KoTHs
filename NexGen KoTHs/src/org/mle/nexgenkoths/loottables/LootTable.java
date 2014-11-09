@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Random;
 
 import org.bukkit.inventory.ItemStack;
+import org.mle.nexgenkoths.itemcollections.ItemCollection;
 import org.mle.nexgenkoths.loottables.LootTableItem.AmountRange;
 
 public class LootTable {
@@ -14,20 +15,24 @@ public class LootTable {
     private String name = "";
     private List<LootTableItem> items;
     private List<NonItemLoot> nonItemLootList;
+    private List<ItemCollection> itemCollections;
     
     private Random random = new Random();
     
     
-    public LootTable(String name, List<LootTableItem> items, List<NonItemLoot> nonItemLootList) {
+    public LootTable(String name, List<LootTableItem> items, List<NonItemLoot> nonItemLootList, List<ItemCollection> itemCollections) {
         this.name = name;
         this.items = items;
         this.nonItemLootList = nonItemLootList;
+        this.itemCollections = itemCollections;
+    }
+    
+    public LootTable(String name, List<LootTableItem> items, List<NonItemLoot> nonItemLootList) {
+        this(name, items, nonItemLootList, new ArrayList<ItemCollection>());
     }
     
     public LootTable(String name, List<LootTableItem> items) {
-        this.name = name;
-        this.items = items;
-        nonItemLootList = new ArrayList<NonItemLoot>();
+        this(name, items, new ArrayList<NonItemLoot>(), new ArrayList<ItemCollection>());
     }
     
     
@@ -44,6 +49,10 @@ public class LootTable {
             itemStack.setAmount(random.nextInt((range.getMax() - range.getMin()) + 1) + range.getMin());
             
             itemsList.add(itemStack);
+        }
+        
+        for(ItemCollection coll : itemCollections) {
+            itemsList.add(coll.getRandomItem());
         }
         
         return itemsList;
@@ -89,6 +98,15 @@ public class LootTable {
     
     public void setItems(List<LootTableItem> items) {
         this.items = items;
+    }
+    
+    
+    public List<ItemCollection> getItemCollections() {
+        return itemCollections;
+    }
+    
+    public void setItemCollections(List<ItemCollection> itemCollections) {
+        this.itemCollections = itemCollections;
     }
     
     

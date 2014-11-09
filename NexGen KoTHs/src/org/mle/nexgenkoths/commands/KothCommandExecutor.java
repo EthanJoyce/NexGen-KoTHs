@@ -18,6 +18,9 @@ import org.mle.nexgenkoths.KothFlag;
 import org.mle.nexgenkoths.LocationPair;
 import org.mle.nexgenkoths.NexGenKoths;
 import org.mle.nexgenkoths.customitems.CustomItemsDataHandler;
+import org.mle.nexgenkoths.itemcollections.ItemCollection;
+import org.mle.nexgenkoths.itemcollections.ItemCollectionDataHandler;
+import org.mle.nexgenkoths.itemcollections.ItemCollectionItem;
 import org.mle.nexgenkoths.loottables.LootTable;
 import org.mle.nexgenkoths.loottables.LootTableDataHandler;
 import org.mle.nexgenkoths.loottables.LootTableItem;
@@ -66,6 +69,10 @@ public class KothCommandExecutor implements CommandExecutor {
 		        return onViewTimersCommand(sender, cmd, label, args);
 		    case "update":
 		        return onUpdateCommand(sender, cmd, label, args);
+		    case "listitemcollections":
+		        return onListItemCollectionsCommand(sender, cmd, label, args);
+		    case "itemcollectioncontents":
+		        return onItemCollectionContentsCommand(sender, cmd, label, args);
 		    default:
 		        sender.sendMessage(ChatColor.RED + "Unknown Sub-Command. Type \"/" + label + " help\" for help.");
 		        return true;
@@ -102,6 +109,8 @@ public class KothCommandExecutor implements CommandExecutor {
 	    helpMessage.append(String.format(ChatColor.GREEN + " /%s viewloottable <Name> %s- Shows the LootTable that the KoTH uses.\n", label, ChatColor.RED));
 	    helpMessage.append(String.format(ChatColor.GREEN + " /%s listloottables %s- Shows a list of the loaded LootTables.\n", label, ChatColor.RED));
 	    helpMessage.append(String.format(ChatColor.GREEN + " /%s loottablecontents <Name> %s- Shows the contents of the specified LootTable.\n", label, ChatColor.RED));
+	    helpMessage.append(String.format(ChatColor.GREEN + " /%s listitemcollections %s- Shows a list of the loaded ItemCollections.\n", label, ChatColor.RED));
+	    helpMessage.append(String.format(ChatColor.GREEN + " /%s itemcollectioncontents <Name> %s- Shows the contents of the specified ItemCollection.\n", label, ChatColor.RED));
 	    helpMessage.append(String.format(ChatColor.GREEN + " /%s version %s- Shows the current plugin version.\n", label, ChatColor.RED));
 	    helpMessage.append(String.format(ChatColor.GREEN + " /%s viewtimers <Name> %s- Shows the timers on a KoTH.\n", label, ChatColor.RED));
 	    helpMessage.append(String.format(ChatColor.GREEN + " /%s update %s- Checks Bukkit Dev for an update.\n", label, ChatColor.RED));
@@ -401,6 +410,7 @@ public class KothCommandExecutor implements CommandExecutor {
 	    }
 	    
 	    CustomItemsDataHandler.loadAllCustomItems();
+	    ItemCollectionDataHandler.loadAllItemCollections();
 	    LootTableDataHandler.loadAllLootTables();
 	    
 	    NexGenKoths.instance.reloadConfig();
@@ -610,6 +620,54 @@ public class KothCommandExecutor implements CommandExecutor {
 	        return true;
 	    
 	    }
+	}
+	
+	
+	private static boolean onItemCollectionContentsCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	    if(!sender.hasPermission("nexgenkoths.itemcollectioncontents")) {
+	        sender.sendMessage(ChatColor.RED + "You don't have permission to do that.");
+	        return true;
+	    }
+	    
+	    if(args.length != 2) {
+	        sender.sendMessage(ChatColor.RED + "Invalid command arguments.");
+	        return true;
+	    }
+	    
+	    String itemCollectionName = args[1];
+	    ItemCollection itemCollection = NexGenKoths.getItemCollectionByName(itemCollectionName);
+	    
+	    if(itemCollection == null) {
+	        sender.sendMessage(ChatColor.RED + "No ItemCollection with name \"" + itemCollectionName + "\" exists.");
+	        return true;
+	    }
+	    
+	    StringBuilder contentsList = new StringBuilder(ChatColor.AQUA.toString() + ChatColor.BOLD + itemCollection.getName() + "'s Contents:\n");
+	    
+	    for(ItemCollectionItem item : itemCollection.getItems())
+	        contentsList.append(String.format(" %sItem: %s, %sAmount: %s\n", ChatColor.LIGHT_PURPLE, ChatColor.GREEN + item.getItemStack().getType().toString(), ChatColor.RED, ChatColor.GREEN.toString() + item.getAmountRange().getMin() + "-" + item.getAmountRange().getMax()));
+	    
+	    sender.sendMessage(contentsList.toString());
+	    return true;
+	}
+	
+	
+	private static boolean onListItemCollectionsCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	    if(!sender.hasPermission("nexgenkoths.listitemcollections")) {
+	        sender.sendMessage(ChatColor.RED + "You don't have permission to do that.");
+	        return true;
+	    }
+	    
+	    StringBuilder listMessage = new StringBuilder(String.format(ChatColor.GOLD + "----- %sLoaded ItemCollections: %s-----\n" + ChatColor.GREEN, ChatColor.AQUA, ChatColor.GOLD));
+	    
+	    for(ItemCollection itemCollection : NexGenKoths.loadedItemCollections)
+	        listMessage.append(" " + itemCollection.getName() + ",");
+	    
+	    listMessage.append(ChatColor.GOLD + "\n------------------------------");
+	    
+	    sender.sendMessage(listMessage.toString());
+	    
+	    return true;
 	}
     
     

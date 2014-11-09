@@ -72,3 +72,9 @@ permissions:
         nexgenkoths.update:
                 description: Allows the player to update the plugin using the "update" Sub-Command.
                 default: op
+        nexgenkoths.listitemcollections:
+                description: Allows the player to view a list of the loaded ItemCollections using the "listitemcollections" Sub-Command.
+                default: op
+        nexgenkoths.itemcollectioncontents:
+                description: Allows the player to view the contents of an ItemCollection using the "itemcollectioncontents" Sub-Command.
+                default: op

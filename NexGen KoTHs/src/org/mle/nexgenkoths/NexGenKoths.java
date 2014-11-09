@@ -28,6 +28,8 @@ import org.mle.nexgenkoths.customitems.CustomItemsDataHandler;
 import org.mle.nexgenkoths.events.PlayerCaptureKothEvent;
 import org.mle.nexgenkoths.integration.Factions;
 import org.mle.nexgenkoths.integration.Vault;
+import org.mle.nexgenkoths.itemcollections.ItemCollection;
+import org.mle.nexgenkoths.itemcollections.ItemCollectionDataHandler;
 import org.mle.nexgenkoths.listeners.NexGenListener;
 import org.mle.nexgenkoths.loottables.LootTable;
 import org.mle.nexgenkoths.loottables.LootTableDataHandler;
@@ -42,6 +44,7 @@ public class NexGenKoths extends JavaPlugin {
     public static List<Koth> loadedKoths = new ArrayList<Koth>();
     public static List<LootTable> loadedLootTables = new ArrayList<LootTable>();
     public static List<CustomItem> loadedCustomItems = new ArrayList<CustomItem>();
+    public static List<ItemCollection> loadedItemCollections = new ArrayList<ItemCollection>();
     
     
     public static Map<UUID, Long> zoneEnterCooldownPlayers = new HashMap<UUID, Long>();
@@ -81,6 +84,7 @@ public class NexGenKoths extends JavaPlugin {
             Bukkit.getLogger().info(tag + " Vault economy setup failed; Vault features will not be present.");
         
         CustomItemsDataHandler.initDirectories();
+        ItemCollectionDataHandler.initDirectories();
         LootTableDataHandler.initDirectories();
         KothDataHandler.initDirectories();
         
@@ -90,6 +94,7 @@ public class NexGenKoths extends JavaPlugin {
         
         if(!(new File(getDataFolder(), "config.yml")).exists()) {
             CustomItemsDataHandler.createExampleCustomItems();
+            ItemCollectionDataHandler.createExampleItemCollection();
             LootTableDataHandler.createExampleTable();
         }
         
@@ -103,6 +108,7 @@ public class NexGenKoths extends JavaPlugin {
         }
         
         CustomItemsDataHandler.loadAllCustomItems();
+        ItemCollectionDataHandler.loadAllItemCollections();
         LootTableDataHandler.loadAllLootTables();
         KothDataHandler.loadAllKoths();
         startTimers();
@@ -252,6 +258,16 @@ public class NexGenKoths extends JavaPlugin {
         for(CustomItem customItem : loadedCustomItems) {
             if(customItem.getName().equalsIgnoreCase(name))
                 return customItem;
+        }
+        
+        return null;
+    }
+    
+    
+    public static ItemCollection getItemCollectionByName(String name) {
+        for(ItemCollection coll : loadedItemCollections) {
+            if(coll.getName().equalsIgnoreCase(name))
+                return coll;
         }
         
         return null;
