@@ -42,4 +42,14 @@ public class NumberUtils {
     }
     
     
+    public static boolean isLong(String str) {
+        try {
+            Long.parseLong(str);
+            return true;
+        } catch(NumberFormatException ex) {
+            return false;
+        }
+    }
+    
+    
 }
