@@ -282,6 +282,12 @@ public enum KothDataHandler {;
             return;
         }
         
+        koth.stopAutoEndTimer();
+        koth.stopAutoStartTimer();
+        
+        if(koth.isBeingCaptured())
+            koth.stopCaptureTimer(koth.getCappingPlayer());
+        
         if(NexGenKoths.loadedKoths.contains(koth))
             NexGenKoths.loadedKoths.remove(koth);
     }
