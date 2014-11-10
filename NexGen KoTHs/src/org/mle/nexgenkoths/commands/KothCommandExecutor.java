@@ -1,5 +1,7 @@
 package org.mle.nexgenkoths.commands;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import net.gravitydevelopment.updater.nexgenkoths.Updater;
@@ -169,7 +171,14 @@ public class KothCommandExecutor implements CommandExecutor {
 	        }
 	    }
 	    
+	    Map<Long, String> capTimeMessages = new HashMap<Long, String>();
+	    capTimeMessages.put(60L, ChatColor.LIGHT_PURPLE + "[KoTH] " + ChatColor.GOLD + ChatColor.BOLD + "{KOTH_NAME}" + ChatColor.GOLD + " has " + ChatColor.GREEN + "{TIME_LEFT}" + ChatColor.GOLD + " seconds left until it is captured!");
+	    capTimeMessages.put(30L, ChatColor.LIGHT_PURPLE + "[KoTH] " + ChatColor.GOLD + ChatColor.BOLD + "{KOTH_NAME}" + ChatColor.GOLD + " has " + ChatColor.GREEN + "{TIME_LEFT}" + ChatColor.GOLD + " seconds left until it is captured!");
+	    capTimeMessages.put(15L, ChatColor.LIGHT_PURPLE + "[KoTH] " + ChatColor.GOLD + ChatColor.BOLD + "{KOTH_NAME}" + ChatColor.GOLD + " has " + ChatColor.GREEN + "{TIME_LEFT}" + ChatColor.GOLD + " seconds left until it is captured!");
+	    
 	    Koth koth = new Koth(name, locPair);
+	    koth.setCapTimeMessages(capTimeMessages);
+	    
 	    NexGenKoths.loadedKoths.add(koth);
 	    KothDataHandler.saveKoth(koth);
 	    
