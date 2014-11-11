@@ -87,3 +87,6 @@ permissions:
         nexgenkoths.viewmessages:
                 description: Allows the player to view the capture time messages to be broadcast at specific times, using the "viewmessages" Sub-Command.
                 default: op
+        nexgenkoths.setzone:
+                description: Allows the player to set the capture zone of a KoTH using the "setzone" Sub-Command.
+                default: op

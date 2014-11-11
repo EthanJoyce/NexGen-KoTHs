@@ -81,6 +81,8 @@ public class KothCommandExecutor implements CommandExecutor {
 		        return onUnsetMessageCommand(sender, cmd, label, args);
 		    case "viewmessages":
 		        return onViewMessagesCommand(sender, cmd, label, args);
+		    case "setzone":
+		        return onSetZoneCommand(sender, cmd, label, args);
 		    default:
 		        sender.sendMessage(ChatColor.RED + "Unknown Sub-Command. Type \"/" + label + " help\" for help.");
 		        return true;
@@ -126,6 +128,7 @@ public class KothCommandExecutor implements CommandExecutor {
 	    helpMessage.append(String.format(ChatColor.GREEN + " /%s setmessage <Name> <Time> <Message> %s- Sets a capture time message to be broadcast at a specific time for the KoTH.\n", label, ChatColor.RED));
 	    helpMessage.append(String.format(ChatColor.GREEN + " /%s unsetmessage <Name> <Time> %s- Removes the capture time message at the given time for the specified KoTH.\n", label, ChatColor.RED));
 	    helpMessage.append(String.format(ChatColor.GREEN + " /%s viewmessages <Name> %s- Shows the capture time messages that are broadcast at specific times for the KoTH.\n", label, ChatColor.RED));
+	    helpMessage.append(String.format(ChatColor.GREEN + " /%s setzone <Name> %s- Allows you to redefine the specified KoTH's capture zone.\n", label, ChatColor.RED));
 	    
 	    helpMessage.append(ChatColor.GOLD + "---------------------------");
 	    
@@ -792,6 +795,45 @@ public class KothCommandExecutor implements CommandExecutor {
 	        sender.sendMessage(ChatColor.RED + "No capture time message has been set for the time \"" + time + "\"");
 	        return true;
 	    }
+	}
+	
+	
+	private static boolean onSetZoneCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	    if(!sender.hasPermission("nexgenkoths.setzone")) {
+	        sender.sendMessage(ChatColor.RED + "You don't have permission to do that.");
+	        return true;
+	    }
+	    
+	    if(!(sender instanceof Player)) {
+	        sender.sendMessage(ChatColor.RED + "Only players can execute this command.");
+	        return true;
+	    }
+	    Player player = (Player) sender;
+	    
+	    if(args.length != 2) {
+	        sender.sendMessage(ChatColor.RED + "Invalid command arguments.");
+	        return true;
+	    }
+	    
+	    LocationPair locPair = NexGenKoths.playerSelections.get(player.getUniqueId());
+	    if(locPair == null || locPair.getLocation1() == null || locPair.getLocation2() == null) {
+	        sender.sendMessage(ChatColor.RED + "Please make a selection first.");
+	        return true;
+	    }
+	    
+	    
+	    String kothName = args[1];
+	    Koth koth = NexGenKoths.getKothByName(kothName);
+	    
+	    if(koth == null) {
+	        sender.sendMessage(ChatColor.RED + "No KoTH with the name \"" + kothName + "\" exists.");
+	        return true;
+	    }
+	    
+	    koth.setCapZoneLocations(locPair);
+	    
+	    sender.sendMessage(ChatColor.GREEN + "Successfully set the capture zone of KoTH \"" + kothName + "\"");
+	    return true;
 	}
     
     
