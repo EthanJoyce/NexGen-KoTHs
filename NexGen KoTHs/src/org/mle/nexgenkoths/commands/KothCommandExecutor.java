@@ -167,11 +167,9 @@ public class KothCommandExecutor implements CommandExecutor {
 	        return true;
 	    }
 	    
-	    for(Koth koth : NexGenKoths.loadedKoths) {
-	        if(koth.getName().equalsIgnoreCase(name)) {
-	            sender.sendMessage(ChatColor.RED + "A KoTH with the name \"" + name + "\" already exists.");
-	            return true;
-	        }
+	    if(NexGenKoths.getKothByName(name) != null) {
+	        sender.sendMessage(ChatColor.RED + "A KoTH with the name \"" + name + "\" already exists.");
+	        return true;
 	    }
 	    
 	    Map<Long, String> capTimeMessages = new HashMap<Long, String>();
