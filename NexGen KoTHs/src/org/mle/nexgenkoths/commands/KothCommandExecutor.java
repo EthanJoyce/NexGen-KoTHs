@@ -831,6 +831,7 @@ public class KothCommandExecutor implements CommandExecutor {
 	    }
 	    
 	    koth.setCapZoneLocations(locPair);
+	    KothDataHandler.saveKoth(koth);
 	    
 	    sender.sendMessage(ChatColor.GREEN + "Successfully set the capture zone of KoTH \"" + kothName + "\"");
 	    return true;
