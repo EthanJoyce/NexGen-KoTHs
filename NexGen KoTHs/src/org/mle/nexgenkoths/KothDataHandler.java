@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.mle.nexgenkoths.loottables.LootTable;
@@ -85,7 +86,7 @@ public enum KothDataHandler {;
             
             out.append("capTimeMessages=");
             for(Entry<Long, String> entry : koth.getCapTimeMessages().entrySet())
-                out.append(entry.getKey() + ":" + entry.getValue() + "|");
+                out.append(entry.getKey() + ":" + entry.getValue().replace(ChatColor.COLOR_CHAR, '&') + "|");
             out.newLine();
             
         } catch(Exception ex) {
@@ -239,7 +240,7 @@ public enum KothDataHandler {;
                         long time = Long.parseLong(sectSplit[0]);
                         String message = sectSplit[1];
                         
-                        capTimeMessages.put(time, message);
+                        capTimeMessages.put(time, ChatColor.translateAlternateColorCodes('&', message));
                     }
                 }
             }
