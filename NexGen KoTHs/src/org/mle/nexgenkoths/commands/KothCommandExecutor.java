@@ -162,8 +162,8 @@ public class KothCommandExecutor implements CommandExecutor {
 	    
 	    String name = args[1].replaceAll("[^A-Za-z0-9]", "");
 	    
-	    if(name.length() > 12) {
-	        sender.sendMessage(ChatColor.RED + "That name is too long (" + name.length() + "). Please keep the length under 13 characters.");
+	    if(name.length() > 11) {
+	        sender.sendMessage(ChatColor.RED + "That name is too long (" + name.length() + "). Please keep the length under 12 characters.");
 	        return true;
 	    }
 	    

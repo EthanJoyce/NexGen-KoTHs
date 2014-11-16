@@ -113,7 +113,7 @@ public class Koth {
                 autoEndTimer++;
                 
                 if(NexGenKoths.useScoreboard)
-                    NexGenKoths.globalScoreboardsMap.put(ChatColor.GREEN + name + " End", (int) (AUTO_END_DELAY - autoEndTimer));
+                    NexGenKoths.globalScoreboardsMap.put(ChatColor.GREEN + name + " Ends", (int) (AUTO_END_DELAY - autoEndTimer));
                 
                 if(autoEndTimer >= AUTO_END_DELAY) {
                     stopKoth(true);
@@ -129,8 +129,8 @@ public class Koth {
             autoEndTimer = 0;
             lastAutoEndDelay = -1;
             
-            if(NexGenKoths.useScoreboard && NexGenKoths.globalScoreboardsMap.containsKey(ChatColor.GREEN + name + " End"))
-                NexGenKoths.globalScoreboardsMap.remove(ChatColor.GREEN + name + " End");
+            if(NexGenKoths.useScoreboard && NexGenKoths.globalScoreboardsMap.containsKey(ChatColor.GREEN + name + " Ends"))
+                NexGenKoths.globalScoreboardsMap.remove(ChatColor.GREEN + name + " Ends");
         }
     }
     
