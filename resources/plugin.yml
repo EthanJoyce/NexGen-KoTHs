@@ -1,0 +1,91 @@
+name: NexGen_KoTHs
+main: org.mle.nexgenkoths.P
+version: 0.6
+author: MrLolEthan
+softdepend: [Factions, Vault]
+
+commands:
+        koth:
+                description: The main NexGen KoTHs command.
+                usage: /<command> <Sub-Command> (Arguments)
+                permission: nexgenkoths.cmd.main
+                aliases: [k, nexgenkoth, koths, nexgenkoths]
+permissions:
+        nexgenkoths.entercooldown.bypass:
+                description: Allows the player to bypass the KoTH enter cooldown.
+                default: false
+        nexgenkoths.cmd.main:
+                description: Allows the player to use the Koth command.
+                default: true
+        nexgenkoths.cmd.help:
+                description: Allows the player to view the NexGen KoTHs help text using the "help" Sub-Command.
+                default: true
+        nexgenkoths.cmd.create:
+                description: Allows the player to create KoTHs using the "create" Sub-Command.
+                default: op
+        nexgenkoths.cmd.wand:
+                description: Allows the player to get the selector item using the "wand" Sub-Command.
+                default: op
+        nexgenkoths.cmd.list:
+                description: Allows the player to list all loaded KoTHs using the "list" Sub-Command.
+                default: op
+        nexgenkoths.cmd.setflag:
+                description: Allows the player to set flags on KoTHs using the "flag" Sub-Command.
+                default: op
+        nexgenkoths.cmd.viewflags:
+                description: Allows the player to view the flags of a KoTH using the "viewflags" Sub-Command.
+                default: op
+        nexgenkoths.cmd.delete:
+                description: Allows the player to delete KoTHs using the "delete" Sub-Command.
+                default: op
+        nexgenkoths.cmd.saveall:
+                description: Allows the player to save all KoTHs using the "saveall" Sub-Command.
+                default: op
+        nexgenkoths.cmd.start:
+                description: Allows the player to manually start a KoTH using the "start" Sub-Command.
+                default: op
+        nexgenkoths.cmd.stop:
+                description: Allows the player to manually stop a KoTH using the "stop" Sub-Command.
+                default: op
+        nexgenkoths.cmd.reload:
+                description: Allows the player to reload the plugin using the "reload" Sub-Command.
+                default: op
+        nexgenkoths.cmd.setloottable:
+                description: Allows the player to set the LootTable that a KoTH uses using the "setloottable" Sub-Command.
+                default: op
+        nexgenkoths.cmd.viewloottable:
+                description: Allows the player to view the LootTable that a KoTH uses using the "viewloottable" Sub-Command.
+                default: op
+        nexgenkoths.cmd.listloottables:
+                description: Allows the player to view a list of the loaded LootTables using the "listloottables" Sub-Command.
+                default: op
+        nexgenkoths.cmd.loottablecontents:
+                description: Allows the player to view the contents of a LootTable using the "loottablecontents" Sub-Command.
+                default: op
+        nexgenkoths.cmd.version:
+                description: Allows the player to view the current plugin version using the "version" Sub-Command.
+                default: true
+        nexgenkoths.cmd.viewtimers:
+                description: Allows the player to view the timers on a KoTH using the "viewtimers" Sub-Command.
+                default: op
+        nexgenkoths.cmd.update:
+                description: Allows the player to update the plugin using the "update" Sub-Command.
+                default: op
+        nexgenkoths.cmd.listitemcollections:
+                description: Allows the player to view a list of the loaded ItemCollections using the "listitemcollections" Sub-Command.
+                default: op
+        nexgenkoths.cmd.itemcollectioncontents:
+                description: Allows the player to view the contents of an ItemCollection using the "itemcollectioncontents" Sub-Command.
+                default: op
+        nexgenkoths.cmd.setmessage:
+                description: Allows the player to set capture time messages to be broadcast at specific times using the "setmessage" Sub-Command.
+                default: op
+        nexgenkoths.cmd.unsetmessage:
+                description: Allows the player to remove capture time messages using the "unsetmessage" Sub-Command.
+                default: op
+        nexgenkoths.cmd.viewmessages:
+                description: Allows the player to view the capture time messages to be broadcast at specific times, using the "viewmessages" Sub-Command.
+                default: op
+        nexgenkoths.cmd.setzone:
+                description: Allows the player to set the capture zone of a KoTH using the "setzone" Sub-Command.
+                default: op
