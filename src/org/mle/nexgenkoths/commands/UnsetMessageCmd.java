@@ -1,0 +1,52 @@
+package org.mle.nexgenkoths.commands;
+
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.mle.nexgenkoths.Koth;
+import org.mle.nexgenkoths.KothDataHandler;
+import org.mle.nexgenkoths.NexGenKoths;
+import org.mle.nexgenkoths.util.NumberUtils;
+
+public class UnsetMessageCmd extends NexGenCmd { // TODO Remove
+    
+	public UnsetMessageCmd(CommandSender sender, Command cmd, String label, String[] args) {
+		super(sender, cmd, label, args);
+	}
+    
+    
+	@Override
+	public void perform() {
+	    if(!hasArgs(3)) {
+	        msg("&cInvalid command arguments.");
+	        return;
+	    }
+	    
+	    String kothName = getArg(1);
+	    Koth koth = NexGenKoths.getKothByName(kothName);
+	    
+	    if(koth == null) {
+	        msg("&cNo KoTH with the name \"" + kothName + "\" exists.");
+	        return;
+	    }
+	    
+	    if(!NumberUtils.isLong(getArg(2))) {
+            msg("&c" + getArg(2) + " is not a valid number.");
+            return;
+        }
+	    
+	    final Long time = Long.valueOf(getArg(2));
+	    
+	    
+	    if(koth.getCapTimeMessage(time) != null) {
+	        koth.removeCapTimeMessage(time);
+	        KothDataHandler.saveKoth(koth);
+	        
+	        msg("&aSuccessfully removed the capture time message for the time \"" + time + "\"");
+	        return;
+	    } else {
+	        msg("&cNo capture time message has been set for the time \"" + time + "\"");
+	        return;
+	    }
+	}
+    
+}
