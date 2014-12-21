@@ -5,4 +5,4 @@
 
 ### Building:
 NexGen KoTHs uses Apache Ant (https://ant.apache.org/) as it's builder. The following command should build the project:
-## $ ant jar
+#### $ ant jar
