@@ -15,14 +15,13 @@
 			</fileset>
 		</path>
 		
-		<mkdir dir="build"/>
 		<mkdir dir="build/jar"/>
-		<mkdir dir="build/bin"/>
+		<mkdir dir="bin"/>
 	</target>
 	
 	
 	<target name="compile" if="binDoesNotExist" depends="init">
-		<javac srcdir="src" destdir="build/bin" classpath="lib/*.jar">
+		<javac srcdir="src" destdir="bin" classpath="lib/*.jar">
 			<classpath refid="class.path"/>
 		</javac>
 	</target>
