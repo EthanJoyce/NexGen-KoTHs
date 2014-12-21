@@ -31,6 +31,7 @@ public class ViewTimersCmd extends NexGenCmd { // TODO Remove
 	    msg("&b&l" + koth.getName() + "'s Timers: ");
 	    msg(" &aAuto Start: &c" + koth.getAutoStartTimer());
 	    msg(" &aAuto End: &c" + koth.getAutoEndTimer());
+	    if(koth.isBeingCaptured()) msg(" &aCapture: &c" + koth.getCaptureTimer());
 	}
     
 }

@@ -29,12 +29,14 @@ public class Koth {
     
     private boolean active = false;
     
-    private long lastAutoStartDelay = -1;
     private long autoStartTimer = 0;
     private long autoEndTimer = 0;
     private long capTimer = 0;
     
+    private long lastAutoStartDelay = -1;
     private long lastAutoEndDelay = -1;
+    private long lastCapDelay = -1;
+    
     private int autoStartTimerID = -1;
     private int autoEndTimerID = -1;
     private int capTimerID = -1;
@@ -148,6 +150,7 @@ public class Koth {
     
     public void startCaptureTimer(final Player player, boolean broadcast) {
         final long CAPTURE_TIME = getFlagValue(KothFlag.CAPTURE_TIME);
+        lastCapDelay = CAPTURE_TIME;
         
         isBeingCapped = true;
         cappingPlayer = player;
@@ -184,6 +187,7 @@ public class Koth {
         Bukkit.getScheduler().cancelTask(capTimerID);
         capTimerID = -1;
         capTimer = 0;
+        lastCapDelay = -1;
         
         isBeingCapped = false;
         cappingPlayer = null;
@@ -331,6 +335,17 @@ public class Koth {
         
         return autoEndDelay - autoEndTimer;
     }
+    
+    
+    public long getCaptureTimer() {
+        long captureDelay = getFlagValue(KothFlag.CAPTURE_TIME);
+        
+        if(lastCapDelay != -1)
+            captureDelay = lastCapDelay;
+        
+        return captureDelay - capTimer;
+    }
+    
     
     public Map<Long, String> getCapTimeMessages() {
         return Collections.unmodifiableMap(capTimeMessages);
