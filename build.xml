@@ -15,6 +15,7 @@
 			</fileset>
 		</path>
 		
+		<mkdir dir="build"/>
 		<mkdir dir="build/jar"/>
 		<mkdir dir="build/bin"/>
 	</target>
