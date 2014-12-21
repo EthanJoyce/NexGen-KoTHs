@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -129,6 +130,15 @@ public class PlayerListener implements Listener {
                 e.setCancelled(event.isCancelled());
             }
         }
+    }
+    
+    
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent e) {
+    	Koth koth = NexGenKoths.getKothPlayerCapping(e.getEntity());
+    	
+    	if(koth != null)
+    		koth.stopCaptureTimer(e.getEntity());
     }
     
     

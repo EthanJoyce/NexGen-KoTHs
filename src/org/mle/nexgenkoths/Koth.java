@@ -142,7 +142,11 @@ public class Koth {
     }
     
     
-    public void startCaptureTimer(final Player player) {
+    public void startCaptureTimer(Player player) {
+    	startCaptureTimer(player, true);
+    }
+    
+    public void startCaptureTimer(final Player player, boolean broadcast) {
         final long CAPTURE_TIME = getFlagValue(KothFlag.CAPTURE_TIME);
         
         isBeingCapped = true;
@@ -166,9 +170,17 @@ public class Koth {
                 }
             }
         }, 20, 20);
+        
+        if(broadcast)
+        	Bukkit.broadcastMessage(NexGenKoths.kothCapStartMsg.replace("{KOTH_NAME}", getName()).replace("{PLAYER}", player.getName()));
     }
     
+    
     public void stopCaptureTimer(Player player) {
+    	stopCaptureTimer(player, true);
+    }
+    
+    public void stopCaptureTimer(Player player, boolean broadcast) {
         Bukkit.getScheduler().cancelTask(capTimerID);
         capTimerID = -1;
         capTimer = 0;
@@ -181,6 +193,9 @@ public class Koth {
         
         if(player == null)
             return;
+        
+        if(broadcast)
+        	Bukkit.broadcastMessage(NexGenKoths.kothCapStopMsg.replace("{KOTH_NAME}", getName()).replace("{PLAYER}", player.getName()));
     }
     
     

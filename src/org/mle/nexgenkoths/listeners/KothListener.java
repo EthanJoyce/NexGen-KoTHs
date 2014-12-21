@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -43,7 +42,6 @@ public class KothListener implements Listener {
             }
             
             koth.startCaptureTimer(player);
-            Bukkit.broadcastMessage(NexGenKoths.kothCapStartMsg.replace("{KOTH_NAME}", koth.getName()).replace("{PLAYER}", player.getName()));
         }
     }
 	
@@ -55,7 +53,6 @@ public class KothListener implements Listener {
         
         if(koth.getCappingPlayer() != null && koth.getCappingPlayer().equals(player)) {
             koth.stopCaptureTimer(player);
-            Bukkit.broadcastMessage(NexGenKoths.kothCapStopMsg.replace("{KOTH_NAME}", koth.getName()).replace("{PLAYER}", player.getName()));
         	
         	if(!player.hasPermission("nexgenkoths.entercooldown.bypass") && NexGenKoths.zoneCaptureCooldown > 0)
             	NexGenKoths.zoneCaptureCooldownPlayers.put(player.getUniqueId(), NexGenKoths.zoneCaptureCooldown);
