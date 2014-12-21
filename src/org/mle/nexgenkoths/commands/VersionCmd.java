@@ -18,6 +18,7 @@ public class VersionCmd extends NexGenCmd { // TODO Remove
 	    Updater updater  = new Updater(P.p, 86133, P.pluginFile, Updater.UpdateType.NO_DOWNLOAD, false);
 	    boolean isUpToDate = updater.getLatestVersion().equals(P.p.getDescription().getVersion());
 	    
+	    msg(String.format("&dNexGen KoTHs &av%s, &6Authored by &e&lMrLolEthan", P.p.getDescription().getVersion()));
 	    msg("&aVersion: " + P.p.getDescription().getVersion() + "&6, " + (isUpToDate ? "&a" : "&c") + "Latest Version: " + updater.getLatestVersion());
 	}
     

@@ -11,12 +11,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.mle.nexgenkoths.Koth;
 import org.mle.nexgenkoths.LocationPair;
 import org.mle.nexgenkoths.NexGenKoths;
+import org.mle.nexgenkoths.P;
 import org.mle.nexgenkoths.events.PlayerEnterKothEvent;
 import org.mle.nexgenkoths.events.PlayerExitKothEvent;
 import org.mle.nexgenkoths.util.LocationUtils;
@@ -139,6 +142,21 @@ public class PlayerListener implements Listener {
     	
     	if(koth != null)
     		koth.stopCaptureTimer(e.getEntity());
+    }
+    
+    
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerJoin(PlayerJoinEvent e) {
+    	final Player player = e.getPlayer();
+    	
+    	if(NexGenKoths.getStaffWarning() != null && (player.isOp() || player.hasPermission("nexgenkoths.cmd.main"))) {
+    		new BukkitRunnable() {
+				@Override
+				public void run() {
+					player.sendMessage(NexGenKoths.getStaffWarning());
+				}
+			}.runTaskLater(P.p, 20);
+    	}
     }
     
     

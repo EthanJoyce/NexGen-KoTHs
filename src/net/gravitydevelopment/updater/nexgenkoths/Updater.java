@@ -12,6 +12,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Enumeration;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -611,6 +613,21 @@ public class Updater {
      * @return true if Updater should consider the remote version an update, false if not.
      */
     public boolean shouldUpdate(String localVersion, String remoteVersion) {
+        if(localVersion.contains("DEV")) {
+        	Pattern pattern = Pattern.compile("\\d+(?:\\.\\d+)?");
+        	Matcher localMatcher = pattern.matcher(localVersion);
+        	Matcher remoteMatcher = pattern.matcher(remoteVersion);
+        	
+        	if(localMatcher.find() && remoteMatcher.find()) {
+        		String local = localMatcher.group(), remote = remoteMatcher.group();
+        		float localFloat = Float.parseFloat(local), remoteFloat = Float.parseFloat(remote);
+        		
+        		if(localFloat < remoteFloat)
+        			return true;
+        	}
+        	return false;
+        }
+        
         return !localVersion.equalsIgnoreCase(remoteVersion);
     }
 

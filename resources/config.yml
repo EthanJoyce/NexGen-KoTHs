@@ -63,7 +63,7 @@ KoTHs:
 
 
 # Should we automatically install updates for this plugin?
-AutoUpdate: true
+AutoUpdate: false
 
 # Should we collect anonymous information about your server?
 # This can be viewed at: http://mcstats.org/plugin/NexGen_KoTHs

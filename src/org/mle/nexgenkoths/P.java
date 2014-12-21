@@ -79,8 +79,8 @@ public class P extends JavaPlugin {
 		        getServer().getLogger().severe(tag + " Error starting Metrics: \"" + ex.getMessage() + "\"");
 	    	}
         }
-        if(NexGenKoths.autoUpdate)
-            new Updater(this, 86133, getFile(), Updater.UpdateType.DEFAULT, false);
+        
+        performUpdateCheck(NexGenKoths.autoUpdate);
     }
     
     
@@ -136,6 +136,38 @@ public class P extends JavaPlugin {
         
         NexGenKoths.autoUpdate = getConfig().getBoolean("AutoUpdate", NexGenKoths.autoUpdate);
         NexGenKoths.sendMetrics = getConfig().getBoolean("SendMetrics", NexGenKoths.sendMetrics);
+    }
+    
+    
+    protected void performUpdateCheck(boolean download) {
+    	Updater updater = new Updater(this, 86133, getFile(), download ? Updater.UpdateType.DEFAULT : Updater.UpdateType.NO_DOWNLOAD, false);
+    	
+    	P.log(Level.INFO, download + "");
+    	
+    	// Check if an update is available.
+    	if(updater.getResult().equals(Updater.UpdateResult.UPDATE_AVAILABLE)) {
+    		NexGenKoths.setStaffWarning(
+    			ChatColor.translateAlternateColorCodes('&',
+    				String.format(
+    					"&d" + tag + " &6An update is available for NexGen KoTHs&6! &aNew version: %s\n" +
+    					"&d" + tag + " &6Download it now at: &chttp://dev.bukkit.org/bukkit-plugins/nexgen-koths/",
+    				updater.getLatestVersion())
+    			)
+    		);
+    	}
+    	
+    	// Else, check if an update was downloaded.
+    	else if(updater.getResult().equals(Updater.UpdateResult.SUCCESS)) {
+    		NexGenKoths.setStaffWarning(
+    			ChatColor.translateAlternateColorCodes('&',
+    				String.format(
+    					"&d" + tag + " &6An update has been downloaded for &dNexGen KoTHs&6! &aNew version: %s\n" +
+    					"&d" + tag + " &6This update will be installed next restart/reload.\n" +
+    					"&d" + tag + " &6Check out the new features here: &chttp://dev.bukkit.org/bukkit-plugins/nexgen-koths/",
+    				updater.getLatestVersion())
+    			)
+    		);
+    	}
     }
     
     

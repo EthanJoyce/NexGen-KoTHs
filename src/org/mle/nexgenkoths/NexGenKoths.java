@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.mle.nexgenkoths.customitems.CustomItem;
 import org.mle.nexgenkoths.itemcollections.ItemCollection;
 import org.mle.nexgenkoths.loottables.LootTable;
@@ -48,8 +49,11 @@ public class NexGenKoths {
     public static Map<String, Integer> globalScoreboardsMap = new HashMap<String, Integer>();
     public static long scoreboardUpdateFrequency = 10;
     
-    public static boolean autoUpdate = true;
+    public static boolean autoUpdate = false;
     public static boolean sendMetrics = true;
+    
+    
+    private static String staffWarning = null;
     
     
     protected static void startTimers() {
@@ -141,6 +145,25 @@ public class NexGenKoths {
         }
         
         return null;
+    }
+    
+    
+    public static void setStaffWarning(String msg) {
+    	staffWarning = msg;
+    	
+    	new BukkitRunnable() {
+			@Override
+			public void run() {
+				for(Player player : Bukkit.getServer().getOnlinePlayers()) {
+    				if(NexGenKoths.staffWarning != null && (player.isOp() || player.hasPermission("nexgenkoths.cmd.main")))
+    					player.sendMessage(NexGenKoths.staffWarning);
+    			}
+			}
+		}.runTaskLater(P.p, 20);
+    }
+    
+    public static String getStaffWarning() {
+    	return staffWarning;
     }
     
     
