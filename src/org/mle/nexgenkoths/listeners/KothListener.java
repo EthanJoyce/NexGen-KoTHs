@@ -83,8 +83,6 @@ public class KothListener implements Listener {
             }
         }
         
-        e.setCancelled(true);
-        
         e.setLoot(loot);
         e.setNonItemLoot(nonItemLoot);
     }
