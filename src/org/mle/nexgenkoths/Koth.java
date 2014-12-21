@@ -1,16 +1,22 @@
 package org.mle.nexgenkoths;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.mle.nexgenkoths.events.PlayerCaptureKothEvent;
+import org.mle.nexgenkoths.integration.Factions;
+import org.mle.nexgenkoths.integration.Vault;
 import org.mle.nexgenkoths.loottables.LootTable;
+import org.mle.nexgenkoths.mleutils.InventoryUtils;
 
 public class Koth {
     
@@ -179,8 +185,37 @@ public class Koth {
     
     
     public void playerCapturedKoth(Player player) {
-        if(NexGenKoths.onPlayerCaptureKoth(player, this))
-            stopKoth(false);
+        PlayerCaptureKothEvent event = new PlayerCaptureKothEvent(player, this, new ArrayList<ItemStack>(), new HashMap<String, Double>());
+        
+        Bukkit.getPluginManager().callEvent(event);
+        if(event.isCancelled()) return;
+        
+        stopKoth(false);
+        
+        for(ItemStack is : event.getLoot())
+            InventoryUtils.givePlayerItemStack(player, is);
+        
+        for(Entry<String, Double> entry : event.getNonItemLoot().entrySet()) {
+            switch(entry.getKey().toLowerCase()) {
+            
+            case "money":
+                Vault.givePlayerMoney(player, entry.getValue());
+                break;
+            case "factionspower":
+                Factions.addPower(player, entry.getValue());
+                break;
+            case "exp":
+                player.giveExp(entry.getValue().intValue());
+                break;
+            default:
+                Bukkit.getLogger().warning("Unknown non-item loot: " + entry.getKey());
+                break;
+            
+            }
+        }
+        
+        if(getFlagValue(KothFlag.BROADCAST_CAPTURE) != 0)
+            Bukkit.broadcastMessage(NexGenKoths.kothCapturedMsg.replace("{KOTH_NAME}", getName()).replace("{PLAYER}", player.getName()));
     }
     
     

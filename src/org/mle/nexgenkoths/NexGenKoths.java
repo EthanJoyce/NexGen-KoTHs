@@ -6,23 +6,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
-import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.mle.nexgenkoths.customitems.CustomItem;
-import org.mle.nexgenkoths.events.PlayerCaptureKothEvent;
-import org.mle.nexgenkoths.integration.Factions;
-import org.mle.nexgenkoths.integration.Vault;
 import org.mle.nexgenkoths.itemcollections.ItemCollection;
 import org.mle.nexgenkoths.loottables.LootTable;
-import org.mle.nexgenkoths.mleutils.InventoryUtils;
 import org.mle.nexgenkoths.util.ScoreboardUtil;
 
 public class NexGenKoths {
@@ -33,7 +24,7 @@ public class NexGenKoths {
     public static List<ItemCollection> loadedItemCollections = new ArrayList<ItemCollection>();
     
     
-    public static Map<UUID, Long> zoneEnterCooldownPlayers = new HashMap<UUID, Long>();
+    public static Map<UUID, Long> zoneCaptureCooldownPlayers = new HashMap<UUID, Long>();
     
     public static Map<UUID, LocationPair> playerSelections = new HashMap<UUID, LocationPair>();
     public static Material selectionItem = Material.STICK;
@@ -41,12 +32,12 @@ public class NexGenKoths {
     
     public static String kothCapStartMsg = ChatColor.LIGHT_PURPLE + "[KoTH] " + ChatColor.GOLD + ChatColor.BOLD + "{PLAYER}" + ChatColor.GOLD + " is trying to control " + ChatColor.BOLD + "{KOTH_NAME}" + ChatColor.GOLD + "!";
     public static String kothCapStopMsg = ChatColor.LIGHT_PURPLE + "[KoTH] " + ChatColor.GOLD + ChatColor.BOLD + "{PLAYER}" + ChatColor.GOLD + " has lost control of " + ChatColor.BOLD + "{KOTH_NAME}" + ChatColor.GOLD + "!";
-    public static String zoneEnterCooldownMsg = ChatColor.LIGHT_PURPLE + "[KoTH] " + ChatColor.RED + "You can't enter another KoTH for {SECONDS} seconds.";
+    public static String zoneCaptureCooldownMsg = ChatColor.LIGHT_PURPLE + "[KoTH] " + ChatColor.RED + "You can't attempt to control another KoTH for {SECONDS} seconds.";
     public static String kothStartMsg = ChatColor.LIGHT_PURPLE + "[KoTH] " + ChatColor.GREEN + ChatColor.BOLD + "{KOTH_NAME}" + ChatColor.GREEN + " is now active!";
     public static String kothStopMsg = ChatColor.LIGHT_PURPLE + "[KoTH] " + ChatColor.RED + ChatColor.BOLD + "{KOTH_NAME}" + ChatColor.RED + " is no longer active.";
-    public static String kothCapturedMsg = ChatColor.LIGHT_PURPLE + "[KoTH] " + ChatColor.GOLD + ChatColor.BOLD + "{PLAYER}" + ChatColor.GOLD + " has captured {KOTH_NAME}!";
+    public static String kothCapturedMsg = ChatColor.LIGHT_PURPLE + "[KoTH] " + ChatColor.GOLD + ChatColor.BOLD + "{PLAYER}" + ChatColor.GOLD + " has controlled {KOTH_NAME}!";
     
-    public static long zoneEnterCooldown = 15;
+    public static long zoneCaptureCooldown = 15;
     
     public static boolean canCaptureWhileInvis = false;
     
@@ -64,24 +55,24 @@ public class NexGenKoths {
     protected static void startTimers() {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable() {
             public void run() {
-                Map<UUID, Long> zoneEnterCooldownsCopy = new HashMap<UUID, Long>(zoneEnterCooldownPlayers);
+                Map<UUID, Long> zoneCaptureCooldownsCopy = new HashMap<UUID, Long>(zoneCaptureCooldownPlayers);
                 
-                for(Entry<UUID, Long> entry : zoneEnterCooldownsCopy.entrySet()) {
-                    zoneEnterCooldownPlayers.put(entry.getKey(), entry.getValue() - 1);
+                for(Entry<UUID, Long> entry : zoneCaptureCooldownsCopy.entrySet()) {
+                    zoneCaptureCooldownPlayers.put(entry.getKey(), entry.getValue() - 1);
                     
                     if(useScoreboard && Bukkit.getOfflinePlayer(entry.getKey()).isOnline()) {
                         if(playerScoreboardsMap.containsKey(entry.getKey())) {
-                            playerScoreboardsMap.get(entry.getKey()).put(ChatColor.GREEN + "Enter Cooldown", entry.getValue().intValue());
+                            playerScoreboardsMap.get(entry.getKey()).put(ChatColor.GREEN + "Cap Cooldown", entry.getValue().intValue());
                         } else {
                             Map<String, Integer> map = new HashMap<String, Integer>();
-                            map.put(ChatColor.GREEN + "Enter Cooldown", entry.getValue().intValue());
+                            map.put(ChatColor.GREEN + "Cap Cooldown", entry.getValue().intValue());
                             
                             playerScoreboardsMap.put(entry.getKey(), map);
                         }
                     }
                     
                     if(entry.getValue().longValue() <= 0)
-                        zoneEnterCooldownPlayers.remove(entry.getKey());
+                        zoneCaptureCooldownPlayers.remove(entry.getKey());
                 }
             }
         }, 20, 20);
@@ -150,92 +141,6 @@ public class NexGenKoths {
         }
         
         return null;
-    }
-    
-    
-    
-    public static void onPlayerEnterKoth(Player player, Koth koth, PlayerMoveEvent e) {
-        if(!koth.isActive()) return;
-        
-        if(!koth.isBeingCaptured()) {
-            if(!canCaptureWhileInvis) {
-                for(PotionEffect pe : player.getActivePotionEffects()) {
-                    if(pe.getType().equals(PotionEffectType.INVISIBILITY))
-                        return;
-                }
-            }
-            
-            koth.startCaptureTimer(player);
-            Bukkit.broadcastMessage(kothCapStartMsg.replace("{KOTH_NAME}", koth.getName()).replace("{PLAYER}", player.getName()));
-        }
-    }
-    
-    
-    public static void onPlayerExitKoth(Player player, Koth koth, PlayerMoveEvent e) {
-        if(!koth.isActive()) return;
-        
-        if(koth.getCappingPlayer().equals(player)) {
-            koth.stopCaptureTimer(player);
-            Bukkit.broadcastMessage(kothCapStopMsg.replace("{KOTH_NAME}", koth.getName()).replace("{PLAYER}", player.getName()));
-        }
-        
-        if(!player.hasPermission("nexgenkoths.entercooldown.bypass") && zoneEnterCooldown > 0)
-            zoneEnterCooldownPlayers.put(player.getUniqueId(), zoneEnterCooldown);
-    }
-    
-    
-    public static boolean onPlayerCaptureKoth(Player player, Koth koth) {
-        List<ItemStack> loot = new ArrayList<ItemStack>();
-        Map<String, Double> nonItemLoot = new HashMap<String, Double>();
-        
-        if(koth.getFlagValue(KothFlag.USE_LOOT_TABLE) != 0 && koth.getLootTable() != null) {
-            loot = koth.getRandomLoot();
-            nonItemLoot = koth.getRandomNonItemLoot();
-            
-            if(loot == null) {
-                P.log(Level.WARNING, "Error giving player \"" + player.getName() + "\" KoTH loot: KoTH \"" + koth.getName() + "\"'s random loot list returned null.");
-                return false;
-            }
-            
-            if(nonItemLoot == null) {
-                P.log(Level.WARNING, "Error giving player \"" + player.getName() + "\" KoTH loot: KoTH \"" + koth.getName() + "\"'s random NON-ITEM loot list returned null.");
-                return false;
-            }
-        }
-        
-        PlayerCaptureKothEvent event = new PlayerCaptureKothEvent(player, koth, loot, nonItemLoot);
-        Bukkit.getPluginManager().callEvent(event);
-        
-        
-        if(event.isCancelled())
-            return false;
-        
-        for(ItemStack is : loot)
-            InventoryUtils.givePlayerItemStack(player, is);
-        
-        for(Entry<String, Double> entry : nonItemLoot.entrySet()) {
-            switch(entry.getKey().toLowerCase()) {
-            
-            case "money":
-                Vault.givePlayerMoney(player, entry.getValue());
-                break;
-            case "factionspower":
-                Factions.addPower(player, entry.getValue());
-                break;
-            case "exp":
-                player.giveExp(entry.getValue().intValue());
-                break;
-            default:
-                Bukkit.getLogger().warning("Unknown non-item loot: " + entry.getKey());
-                break;
-            
-            }
-        }
-        
-        if(koth.getFlagValue(KothFlag.BROADCAST_CAPTURE) != 0)
-            Bukkit.broadcastMessage(kothCapturedMsg.replace("{KOTH_NAME}", koth.getName()).replace("{PLAYER}", player.getName()));
-        
-        return true;
     }
     
     
