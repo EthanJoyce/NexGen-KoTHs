@@ -1,17 +1,48 @@
+<!-- Sorry for the poorly written build script ;3 -->
+
 <project default="jar">
 	
-	<target name="clean">
-		<delete dir="build"/>
+	<target name="init">
+		<condition property="binDoesNotExist">
+			<not>
+		    	<available file="bin" type="dir"/>
+		   	</not>
+		</condition>
+		
+		<path id="class.path">
+			<fileset dir="lib">
+				<include name="**/*.jar"/>
+			</fileset>
+		</path>
+		
+		<mkdir dir="build/jar"/>
+		<mkdir dir="build/bin"/>
 	</target>
 	
-    <target name="jar">
-    	<mkdir dir="build/jar"/>
+	
+	<target name="compile" if="binDoesNotExist" depends="init">
+		<javac srcdir="src" destdir="build/bin" classpath="lib/*.jar">
+			<classpath refid="class.path"/>
+		</javac>
+	</target>
+	
+    <target name="jar" depends="init">
+    	<antcall target="compile"/>
     	
         <jar destfile="build/jar/NexGenKoTHs.jar" basedir="bin">
             <fileset dir="resources" includes="*"/>
         </jar>
     	
-    	<copyfile dest="server/plugins/NexGenKoTHs.jar" src="build/jar/NexGenKoTHs.jar"/>
+    	<available file="server/plugins/" type="dir" property="serverPluginsDirExists"/>
+    	<antcall target="copy-to-server"/>
     </target>
 	
+	<target name="copy-to-server" if="serverPluginsDirExists">
+		<copy tofile="server/plugins/NexGenKoTHs.jar" file="build/jar/NexGenKoTHs.jar"/>
+	</target>
+	
+	<target name="clean">
+		<delete dir="build"/>
+	</target>
+
 </project>
