@@ -1,0 +1,78 @@
+#  _   _            _____              _  __  _______ _    _     
+# | \ | |          / ____|            | |/ / |__   __| |  | |    
+# |  \| | _____  _| |  __  ___ _ __   | ' / ___ | |  | |__| |___ 
+# | . ` |/ _ \ \/ / | |_ |/ _ \ '_ \  |  < / _ \| |  |  __  / __|
+# | |\  |  __/>  <| |__| |  __/ | | | | . \ (_) | |  | |  | \__ \
+# |_| \_|\___/_/\_\\_____|\___|_| |_| |_|\_\___/|_|  |_|  |_|___/
+#
+# NexGen KoTHs configuration file:
+
+
+KoTHs:
+  Area_Selection:
+
+    # What item should be used to select KoTH capture zones?
+    Item: STICK
+
+
+    # Should we only allow selection of zones in creative mode?
+    OnlyInCreative: false
+
+
+  KoTH_Capture:
+
+    # What should the cool down time be (in seconds) to attempt to capture a KoTH after losing control? (This prevents players from spamming messages in chat.)
+    KoTH_Capture_Cooldown: 15
+
+
+    # What message should be sent to players that try to capture a KoTH during this time?
+    KoTH_Capture_Cooldown_Message: '&d[KoTH] &cYou can''t attempt to control another KoTH for {SECONDS} seconds.'
+
+
+    # What message should be broadcast to the server when a player tries to control a KoTH?
+    KoTH_Capture_Start_Message: '&d[KoTH] &6&l{PLAYER}&6 is trying to control &l{KOTH_NAME}&6!'
+
+    # What message should be broadcast to the server when a player loses control of a KoTH?
+    KoTH_Capture_Stop_Message: '&d[KoTH] &6&l{PLAYER}&6 has lost control of &l{KOTH_NAME}&6!'
+
+    # What message should be broadcast to the server when a player captures a KoTH?
+    KoTH_Captured_Message: '&d[KoTH] &6&l{PLAYER}&6 has controlled {KOTH_NAME}!'
+
+
+    # Should we allow players with the Invisibility potion effect to capture KoTHs?
+    CanPlayerCaptureWhileInvisible: false
+
+
+  # What message should be broadcast to the server when a KoTH starts?
+  KoTH_Start_Message: '&d[KoTH] &a&l{KOTH_NAME}&a is now active!'
+
+  # What message should be broadcast to the server when a KoTH ends?
+  KoTH_Stop_Message: '&d[KoTH] &c&l{KOTH_NAME}&c is no longer active.'
+
+
+  Scoreboard:
+
+    # Should we use the scoreboard to display KoTH info?
+    Use: true
+
+    # What should the scoreboard's display name be?
+    DisplayName: '&dNexGen KoTHs'
+
+    # How often should this scoreboard update?
+    UpdateFrequency: 10
+
+
+# Should we automatically install updates for this plugin?
+AutoUpdate: true
+
+# Should we collect anonymous information about your server?
+# This can be viewed at: http://mcstats.org/plugin/NexGen_KoTHs
+SendMetrics: true
+
+
+#  ______           _ 
+# |  ____|         | |
+# | |__   _ __   __| |
+# |  __| | '_ \ / _` |
+# | |____| | | | (_| |
+# |______|_| |_|\__,_|

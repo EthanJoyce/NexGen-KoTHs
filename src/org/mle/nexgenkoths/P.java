@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 import net.gravitydevelopment.updater.nexgenkoths.Updater;
+import net.minecraft.util.org.apache.commons.io.FileUtils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -41,18 +42,20 @@ public class P extends JavaPlugin {
         LootTableDataHandler.initDirectories();
         KothDataHandler.initDirectories();
         
+        if(!(new File(getDataFolder(), "config.yml")).exists()) {
+        	CustomItemsDataHandler.createExampleCustomItems();
+        	ItemCollectionDataHandler.createExampleItemCollection();
+        	LootTableDataHandler.createExampleTable();
+        }
+        
+        if(!initConfiguration())
+        	return;
+        
         getCommand("koth").setExecutor(new KothCommandExecutor());
         
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         Bukkit.getPluginManager().registerEvents(new KothListener(), this);
         
-        if(!(new File(getDataFolder(), "config.yml")).exists()) {
-            CustomItemsDataHandler.createExampleCustomItems();
-            ItemCollectionDataHandler.createExampleItemCollection();
-            LootTableDataHandler.createExampleTable();
-        }
-        
-        initConfiguration();
         
         try {
             loadConfiguration();
@@ -89,29 +92,19 @@ public class P extends JavaPlugin {
     }
     
     
-    public void initConfiguration() {
-        getConfig().addDefault("KoTHs.Area_Selection.Item", NexGenKoths.selectionItem.toString());
-        getConfig().addDefault("KoTHs.Area_Selection.OnlyInCreative", NexGenKoths.selectOnlyInCreative);
-        
-        getConfig().addDefault("KoTHs.KoTH_Capture.ZoneCaptureCooldown", NexGenKoths.zoneCaptureCooldown);
-        getConfig().addDefault("KoTHs.KoTH_Capture.ZoneCaptureCooldown_Message", NexGenKoths.zoneCaptureCooldownMsg.replace(ChatColor.COLOR_CHAR, '&'));
-        getConfig().addDefault("KoTHs.KoTH_Capture.KoTH_Capture_Start_Message", NexGenKoths.kothCapStartMsg.replace(ChatColor.COLOR_CHAR, '&'));
-        getConfig().addDefault("KoTHs.KoTH_Capture.KoTH_Capture_Stop_Message", NexGenKoths.kothCapStopMsg.replace(ChatColor.COLOR_CHAR, '&'));
-        getConfig().addDefault("KoTHs.KoTH_Capture.KoTH_Captured_Message", NexGenKoths.kothCapturedMsg.replace(ChatColor.COLOR_CHAR, '&'));
-        getConfig().addDefault("KoTHs.KoTH_Capture.CanPlayerCaptureWhileInvisible", NexGenKoths.canCaptureWhileInvis);
-        
-        getConfig().addDefault("KoTHs.KoTH_Start_Message", NexGenKoths.kothStartMsg.replace(ChatColor.COLOR_CHAR, '&'));
-        getConfig().addDefault("KoTHs.KoTH_Stop_Message", NexGenKoths.kothStopMsg.replace(ChatColor.COLOR_CHAR, '&'));
-        
-        getConfig().addDefault("KoTHs.Scoreboard.Use", NexGenKoths.useScoreboard);
-        getConfig().addDefault("KoTHs.Scoreboard.DisplayName", NexGenKoths.scoreboardObjDisplayName.replace(ChatColor.COLOR_CHAR, '&'));
-        getConfig().addDefault("KoTHs.Scoreboard.UpdateFrequency", NexGenKoths.scoreboardUpdateFrequency);
-        
-        getConfig().addDefault("AutoUpdate", NexGenKoths.autoUpdate);
-        getConfig().addDefault("SendMetrics", NexGenKoths.sendMetrics);
-        
-        getConfig().options().copyDefaults(true);
-        saveConfig();
+    public boolean initConfiguration() {
+        File configFile = new File(getDataFolder(), "config.yml");
+        if(!configFile.exists()) {
+        	try {
+        		configFile.createNewFile();
+        		FileUtils.copyInputStreamToFile(P.class.getResourceAsStream("/config.yml"), configFile);
+        	} catch(IOException ex) {
+        		ex.printStackTrace();
+        		P.log(Level.SEVERE, "Error creating configuration file: " + ex.getMessage());
+        		return false;
+        	}
+        }
+        return true;
     }
     
     
@@ -127,8 +120,8 @@ public class P extends JavaPlugin {
         NexGenKoths.selectOnlyInCreative = getConfig().getBoolean("KoTHs.Area_Selection.OnlyInCreative", NexGenKoths.selectOnlyInCreative);
         
         
-        NexGenKoths.zoneCaptureCooldown = getConfig().getLong("KoTHs.KoTH_Capture.ZoneCaptureCooldown", NexGenKoths.zoneCaptureCooldown);
-        NexGenKoths.zoneCaptureCooldownMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Capture.ZoneCaptureCooldown_Message", NexGenKoths.zoneCaptureCooldownMsg));
+        NexGenKoths.zoneCaptureCooldown = getConfig().getLong("KoTHs.KoTH_Capture.KoTH_Capture_Cooldown", NexGenKoths.zoneCaptureCooldown);
+        NexGenKoths.zoneCaptureCooldownMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Capture.KoTH_Capture_Cooldown_Message", NexGenKoths.zoneCaptureCooldownMsg));
         NexGenKoths.kothCapStartMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Capture.KoTH_Capture_Start_Message", NexGenKoths.kothCapStartMsg));
         NexGenKoths.kothCapStopMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Capture.KoTH_Capture_Stop_Message", NexGenKoths.kothCapStopMsg));
         NexGenKoths.kothCapturedMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Capture.KoTH_Captured_Message", NexGenKoths.kothCapturedMsg));
