@@ -1,0 +1,17 @@
+<project default="jar">
+	
+	<target name="clean">
+		<delete dir="build"/>
+	</target>
+	
+    <target name="jar">
+    	<mkdir dir="build/jar"/>
+    	
+        <jar destfile="build/jar/NexGenKoTHs.jar" basedir="bin">
+            <fileset dir="resources" includes="*"/>
+        </jar>
+    	
+    	<copyfile dest="server/plugins/NexGenKoTHs.jar" src="build/jar/NexGenKoTHs.jar"/>
+    </target>
+	
+</project>
