@@ -142,10 +142,21 @@ public class P extends JavaPlugin {
     protected void performUpdateCheck(boolean download) {
     	Updater updater = new Updater(this, 86133, getFile(), download ? Updater.UpdateType.DEFAULT : Updater.UpdateType.NO_DOWNLOAD, false);
     	
-    	P.log(Level.INFO, download + "");
-    	
-    	// Check if an update is available.
-    	if(updater.getResult().equals(Updater.UpdateResult.UPDATE_AVAILABLE)) {
+    	// The plugin is a development build.
+    	if(Updater.hasTag(getDescription().getVersion())) {
+    		NexGenKoths.setStaffWarning(
+    			ChatColor.translateAlternateColorCodes('&',
+    				String.format(
+    					"&d" + tag + " &4Warning:\n" +
+    					"&d" + tag + " &cYou are running a development build of NexGen KoTHs.\n" +
+    					"&d" + tag + " &cThis build will &4&lNOT&c check for updates.\n" +
+    					"&d" + tag + " &cMake sure to check for updates at: &ahttp://dev.bukkit.org/bukkit-plugins/nexgen-koths/",
+    				updater.getLatestVersion())
+    			)
+    		);
+    	}
+    	// An update is available.
+    	else if(updater.getResult().equals(Updater.UpdateResult.UPDATE_AVAILABLE)) {
     		NexGenKoths.setStaffWarning(
     			ChatColor.translateAlternateColorCodes('&',
     				String.format(
@@ -155,8 +166,7 @@ public class P extends JavaPlugin {
     			)
     		);
     	}
-    	
-    	// Else, check if an update was downloaded.
+    	// An update was downloaded.
     	else if(updater.getResult().equals(Updater.UpdateResult.SUCCESS)) {
     		NexGenKoths.setStaffWarning(
     			ChatColor.translateAlternateColorCodes('&',

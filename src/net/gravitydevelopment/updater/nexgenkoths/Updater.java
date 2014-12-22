@@ -567,7 +567,7 @@ public class Updater {
                 // Get the newest file's version number
                 final String remoteVersion = title.split(DELIMETER)[1].split(" ")[0];
 
-                if (this.hasTag(localVersion) || !this.shouldUpdate(localVersion, remoteVersion)) {
+                if (hasTag(localVersion) || !this.shouldUpdate(localVersion, remoteVersion)) {
                     // We already have the latest version, or this build is tagged for no-update
                     this.result = Updater.UpdateResult.NO_UPDATE;
                     return false;
@@ -637,7 +637,7 @@ public class Updater {
      * @param version a version number to check for tags in.
      * @return true if updating should be disabled.
      */
-    private boolean hasTag(String version) {
+    public static boolean hasTag(String version) {
         for (final String string : Updater.NO_UPDATE_TAG) {
             if (version.contains(string)) {
                 return true;
