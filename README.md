@@ -1,4 +1,4 @@
-![NexGen KoTHs banner](https://i.imgur.com/1iOrO1H.png "NexGen KoTHs")
+[![NexGen KoTHs banner](https://i.imgur.com/1iOrO1H.png "NexGen KoTHs")](http://dev.bukkit.org/bukkit-plugins/nexgen-koths/)
 # NexGen KoTHs
 
 
