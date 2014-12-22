@@ -24,6 +24,9 @@ KoTHs:
     # What should the cool down time be (in seconds) to attempt to capture a KoTH after losing control? (This prevents players from spamming messages in chat.)
     KoTH_Capture_Cooldown: 15
 
+    # Should we prevent players from entering the KoTH's capture zone whilst on capture cool down?
+    Prevent_Entry_On_Capture_Cooldown: false
+
 
     # What message should be sent to players that try to capture a KoTH during this time?
     KoTH_Capture_Cooldown_Message: '&d[KoTH] &cYou can''t attempt to control another KoTH for {SECONDS} seconds.'

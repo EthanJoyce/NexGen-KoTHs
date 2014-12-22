@@ -121,6 +121,7 @@ public class P extends JavaPlugin {
         
         
         NexGenKoths.zoneCaptureCooldown = getConfig().getLong("KoTHs.KoTH_Capture.KoTH_Capture_Cooldown", NexGenKoths.zoneCaptureCooldown);
+        NexGenKoths.preventEntryOnCaptureCooldown = getConfig().getBoolean("KoTHs.KoTH_Capture.Prevent_Entry_On_Capture_Cooldown", NexGenKoths.preventEntryOnCaptureCooldown);
         NexGenKoths.zoneCaptureCooldownMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Capture.KoTH_Capture_Cooldown_Message", NexGenKoths.zoneCaptureCooldownMsg));
         NexGenKoths.kothCapStartMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Capture.KoTH_Capture_Start_Message", NexGenKoths.kothCapStartMsg));
         NexGenKoths.kothCapStopMsg = ChatColor.translateAlternateColorCodes('&', getConfig().getString("KoTHs.KoTH_Capture.KoTH_Capture_Stop_Message", NexGenKoths.kothCapStopMsg));

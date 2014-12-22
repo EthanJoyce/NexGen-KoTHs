@@ -29,6 +29,9 @@ public class KothListener implements Listener {
         Koth koth = e.getKoth();
         
         if(NexGenKoths.zoneCaptureCooldownPlayers.containsKey(e.getPlayer().getUniqueId()) && NexGenKoths.zoneCaptureCooldownPlayers.get(e.getPlayer().getUniqueId()).longValue() > 0) {
+        	if(NexGenKoths.preventEntryOnCaptureCooldown)
+        		e.setTo(e.getFrom());
+        	
         	e.getPlayer().sendMessage(NexGenKoths.zoneCaptureCooldownMsg.replace("{PLAYER}", e.getPlayer().getName()).replace("{KOTH_NAME}", koth.getName()).replace("{SECONDS}", NexGenKoths.zoneCaptureCooldownPlayers.get(e.getPlayer().getUniqueId()).toString()));
         	return;
         }

@@ -39,6 +39,7 @@ public class NexGenKoths {
     public static String kothCapturedMsg = ChatColor.LIGHT_PURPLE + "[KoTH] " + ChatColor.GOLD + ChatColor.BOLD + "{PLAYER}" + ChatColor.GOLD + " has controlled {KOTH_NAME}!";
     
     public static long zoneCaptureCooldown = 15;
+    public static boolean preventEntryOnCaptureCooldown = false;
     
     public static boolean canCaptureWhileInvis = false;
     
