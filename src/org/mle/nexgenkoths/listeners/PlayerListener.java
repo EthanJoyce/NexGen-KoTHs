@@ -23,6 +23,7 @@ import org.mle.nexgenkoths.P;
 import org.mle.nexgenkoths.events.PlayerEnterKothEvent;
 import org.mle.nexgenkoths.events.PlayerExitKothEvent;
 import org.mle.nexgenkoths.util.LocationUtils;
+import org.mle.nexgenkoths.util.ScoreboardUtil;
 
 public class PlayerListener implements Listener {
     
@@ -93,20 +94,6 @@ public class PlayerListener implements Listener {
     }
     
     
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onPlayerQuit(PlayerQuitEvent e) {
-        Koth kothPlayerCapping = NexGenKoths.getKothPlayerCapping(e.getPlayer());
-        if(kothPlayerCapping != null)
-            kothPlayerCapping.stopCaptureTimer(e.getPlayer());
-        
-        if(NexGenKoths.playerScoreboardsMap.containsKey(e.getPlayer().getUniqueId()))
-            NexGenKoths.playerScoreboardsMap.remove(e.getPlayer().getUniqueId());
-        
-        if(NexGenKoths.playerSelections.containsKey(e.getPlayer().getUniqueId()))
-            NexGenKoths.playerSelections.remove(e.getPlayer().getUniqueId());
-    }
-    
-    
     @EventHandler(ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent e) {
         for(Koth koth : NexGenKoths.loadedKoths) {
@@ -157,6 +144,22 @@ public class PlayerListener implements Listener {
 				}
 			}.runTaskLater(P.p, 20);
     	}
+    }
+    
+    
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPlayerQuit(PlayerQuitEvent e) {
+    	Player player = e.getPlayer();
+    	
+    	Koth kothPlayerCapping = NexGenKoths.getKothPlayerCapping(player);
+    	if(kothPlayerCapping != null)
+    		kothPlayerCapping.stopCaptureTimer(player);
+    	
+    	if(NexGenKoths.playerScoreboardsMap.containsKey(player.getUniqueId()))
+    		NexGenKoths.playerScoreboardsMap.remove(player.getUniqueId());
+    	
+    	if(NexGenKoths.playerSelections.containsKey(player.getUniqueId()))
+    		NexGenKoths.playerSelections.remove(player.getUniqueId());
     }
     
     
