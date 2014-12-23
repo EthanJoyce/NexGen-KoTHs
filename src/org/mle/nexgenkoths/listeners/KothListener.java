@@ -28,11 +28,16 @@ public class KothListener implements Listener {
         Player player = e.getPlayer();
         Koth koth = e.getKoth();
         
-        if(NexGenKoths.zoneCaptureCooldownPlayers.containsKey(e.getPlayer().getUniqueId()) && NexGenKoths.zoneCaptureCooldownPlayers.get(e.getPlayer().getUniqueId()).longValue() > 0) {
+        if(NexGenKoths.isOnCaptureCooldown(player) && NexGenKoths.getCaptureCooldownRemaining(player) > 0) {
         	if(NexGenKoths.preventEntryOnCaptureCooldown)
         		e.setTo(e.getFrom());
         	
-        	e.getPlayer().sendMessage(NexGenKoths.zoneCaptureCooldownMsg.replace("{PLAYER}", e.getPlayer().getName()).replace("{KOTH_NAME}", koth.getName()).replace("{SECONDS}", NexGenKoths.zoneCaptureCooldownPlayers.get(e.getPlayer().getUniqueId()).toString()));
+        	player.sendMessage(
+        		NexGenKoths.zoneCaptureCooldownMsg
+        			.replace("{PLAYER}", e.getPlayer().getName())
+        			.replace("{KOTH_NAME}", koth.getName())
+        			.replace("{SECONDS}", Long.toString(NexGenKoths.getCaptureCooldownRemaining(player)))
+        	);
         	return;
         }
         
@@ -58,7 +63,7 @@ public class KothListener implements Listener {
             koth.stopCaptureTimer(player);
         	
         	if(!player.hasPermission("nexgenkoths.entercooldown.bypass") && NexGenKoths.zoneCaptureCooldown > 0)
-            	NexGenKoths.zoneCaptureCooldownPlayers.put(player.getUniqueId(), NexGenKoths.zoneCaptureCooldown);
+            	NexGenKoths.putOnCaptureCooldown(player);
         }
     }
     

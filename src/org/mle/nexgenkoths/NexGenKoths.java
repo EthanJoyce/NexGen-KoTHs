@@ -25,7 +25,7 @@ public class NexGenKoths {
     public static List<ItemCollection> loadedItemCollections = new ArrayList<ItemCollection>();
     
     
-    public static Map<UUID, Long> zoneCaptureCooldownPlayers = new HashMap<UUID, Long>();
+    private static Map<UUID, Long> zoneCaptureCooldownPlayers = new HashMap<UUID, Long>();
     
     public static Map<UUID, LocationPair> playerSelections = new HashMap<UUID, LocationPair>();
     public static Material selectionItem = Material.STICK;
@@ -67,10 +67,10 @@ public class NexGenKoths {
                     
                     if(useScoreboard && Bukkit.getOfflinePlayer(entry.getKey()).isOnline()) {
                         if(playerScoreboardsMap.containsKey(entry.getKey())) {
-                            playerScoreboardsMap.get(entry.getKey()).put(ChatColor.GREEN + "Cap Cooldown", entry.getValue().intValue());
+                            playerScoreboardsMap.get(entry.getKey()).put(ChatColor.GREEN + "Capture Cooldown", entry.getValue().intValue());
                         } else {
                             Map<String, Integer> map = new HashMap<String, Integer>();
-                            map.put(ChatColor.GREEN + "Cap Cooldown", entry.getValue().intValue());
+                            map.put(ChatColor.GREEN + "Capture Cooldown", entry.getValue().intValue());
                             
                             playerScoreboardsMap.put(entry.getKey(), map);
                         }
@@ -166,6 +166,19 @@ public class NexGenKoths {
     public static String getStaffWarning() {
     	return staffWarning;
     }
+    
+    
+    public static boolean isOnCaptureCooldown(Player player) {
+    	return zoneCaptureCooldownPlayers.containsKey(player.getUniqueId());
+	}
+	
+	public static long getCaptureCooldownRemaining(Player player) {
+		return zoneCaptureCooldownPlayers.get(player.getUniqueId());
+	}
+	
+	public static void putOnCaptureCooldown(Player player) {
+		zoneCaptureCooldownPlayers.put(player.getUniqueId(), zoneCaptureCooldown);
+	}
     
     
 }
