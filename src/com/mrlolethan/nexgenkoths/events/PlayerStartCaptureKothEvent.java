@@ -1,45 +1,20 @@
 package com.mrlolethan.nexgenkoths.events;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 
 import com.mrlolethan.nexgenkoths.Koth;
 
-public class PlayerExitKothEvent extends PlayerKothEvent implements Cancellable {
+public class PlayerStartCaptureKothEvent extends PlayerKothEvent implements Cancellable {
 	
 	private static final HandlerList handlers = new HandlerList();
 	
 	private boolean cancelled = false;
 	
-	private Location from;
-	private Location to;
 	
-	
-	public PlayerExitKothEvent(Player player, Koth koth, Location from, Location to) {
+	public PlayerStartCaptureKothEvent(Player player, Koth koth) {
 		super(player, koth);
-		
-		this.from = from;
-		this.to = to;
-	}
-	
-	
-	public Location getFrom() {
-		return from;
-	}
-	
-	public void setFrom(Location from) {
-		this.from = from;
-	}
-	
-	
-	public Location getTo() {
-		return to;
-	}
-	
-	public void setTo(Location to) {
-		this.to = to;
 	}
 	
 	

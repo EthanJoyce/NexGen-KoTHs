@@ -14,6 +14,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.mrlolethan.nexgenkoths.events.PlayerCaptureKothEvent;
+import com.mrlolethan.nexgenkoths.events.PlayerStartCaptureKothEvent;
+import com.mrlolethan.nexgenkoths.events.PlayerStopCaptureKothEvent;
 import com.mrlolethan.nexgenkoths.integration.Factions;
 import com.mrlolethan.nexgenkoths.integration.Vault;
 import com.mrlolethan.nexgenkoths.loottables.LootTable;
@@ -150,6 +152,12 @@ public class Koth {
     }
     
     public void startCaptureTimer(final Player player, boolean broadcast) {
+    	PlayerStartCaptureKothEvent event = new PlayerStartCaptureKothEvent(player, this);
+    	Bukkit.getPluginManager().callEvent(event);
+    	
+    	if(event.isCancelled()) return;
+    	
+    	
         final long CAPTURE_TIME = getFlagValue(KothFlag.CAPTURE_TIME);
         lastCapDelay = CAPTURE_TIME;
         
@@ -185,6 +193,9 @@ public class Koth {
     }
     
     public void stopCaptureTimer(Player player, boolean broadcast) {
+        PlayerStopCaptureKothEvent event = new PlayerStopCaptureKothEvent(cappingPlayer, this);
+        Bukkit.getPluginManager().callEvent(event);
+        
         Bukkit.getScheduler().cancelTask(capTimerID);
         capTimerID = -1;
         capTimer = 0;

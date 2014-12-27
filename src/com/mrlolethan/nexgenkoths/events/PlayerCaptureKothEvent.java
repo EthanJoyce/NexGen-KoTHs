@@ -7,34 +7,27 @@ import java.util.Map;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.mrlolethan.nexgenkoths.Koth;
 
-public class PlayerCaptureKothEvent extends PlayerEvent implements Cancellable {
+public class PlayerCaptureKothEvent extends PlayerKothEvent implements Cancellable {
 	
 	private static final HandlerList handlers = new HandlerList();
 	
 	private boolean cancelled = false;
 	
-	private Koth koth;
 	private List<ItemStack> loot;
 	private Map<String, Double> nonItemLoot;
 	
 	
 	public PlayerCaptureKothEvent(Player player, Koth koth, List<ItemStack> loot, Map<String, Double> nonItemLoot) {
-		super(player);
+		super(player, koth);
 		
-	    this.koth = koth;
 	    this.loot = loot;
 	    this.nonItemLoot = nonItemLoot;
 	}
 	
-	
-	public Koth getKoth() {
-	    return koth;
-	}
 	
 	public List<ItemStack> getLoot() {
 	    return Collections.unmodifiableList(loot);
@@ -71,12 +64,10 @@ public class PlayerCaptureKothEvent extends PlayerEvent implements Cancellable {
 	}
 	
 	
-	@Override
 	public boolean isCancelled() {
 		return cancelled;
 	}
     
-    @Override
 	public void setCancelled(boolean cancelled) {
 	    this.cancelled = cancelled;
 	}
