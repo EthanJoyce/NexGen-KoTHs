@@ -136,6 +136,9 @@ public class PlayerListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
     	final Player player = e.getPlayer();
     	
+    	if(NexGenKoths.isUsingScoreboard())
+    		NexGenKoths.getScoreboardHandler().addBoard(player);
+    	
     	if(NexGenKoths.getStaffWarning() != null && (player.isOp() || player.hasPermission("nexgenkoths.cmd.main"))) {
     		new BukkitRunnable() {
 				@Override
@@ -155,8 +158,8 @@ public class PlayerListener implements Listener {
     	if(kothPlayerCapping != null)
     		kothPlayerCapping.stopCaptureTimer(player);
     	
-    	if(NexGenKoths.playerScoreboardsMap.containsKey(player.getUniqueId()))
-    		NexGenKoths.playerScoreboardsMap.remove(player.getUniqueId());
+    	if(NexGenKoths.isUsingScoreboard())
+    		NexGenKoths.getScoreboardHandler().removeBoard(player);
     	
     	if(NexGenKoths.playerSelections.containsKey(player.getUniqueId()))
     		NexGenKoths.playerSelections.remove(player.getUniqueId());

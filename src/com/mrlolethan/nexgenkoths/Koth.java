@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -124,9 +123,6 @@ public class Koth {
             public void run() {
                 autoEndTimer++;
                 
-                if(NexGenKoths.useScoreboard)
-                    NexGenKoths.globalScoreboardsMap.put(ChatColor.GREEN + name + " Ends", (int) (AUTO_END_DELAY - autoEndTimer));
-                
                 if(autoEndTimer >= AUTO_END_DELAY) {
                     stopKoth(true);
                 }
@@ -140,9 +136,6 @@ public class Koth {
             autoEndTimerID = -1;
             autoEndTimer = 0;
             lastAutoEndDelay = -1;
-            
-            if(NexGenKoths.useScoreboard && NexGenKoths.globalScoreboardsMap.containsKey(ChatColor.GREEN + name + " Ends"))
-                NexGenKoths.globalScoreboardsMap.put(ChatColor.GREEN + name + " Ends", 0);
         }
     }
     
@@ -172,9 +165,6 @@ public class Koth {
                 if(capTimeMessage != null && !capTimeMessage.isEmpty())
                     Bukkit.broadcastMessage(capTimeMessage.replace("{PLAYER}", cappingPlayer.getName()).replace("{KOTH_NAME}", getName()).replace("{TIME_LEFT}", CAPTURE_TIME - capTimer + ""));
                 
-                if(NexGenKoths.useScoreboard)
-                    NexGenKoths.globalScoreboardsMap.put(ChatColor.GREEN + name + " Cap", (int) (CAPTURE_TIME - capTimer));
-                
                 if(capTimer >= CAPTURE_TIME) {
                     playerCapturedKoth(player);
                     
@@ -203,9 +193,6 @@ public class Koth {
         
         isBeingCapped = false;
         cappingPlayer = null;
-        
-        if(NexGenKoths.useScoreboard && NexGenKoths.globalScoreboardsMap.containsKey(ChatColor.GREEN + name + " Cap"))
-            NexGenKoths.globalScoreboardsMap.put(ChatColor.GREEN + name + " Cap", 0);
         
         if(player == null)
             return;

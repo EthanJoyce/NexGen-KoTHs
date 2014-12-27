@@ -22,7 +22,7 @@ import com.mrlolethan.nexgenkoths.itemcollections.ItemCollectionDataHandler;
 import com.mrlolethan.nexgenkoths.listeners.KothListener;
 import com.mrlolethan.nexgenkoths.listeners.PlayerListener;
 import com.mrlolethan.nexgenkoths.loottables.LootTableDataHandler;
-import com.mrlolethan.nexgenkoths.util.ScoreboardUtil;
+import com.mrlolethan.nexgenkoths.scoreboard.ScoreboardHandler;
 
 public class P extends JavaPlugin {
     
@@ -71,6 +71,13 @@ public class P extends JavaPlugin {
         KothDataHandler.loadAllKoths();
         NexGenKoths.startTimers();
         
+        if(NexGenKoths.useScoreboard) {
+            NexGenKoths.scoreboardHandler = new ScoreboardHandler();
+        	
+        	for(Player player : Bukkit.getServer().getOnlinePlayers())
+        		NexGenKoths.getScoreboardHandler().addBoard(player);
+        }
+        
         if(NexGenKoths.sendMetrics) {
             try {
 		        Metrics metrics = new Metrics(this);
@@ -89,7 +96,8 @@ public class P extends JavaPlugin {
         KothDataHandler.saveAllKoths();
         
         for(Player player : Bukkit.getServer().getOnlinePlayers())
-            ScoreboardUtil.clearScoreboard(player);
+        	if(NexGenKoths.isUsingScoreboard())
+            	NexGenKoths.getScoreboardHandler().removeBoard(player);
     }
     
     

@@ -62,7 +62,7 @@ KoTHs:
     DisplayName: '&dNexGen KoTHs'
 
     # How often should this scoreboard update?
-    UpdateFrequency: 10
+    UpdateFrequency: 20
 
 
 # Should we automatically install updates for this plugin?

@@ -16,7 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.mrlolethan.nexgenkoths.customitems.CustomItem;
 import com.mrlolethan.nexgenkoths.itemcollections.ItemCollection;
 import com.mrlolethan.nexgenkoths.loottables.LootTable;
-import com.mrlolethan.nexgenkoths.util.ScoreboardUtil;
+import com.mrlolethan.nexgenkoths.scoreboard.ScoreboardHandler;
 
 public class NexGenKoths {
     
@@ -24,6 +24,8 @@ public class NexGenKoths {
     public static List<LootTable> loadedLootTables = new ArrayList<LootTable>();
     public static List<CustomItem> loadedCustomItems = new ArrayList<CustomItem>();
     public static List<ItemCollection> loadedItemCollections = new ArrayList<ItemCollection>();
+    
+    static ScoreboardHandler scoreboardHandler;
     
     
     private static Map<UUID, Long> zoneCaptureCooldownPlayers = new HashMap<UUID, Long>();
@@ -44,12 +46,10 @@ public class NexGenKoths {
     
     public static boolean canCaptureWhileInvis = false;
     
-    public static boolean useScoreboard = true;
+    static boolean useScoreboard = true;
     public static String scoreboardObjDisplayName = ChatColor.LIGHT_PURPLE + "NexGen KoTHs";
     public static String belowNameObjDisplayName  = ChatColor.GOLD + "Controller";
-    public static Map<UUID, Map<String, Integer>> playerScoreboardsMap = new HashMap<UUID, Map<String, Integer>>();
-    public static Map<String, Integer> globalScoreboardsMap = new HashMap<String, Integer>();
-    public static long scoreboardUpdateFrequency = 10;
+    public static long scoreboardUpdateFrequency = 20;
     
     public static boolean autoUpdate = false;
     public static boolean sendMetrics = true;
@@ -66,37 +66,11 @@ public class NexGenKoths {
                 for(Entry<UUID, Long> entry : zoneCaptureCooldownsCopy.entrySet()) {
                     zoneCaptureCooldownPlayers.put(entry.getKey(), entry.getValue() - 1);
                     
-                    if(useScoreboard && Bukkit.getOfflinePlayer(entry.getKey()).isOnline()) {
-                        if(playerScoreboardsMap.containsKey(entry.getKey())) {
-                            playerScoreboardsMap.get(entry.getKey()).put(ChatColor.GREEN + "Cap Cooldown", entry.getValue().intValue());
-                        } else {
-                            Map<String, Integer> map = new HashMap<String, Integer>();
-                            map.put(ChatColor.GREEN + "Cap Cooldown", entry.getValue().intValue());
-                            
-                            playerScoreboardsMap.put(entry.getKey(), map);
-                        }
-                    }
-                    
                     if(entry.getValue().longValue() <= 0)
                         zoneCaptureCooldownPlayers.remove(entry.getKey());
                 }
             }
         }, 20, 20);
-        
-        
-        if(useScoreboard)
-            Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable() {
-                public void run() {
-                    for(Player player : Bukkit.getOnlinePlayers()) {
-                        ScoreboardUtil.updateScoreboard(player, null);
-                    }
-                    
-                    for(Entry<UUID, Map<String, Integer>> entry : playerScoreboardsMap.entrySet()) {
-                        Player player = Bukkit.getPlayer(entry.getKey());
-                        ScoreboardUtil.updateScoreboard(player, entry.getValue());
-                    }
-                }
-            }, scoreboardUpdateFrequency, scoreboardUpdateFrequency);
     }
     
     
@@ -179,6 +153,15 @@ public class NexGenKoths {
 	
 	public static void putOnCaptureCooldown(Player player) {
 		zoneCaptureCooldownPlayers.put(player.getUniqueId(), zoneCaptureCooldown);
+	}
+	
+	
+	public static boolean isUsingScoreboard() {
+		return scoreboardHandler != null;
+	}
+	
+	public static ScoreboardHandler getScoreboardHandler() {
+		return scoreboardHandler;
 	}
     
     
