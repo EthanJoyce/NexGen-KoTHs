@@ -8,7 +8,7 @@ import com.mrlolethan.nexgenkoths.KothDataHandler;
 import com.mrlolethan.nexgenkoths.NexGenKoths;
 import com.mrlolethan.nexgenkoths.loottables.LootTable;
 
-public class SetLootTableCmd extends NexGenCmd { // TODO Remove
+public class SetLootTableCmd extends NexGenCmd {
     
 	public SetLootTableCmd(CommandSender sender, Command cmd, String label, String[] args) {
 		super(sender, cmd, label, args);

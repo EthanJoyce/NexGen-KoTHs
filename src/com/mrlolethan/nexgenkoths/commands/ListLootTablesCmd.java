@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import com.mrlolethan.nexgenkoths.NexGenKoths;
 import com.mrlolethan.nexgenkoths.loottables.LootTable;
 
-public class ListLootTablesCmd extends NexGenCmd { // TODO Remove
+public class ListLootTablesCmd extends NexGenCmd {
     
 	public ListLootTablesCmd(CommandSender sender, Command cmd, String label, String[] args) {
 		super(sender, cmd, label, args);

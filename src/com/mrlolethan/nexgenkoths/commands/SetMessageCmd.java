@@ -9,7 +9,7 @@ import com.mrlolethan.nexgenkoths.KothDataHandler;
 import com.mrlolethan.nexgenkoths.NexGenKoths;
 import com.mrlolethan.nexgenkoths.util.NumberUtils;
 
-public class SetMessageCmd extends NexGenCmd { // TODO Remove
+public class SetMessageCmd extends NexGenCmd {
     
 	public SetMessageCmd(CommandSender sender, Command cmd, String label, String[] args) {
 		super(sender, cmd, label, args);

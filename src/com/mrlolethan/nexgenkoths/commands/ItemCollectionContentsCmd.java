@@ -7,7 +7,7 @@ import com.mrlolethan.nexgenkoths.NexGenKoths;
 import com.mrlolethan.nexgenkoths.itemcollections.ItemCollection;
 import com.mrlolethan.nexgenkoths.itemcollections.ItemCollectionItem;
 
-public class ItemCollectionContentsCmd extends NexGenCmd { // TODO Remove
+public class ItemCollectionContentsCmd extends NexGenCmd {
     
 	public ItemCollectionContentsCmd(CommandSender sender, Command cmd, String label, String[] args) {
 		super(sender, cmd, label, args);

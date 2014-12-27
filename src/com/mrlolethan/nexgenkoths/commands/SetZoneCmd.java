@@ -9,7 +9,7 @@ import com.mrlolethan.nexgenkoths.KothDataHandler;
 import com.mrlolethan.nexgenkoths.LocationPair;
 import com.mrlolethan.nexgenkoths.NexGenKoths;
 
-public class SetZoneCmd extends NexGenCmd { // TODO Remove
+public class SetZoneCmd extends NexGenCmd {
     
 	public SetZoneCmd(CommandSender sender, Command cmd, String label, String[] args) {
 		super(sender, cmd, label, args);

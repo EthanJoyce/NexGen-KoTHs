@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 
 import com.mrlolethan.nexgenkoths.P;
 
-public class VersionCmd extends NexGenCmd { // TODO Remove
+public class VersionCmd extends NexGenCmd {
     
 	public VersionCmd(CommandSender sender, Command cmd, String label, String[] args) {
 		super(sender, cmd, label, args);

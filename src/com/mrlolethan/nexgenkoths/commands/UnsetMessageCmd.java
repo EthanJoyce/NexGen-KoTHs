@@ -8,7 +8,7 @@ import com.mrlolethan.nexgenkoths.KothDataHandler;
 import com.mrlolethan.nexgenkoths.NexGenKoths;
 import com.mrlolethan.nexgenkoths.util.NumberUtils;
 
-public class UnsetMessageCmd extends NexGenCmd { // TODO Remove
+public class UnsetMessageCmd extends NexGenCmd {
     
 	public UnsetMessageCmd(CommandSender sender, Command cmd, String label, String[] args) {
 		super(sender, cmd, label, args);

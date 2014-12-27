@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import com.mrlolethan.nexgenkoths.Koth;
 import com.mrlolethan.nexgenkoths.NexGenKoths;
 
-public class ViewLootTableCmd extends NexGenCmd { // TODO Remove
+public class ViewLootTableCmd extends NexGenCmd {
     
 	public ViewLootTableCmd(CommandSender sender, Command cmd, String label, String[] args) {
 		super(sender, cmd, label, args);

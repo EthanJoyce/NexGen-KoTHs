@@ -12,7 +12,7 @@ import com.mrlolethan.nexgenkoths.customitems.CustomItemsDataHandler;
 import com.mrlolethan.nexgenkoths.itemcollections.ItemCollectionDataHandler;
 import com.mrlolethan.nexgenkoths.loottables.LootTableDataHandler;
 
-public class ReloadCmd extends NexGenCmd { // TODO Remove
+public class ReloadCmd extends NexGenCmd {
     
 	public ReloadCmd(CommandSender sender, Command cmd, String label, String[] args) {
 		super(sender, cmd, label, args);
