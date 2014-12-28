@@ -31,7 +31,7 @@ public class KothListener implements Listener {
         
         if(NexGenKoths.isOnCaptureCooldown(player) && NexGenKoths.getCaptureCooldownRemaining(player) > 0) {
         	if(NexGenKoths.preventEntryOnCaptureCooldown)
-        		e.setTo(e.getFrom());
+        		e.setCancelled(true);
         	
         	player.sendMessage(
         		NexGenKoths.zoneCaptureCooldownMsg
