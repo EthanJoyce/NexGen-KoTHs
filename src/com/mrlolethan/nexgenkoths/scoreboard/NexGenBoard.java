@@ -18,6 +18,9 @@ import com.mrlolethan.nexgenkoths.util.TimeUtils;
 
 public class NexGenBoard {
 	
+	private static final String PADDING_TITLE = " ";
+	
+	
 	private Player player;
 	private Objective objective;
 	private Set<String> scores = new HashSet<String>();
@@ -91,6 +94,15 @@ public class NexGenBoard {
 					getTeam(title, seconds).addPlayer(Bukkit.getOfflinePlayer(title));
 				}
 			}
+		}
+		
+		if(order < 15) {
+			scores.add(PADDING_TITLE);
+			objective.getScore(PADDING_TITLE).setScore(16);
+		}
+		else if(scores.contains(PADDING_TITLE)) {
+			objective.getScoreboard().resetScores(PADDING_TITLE);
+			scores.remove(PADDING_TITLE);
 		}
 	}
 	
