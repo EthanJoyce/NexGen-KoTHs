@@ -171,7 +171,7 @@ public class Koth {
                 if(capTimer >= CAPTURE_TIME) {
                     playerCapturedKoth(player);
                     
-                    stopCaptureTimer(player);
+                    stopCaptureTimer(player, false);
                 }
             }
         }, 20, 20);
