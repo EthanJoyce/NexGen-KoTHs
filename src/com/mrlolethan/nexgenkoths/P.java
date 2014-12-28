@@ -19,6 +19,7 @@ import com.mrlolethan.nexgenkoths.commands.KothCommandExecutor;
 import com.mrlolethan.nexgenkoths.customitems.CustomItemsDataHandler;
 import com.mrlolethan.nexgenkoths.integration.Vault;
 import com.mrlolethan.nexgenkoths.itemcollections.ItemCollectionDataHandler;
+import com.mrlolethan.nexgenkoths.koth.KothDataHandler;
 import com.mrlolethan.nexgenkoths.listeners.KothListener;
 import com.mrlolethan.nexgenkoths.listeners.PlayerListener;
 import com.mrlolethan.nexgenkoths.loottables.LootTableDataHandler;

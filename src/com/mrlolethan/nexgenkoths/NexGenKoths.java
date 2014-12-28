@@ -15,6 +15,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.mrlolethan.nexgenkoths.customitems.CustomItem;
 import com.mrlolethan.nexgenkoths.itemcollections.ItemCollection;
+import com.mrlolethan.nexgenkoths.koth.Koth;
 import com.mrlolethan.nexgenkoths.loottables.LootTable;
 import com.mrlolethan.nexgenkoths.scoreboard.ScoreboardHandler;
 

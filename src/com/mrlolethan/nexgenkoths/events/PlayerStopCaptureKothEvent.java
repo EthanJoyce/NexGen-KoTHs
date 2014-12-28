@@ -3,7 +3,7 @@ package com.mrlolethan.nexgenkoths.events;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 
-import com.mrlolethan.nexgenkoths.Koth;
+import com.mrlolethan.nexgenkoths.koth.Koth;
 
 public class PlayerStopCaptureKothEvent extends PlayerKothEvent {
 	

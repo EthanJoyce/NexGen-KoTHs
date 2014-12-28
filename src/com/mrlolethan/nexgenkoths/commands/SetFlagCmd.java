@@ -3,10 +3,10 @@ package com.mrlolethan.nexgenkoths.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-import com.mrlolethan.nexgenkoths.Koth;
-import com.mrlolethan.nexgenkoths.KothDataHandler;
-import com.mrlolethan.nexgenkoths.KothFlag;
 import com.mrlolethan.nexgenkoths.NexGenKoths;
+import com.mrlolethan.nexgenkoths.koth.Koth;
+import com.mrlolethan.nexgenkoths.koth.KothDataHandler;
+import com.mrlolethan.nexgenkoths.koth.KothFlag;
 import com.mrlolethan.nexgenkoths.util.NumberUtils;
 
 public class SetFlagCmd extends NexGenCmd {

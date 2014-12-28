@@ -1,6 +1,6 @@
 package com.mrlolethan.nexgenkoths.scoreboard;
 
-import com.mrlolethan.nexgenkoths.Koth;
+import com.mrlolethan.nexgenkoths.koth.Koth;
 
 public abstract class KothScoreGetter {
 	

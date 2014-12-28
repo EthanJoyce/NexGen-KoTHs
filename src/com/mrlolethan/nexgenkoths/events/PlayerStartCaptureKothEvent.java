@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 
-import com.mrlolethan.nexgenkoths.Koth;
+import com.mrlolethan.nexgenkoths.koth.Koth;
 
 public class PlayerStartCaptureKothEvent extends PlayerKothEvent implements Cancellable {
 	

@@ -3,7 +3,7 @@ package com.mrlolethan.nexgenkoths.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-import com.mrlolethan.nexgenkoths.KothDataHandler;
+import com.mrlolethan.nexgenkoths.koth.KothDataHandler;
 
 public class SaveAllCmd extends NexGenCmd {
     

@@ -14,13 +14,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.mrlolethan.nexgenkoths.Koth;
-import com.mrlolethan.nexgenkoths.KothFlag;
 import com.mrlolethan.nexgenkoths.NexGenKoths;
 import com.mrlolethan.nexgenkoths.P;
 import com.mrlolethan.nexgenkoths.events.PlayerCaptureKothEvent;
 import com.mrlolethan.nexgenkoths.events.PlayerEnterKothEvent;
 import com.mrlolethan.nexgenkoths.events.PlayerExitKothEvent;
+import com.mrlolethan.nexgenkoths.koth.Koth;
+import com.mrlolethan.nexgenkoths.koth.KothFlag;
 
 public class KothListener implements Listener {
 	

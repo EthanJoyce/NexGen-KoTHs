@@ -11,8 +11,8 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import com.mrlolethan.nexgenkoths.Koth;
 import com.mrlolethan.nexgenkoths.NexGenKoths;
+import com.mrlolethan.nexgenkoths.koth.Koth;
 import com.mrlolethan.nexgenkoths.scoreboard.NexGenPlayerScores.PlayerScoreGetter;
 import com.mrlolethan.nexgenkoths.util.TimeUtils;
 

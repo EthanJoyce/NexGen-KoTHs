@@ -2,7 +2,7 @@ package com.mrlolethan.nexgenkoths.events;
 
 import org.bukkit.entity.Player;
 
-import com.mrlolethan.nexgenkoths.Koth;
+import com.mrlolethan.nexgenkoths.koth.Koth;
 
 public abstract class PlayerKothEvent extends KothEvent {
 	

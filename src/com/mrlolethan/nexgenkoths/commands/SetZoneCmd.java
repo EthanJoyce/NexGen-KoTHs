@@ -4,10 +4,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.mrlolethan.nexgenkoths.Koth;
-import com.mrlolethan.nexgenkoths.KothDataHandler;
 import com.mrlolethan.nexgenkoths.LocationPair;
 import com.mrlolethan.nexgenkoths.NexGenKoths;
+import com.mrlolethan.nexgenkoths.koth.Koth;
+import com.mrlolethan.nexgenkoths.koth.KothDataHandler;
 
 public class SetZoneCmd extends NexGenCmd {
     

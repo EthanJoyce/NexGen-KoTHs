@@ -1,4 +1,4 @@
-package com.mrlolethan.nexgenkoths;
+package com.mrlolethan.nexgenkoths.koth;
 
 public enum KothFlag {
     AUTO_START_DELAY(3600), AUTO_START(0), MIN_PLAYERS_TO_START(0), AUTO_END_DELAY(3600), AUTO_END(1), CAPTURE_TIME(90), USE_LOOT_TABLE(0), BROADCAST_CAPTURE(1);

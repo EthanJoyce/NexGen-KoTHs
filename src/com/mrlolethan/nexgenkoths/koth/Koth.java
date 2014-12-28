@@ -1,4 +1,4 @@
-package com.mrlolethan.nexgenkoths;
+package com.mrlolethan.nexgenkoths.koth;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +12,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.mrlolethan.nexgenkoths.LocationPair;
+import com.mrlolethan.nexgenkoths.NexGenKoths;
+import com.mrlolethan.nexgenkoths.P;
 import com.mrlolethan.nexgenkoths.events.PlayerCaptureKothEvent;
 import com.mrlolethan.nexgenkoths.events.PlayerStartCaptureKothEvent;
 import com.mrlolethan.nexgenkoths.events.PlayerStopCaptureKothEvent;

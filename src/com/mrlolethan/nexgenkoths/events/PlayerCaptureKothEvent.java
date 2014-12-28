@@ -9,7 +9,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 
-import com.mrlolethan.nexgenkoths.Koth;
+import com.mrlolethan.nexgenkoths.koth.Koth;
 
 public class PlayerCaptureKothEvent extends PlayerKothEvent implements Cancellable {
 	

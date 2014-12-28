@@ -2,8 +2,8 @@ package com.mrlolethan.nexgenkoths.scoreboard;
 
 import org.bukkit.ChatColor;
 
-import com.mrlolethan.nexgenkoths.Koth;
-import com.mrlolethan.nexgenkoths.KothFlag;
+import com.mrlolethan.nexgenkoths.koth.Koth;
+import com.mrlolethan.nexgenkoths.koth.KothFlag;
 
 public class KothEndScoreGetter extends KothScoreGetter {
 	

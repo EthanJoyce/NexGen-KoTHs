@@ -2,7 +2,7 @@ package com.mrlolethan.nexgenkoths.scoreboard;
 
 import org.bukkit.ChatColor;
 
-import com.mrlolethan.nexgenkoths.Koth;
+import com.mrlolethan.nexgenkoths.koth.Koth;
 
 public class KothCaptureScoreGetter extends KothScoreGetter {
 	

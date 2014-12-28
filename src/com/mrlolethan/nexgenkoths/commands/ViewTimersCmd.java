@@ -3,8 +3,8 @@ package com.mrlolethan.nexgenkoths.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-import com.mrlolethan.nexgenkoths.Koth;
 import com.mrlolethan.nexgenkoths.NexGenKoths;
+import com.mrlolethan.nexgenkoths.koth.Koth;
 
 public class ViewTimersCmd extends NexGenCmd {
     

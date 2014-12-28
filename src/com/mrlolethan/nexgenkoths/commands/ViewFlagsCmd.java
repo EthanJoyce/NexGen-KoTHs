@@ -5,9 +5,9 @@ import java.util.Map.Entry;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-import com.mrlolethan.nexgenkoths.Koth;
-import com.mrlolethan.nexgenkoths.KothFlag;
 import com.mrlolethan.nexgenkoths.NexGenKoths;
+import com.mrlolethan.nexgenkoths.koth.Koth;
+import com.mrlolethan.nexgenkoths.koth.KothFlag;
 
 public class ViewFlagsCmd extends NexGenCmd {
     
