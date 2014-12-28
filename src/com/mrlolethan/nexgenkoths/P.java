@@ -149,7 +149,7 @@ public class P extends JavaPlugin {
     }
     
     
-    protected void performUpdateCheck(boolean download) {
+    public void performUpdateCheck(boolean download) {
     	Updater updater = new Updater(this, 86133, getFile(), download ? Updater.UpdateType.DEFAULT : Updater.UpdateType.NO_DOWNLOAD, false);
     	
     	// The plugin is a development build.
