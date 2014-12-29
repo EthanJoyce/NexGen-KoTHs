@@ -32,14 +32,12 @@ public enum NexGenCommand {
     private Class<? extends NexGenCmd> clazz;
     private String desc;
     private String arguments;
-    private String permNode;
     
     NexGenCommand(String cmd, Class<? extends NexGenCmd> clazz, String desc, String arguments) {
         this.cmd = cmd;
         this.clazz = clazz;
         this.desc = desc;
         this.arguments = arguments;
-        this.permNode = "nexgenkoths.cmd." + cmd;
     }
     
     public String getCmd() {
@@ -56,10 +54,6 @@ public enum NexGenCommand {
     
     public String getArguments() {
         return arguments;
-    }
-    
-    public String getPermNode() {
-        return permNode;
     }
     
     

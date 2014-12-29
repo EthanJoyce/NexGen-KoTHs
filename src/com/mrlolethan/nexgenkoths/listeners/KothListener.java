@@ -16,6 +16,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.mrlolethan.nexgenkoths.NexGenKoths;
 import com.mrlolethan.nexgenkoths.P;
+import com.mrlolethan.nexgenkoths.Permissions;
 import com.mrlolethan.nexgenkoths.events.PlayerCaptureKothEvent;
 import com.mrlolethan.nexgenkoths.events.PlayerEnterKothEvent;
 import com.mrlolethan.nexgenkoths.events.PlayerExitKothEvent;
@@ -63,7 +64,7 @@ public class KothListener implements Listener {
         if(koth.getCappingPlayer() != null && koth.getCappingPlayer().equals(player)) {
             koth.stopCaptureTimer(player);
         	
-        	if(!player.hasPermission("nexgenkoths.entercooldown.bypass") && NexGenKoths.zoneCaptureCooldown > 0)
+        	if(!Permissions.bypassCaptureCooldown(player) && NexGenKoths.zoneCaptureCooldown > 0)
             	NexGenKoths.putOnCaptureCooldown(player);
         }
     }

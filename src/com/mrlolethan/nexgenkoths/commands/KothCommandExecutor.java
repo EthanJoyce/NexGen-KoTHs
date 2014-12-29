@@ -10,6 +10,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import com.mrlolethan.nexgenkoths.P;
+import com.mrlolethan.nexgenkoths.Permissions;
 
 public class KothCommandExecutor implements CommandExecutor {
     
@@ -21,7 +22,7 @@ public class KothCommandExecutor implements CommandExecutor {
 		    return true;
 		}
 		
-		if(!sender.hasPermission(command.getPermNode())) {
+		if(!Permissions.performCommand(sender, command.getCmd())) {
 		    sender.sendMessage(ChatColor.RED + "You don't have permission to do that.");
 		    return true;
 		}

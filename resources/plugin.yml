@@ -1,6 +1,6 @@
 name: NexGen_KoTHs
 main: com.mrlolethan.nexgenkoths.P
-version: 0.8
+version: 0.8-DEV
 author: MrLolEthan
 softdepend: [Factions, Vault]
 
