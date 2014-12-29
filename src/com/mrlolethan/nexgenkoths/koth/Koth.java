@@ -15,6 +15,8 @@ import org.bukkit.inventory.ItemStack;
 import com.mrlolethan.nexgenkoths.LocationPair;
 import com.mrlolethan.nexgenkoths.NexGenKoths;
 import com.mrlolethan.nexgenkoths.P;
+import com.mrlolethan.nexgenkoths.events.KothEndEvent;
+import com.mrlolethan.nexgenkoths.events.KothStartEvent;
 import com.mrlolethan.nexgenkoths.events.PlayerCaptureKothEvent;
 import com.mrlolethan.nexgenkoths.events.PlayerStartCaptureKothEvent;
 import com.mrlolethan.nexgenkoths.events.PlayerStopCaptureKothEvent;
@@ -243,6 +245,14 @@ public class Koth {
     public void startKoth() {
         stopAutoStartTimer();
         
+        KothStartEvent event = new KothStartEvent(this);
+        Bukkit.getPluginManager().callEvent(event);
+        
+        if(event.isCancelled()) {
+        	startAutoStartTimer();
+        	return;
+    	}
+        
         setActive(true);
         
         Bukkit.broadcastMessage(NexGenKoths.kothStartMsg.replace("{KOTH_NAME}", getName()));
@@ -253,6 +263,14 @@ public class Koth {
     
     public void stopKoth(boolean broadcast) {
         stopAutoEndTimer();
+        
+        KothEndEvent event = new KothEndEvent(this);
+        Bukkit.getPluginManager().callEvent(event);
+        
+        if(event.isCancelled()) {
+        	startAutoEndTimer();
+        	return;
+    	}
         
         setActive(false);
         
