@@ -17,6 +17,7 @@ import com.mrlolethan.nexgenkoths.customitems.CustomItem;
 import com.mrlolethan.nexgenkoths.itemcollections.ItemCollection;
 import com.mrlolethan.nexgenkoths.koth.Koth;
 import com.mrlolethan.nexgenkoths.loottables.LootTable;
+import com.mrlolethan.nexgenkoths.objects.LocationPair;
 import com.mrlolethan.nexgenkoths.scoreboard.ScoreboardHandler;
 
 public class NexGenKoths {

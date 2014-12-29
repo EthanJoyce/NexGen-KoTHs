@@ -2,7 +2,7 @@ package com.mrlolethan.nexgenkoths.util;
 
 import org.bukkit.Location;
 
-import com.mrlolethan.nexgenkoths.LocationPair;
+import com.mrlolethan.nexgenkoths.objects.LocationPair;
 
 public enum LocationUtils {;
     

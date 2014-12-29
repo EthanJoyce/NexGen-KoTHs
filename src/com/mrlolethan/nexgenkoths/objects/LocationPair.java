@@ -1,4 +1,4 @@
-package com.mrlolethan.nexgenkoths;
+package com.mrlolethan.nexgenkoths.objects;
 
 import org.bukkit.Location;
 

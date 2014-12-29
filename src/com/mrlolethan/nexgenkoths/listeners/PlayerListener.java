@@ -17,12 +17,12 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.mrlolethan.nexgenkoths.LocationPair;
 import com.mrlolethan.nexgenkoths.NexGenKoths;
 import com.mrlolethan.nexgenkoths.P;
 import com.mrlolethan.nexgenkoths.events.PlayerEnterKothEvent;
 import com.mrlolethan.nexgenkoths.events.PlayerExitKothEvent;
 import com.mrlolethan.nexgenkoths.koth.Koth;
+import com.mrlolethan.nexgenkoths.objects.LocationPair;
 import com.mrlolethan.nexgenkoths.util.LocationUtils;
 
 public class PlayerListener implements Listener {

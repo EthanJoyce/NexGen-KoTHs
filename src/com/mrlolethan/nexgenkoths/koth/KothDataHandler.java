@@ -16,10 +16,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import com.mrlolethan.nexgenkoths.LocationPair;
 import com.mrlolethan.nexgenkoths.NexGenKoths;
 import com.mrlolethan.nexgenkoths.P;
 import com.mrlolethan.nexgenkoths.loottables.LootTable;
+import com.mrlolethan.nexgenkoths.objects.LocationPair;
 import com.mrlolethan.nexgenkoths.util.NumberUtils;
 
 public enum KothDataHandler {;

@@ -12,7 +12,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.mrlolethan.nexgenkoths.LocationPair;
 import com.mrlolethan.nexgenkoths.NexGenKoths;
 import com.mrlolethan.nexgenkoths.P;
 import com.mrlolethan.nexgenkoths.events.KothEndEvent;
@@ -24,6 +23,7 @@ import com.mrlolethan.nexgenkoths.integration.Factions;
 import com.mrlolethan.nexgenkoths.integration.Vault;
 import com.mrlolethan.nexgenkoths.loottables.LootTable;
 import com.mrlolethan.nexgenkoths.mleutils.InventoryUtils;
+import com.mrlolethan.nexgenkoths.objects.LocationPair;
 
 public class Koth {
     
