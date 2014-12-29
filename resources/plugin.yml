@@ -11,9 +11,15 @@ commands:
                 permission: nexgenkoths.cmd.main
                 aliases: [k, nexgenkoth, koths, nexgenkoths]
 permissions:
-        nexgenkoths.entercooldown.bypass:
-                description: Allows the player to bypass the KoTH enter cooldown.
+        nexgenkoths.capturecooldown.bypass:
+                description: Allows the player to bypass the KoTH capture cooldown.
                 default: false
+        nexgenkoths.entercooldown.bypass:
+                description: For legacy enter cooldown system support.
+                default: false
+                children:
+                    - nexgenkoths.capturecooldown.bypass
+
         nexgenkoths.cmd.main:
                 description: Allows the player to use the Koth command.
                 default: true
