@@ -9,29 +9,24 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.mrlolethan.nexgenkoths.NexGenKoths;
+import com.mrlolethan.nexgenkoths.commands.proc.Cmd;
+import com.mrlolethan.nexgenkoths.commands.proc.CommandSenderType;
+import com.mrlolethan.nexgenkoths.commands.proc.NexGenCmd;
 import com.mrlolethan.nexgenkoths.koth.Koth;
 import com.mrlolethan.nexgenkoths.koth.KothDataHandler;
 import com.mrlolethan.nexgenkoths.objects.LocationPair;
 
+@Cmd(senderType = CommandSenderType.PLAYER, argsRequired = 1)
 public class CreateCmd extends NexGenCmd {
     
-	public CreateCmd(CommandSender sender, Command cmd, String label, String[] args) {
-		super(sender, cmd, label, args);
+	public CreateCmd(CommandSender sender, Command cmd, String cmdName, String label, String[] args) {
+		super(sender, cmd, cmdName, label, args);
 	}
     
     
 	@Override
 	public void perform() {
-	    if(!(sender instanceof Player)) {
-	        msg("&cOnly players can perform this command.");
-	        return;
-	    }
 	    Player player = (Player) sender;
-	    
-	    if(!hasArgs(2)) {
-	        msg("&cInvalid command arguments.");
-	        return;
-	    }
 	    
 	    LocationPair locPair = NexGenKoths.playerSelections.get(player.getUniqueId());
 	    if(locPair == null || locPair.getLocation1() == null || locPair.getLocation2() == null) {

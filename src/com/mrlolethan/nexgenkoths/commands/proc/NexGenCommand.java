@@ -1,4 +1,29 @@
-package com.mrlolethan.nexgenkoths.commands;
+package com.mrlolethan.nexgenkoths.commands.proc;
+
+import com.mrlolethan.nexgenkoths.commands.CreateCmd;
+import com.mrlolethan.nexgenkoths.commands.DeleteCmd;
+import com.mrlolethan.nexgenkoths.commands.HelpCmd;
+import com.mrlolethan.nexgenkoths.commands.ItemCollectionContentsCmd;
+import com.mrlolethan.nexgenkoths.commands.ListCmd;
+import com.mrlolethan.nexgenkoths.commands.ListItemCollectionsCmd;
+import com.mrlolethan.nexgenkoths.commands.ListLootTablesCmd;
+import com.mrlolethan.nexgenkoths.commands.LootTableContentsCmd;
+import com.mrlolethan.nexgenkoths.commands.ReloadCmd;
+import com.mrlolethan.nexgenkoths.commands.SaveAllCmd;
+import com.mrlolethan.nexgenkoths.commands.SetFlagCmd;
+import com.mrlolethan.nexgenkoths.commands.SetLootTableCmd;
+import com.mrlolethan.nexgenkoths.commands.SetMessageCmd;
+import com.mrlolethan.nexgenkoths.commands.SetZoneCmd;
+import com.mrlolethan.nexgenkoths.commands.StartCmd;
+import com.mrlolethan.nexgenkoths.commands.StopCmd;
+import com.mrlolethan.nexgenkoths.commands.UnsetMessageCmd;
+import com.mrlolethan.nexgenkoths.commands.UpdateCmd;
+import com.mrlolethan.nexgenkoths.commands.VersionCmd;
+import com.mrlolethan.nexgenkoths.commands.ViewFlagsCmd;
+import com.mrlolethan.nexgenkoths.commands.ViewLootTableCmd;
+import com.mrlolethan.nexgenkoths.commands.ViewMessagesCmd;
+import com.mrlolethan.nexgenkoths.commands.ViewTimersCmd;
+import com.mrlolethan.nexgenkoths.commands.WandCmd;
 
 
 public enum NexGenCommand {

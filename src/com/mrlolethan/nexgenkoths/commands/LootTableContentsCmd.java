@@ -4,24 +4,23 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import com.mrlolethan.nexgenkoths.NexGenKoths;
+import com.mrlolethan.nexgenkoths.commands.proc.Cmd;
+import com.mrlolethan.nexgenkoths.commands.proc.CommandSenderType;
+import com.mrlolethan.nexgenkoths.commands.proc.NexGenCmd;
 import com.mrlolethan.nexgenkoths.loottables.LootTable;
 import com.mrlolethan.nexgenkoths.loottables.LootTableItem;
 import com.mrlolethan.nexgenkoths.loottables.NonItemLoot;
 
+@Cmd(senderType = CommandSenderType.ANY, argsRequired = 1)
 public class LootTableContentsCmd extends NexGenCmd {
     
-	public LootTableContentsCmd(CommandSender sender, Command cmd, String label, String[] args) {
-		super(sender, cmd, label, args);
+	public LootTableContentsCmd(CommandSender sender, Command cmd, String cmdName, String label, String[] args) {
+		super(sender, cmd, cmdName, label, args);
 	}
     
     
 	@Override
 	public void perform() {
-	    if(!hasArgs(2)) {
-	        msg("&cInvalid command arguments.");
-	        return;
-	    }
-	    
 	    String lootTableName = getArg(1);
 	    LootTable lootTable = NexGenKoths.getLootTableByName(lootTableName);
 	    

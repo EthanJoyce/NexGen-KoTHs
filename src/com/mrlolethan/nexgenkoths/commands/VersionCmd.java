@@ -6,11 +6,15 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import com.mrlolethan.nexgenkoths.P;
+import com.mrlolethan.nexgenkoths.commands.proc.Cmd;
+import com.mrlolethan.nexgenkoths.commands.proc.CommandSenderType;
+import com.mrlolethan.nexgenkoths.commands.proc.NexGenCmd;
 
+@Cmd(senderType = CommandSenderType.ANY)
 public class VersionCmd extends NexGenCmd {
     
-	public VersionCmd(CommandSender sender, Command cmd, String label, String[] args) {
-		super(sender, cmd, label, args);
+	public VersionCmd(CommandSender sender, Command cmd, String cmdName, String label, String[] args) {
+		super(sender, cmd, cmdName, label, args);
 	}
     
     

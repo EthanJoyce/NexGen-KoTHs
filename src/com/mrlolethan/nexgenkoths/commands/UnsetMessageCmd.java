@@ -4,24 +4,23 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import com.mrlolethan.nexgenkoths.NexGenKoths;
+import com.mrlolethan.nexgenkoths.commands.proc.Cmd;
+import com.mrlolethan.nexgenkoths.commands.proc.CommandSenderType;
+import com.mrlolethan.nexgenkoths.commands.proc.NexGenCmd;
 import com.mrlolethan.nexgenkoths.koth.Koth;
 import com.mrlolethan.nexgenkoths.koth.KothDataHandler;
 import com.mrlolethan.nexgenkoths.util.NumberUtils;
 
+@Cmd(senderType = CommandSenderType.ANY, argsRequired = 2)
 public class UnsetMessageCmd extends NexGenCmd {
     
-	public UnsetMessageCmd(CommandSender sender, Command cmd, String label, String[] args) {
-		super(sender, cmd, label, args);
+	public UnsetMessageCmd(CommandSender sender, Command cmd, String cmdName, String label, String[] args) {
+		super(sender, cmd, cmdName, label, args);
 	}
     
     
 	@Override
 	public void perform() {
-	    if(!hasArgs(3)) {
-	        msg("&cInvalid command arguments.");
-	        return;
-	    }
-	    
 	    String kothName = getArg(1);
 	    Koth koth = NexGenKoths.getKothByName(kothName);
 	    

@@ -5,12 +5,16 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import com.mrlolethan.nexgenkoths.NexGenKoths;
+import com.mrlolethan.nexgenkoths.commands.proc.Cmd;
+import com.mrlolethan.nexgenkoths.commands.proc.CommandSenderType;
+import com.mrlolethan.nexgenkoths.commands.proc.NexGenCmd;
 import com.mrlolethan.nexgenkoths.koth.Koth;
 
+@Cmd(senderType = CommandSenderType.ANY)
 public class ListCmd extends NexGenCmd {
     
-	public ListCmd(CommandSender sender, Command cmd, String label, String[] args) {
-		super(sender, cmd, label, args);
+	public ListCmd(CommandSender sender, Command cmd, String cmdName, String label, String[] args) {
+		super(sender, cmd, cmdName, label, args);
 	}
     
     

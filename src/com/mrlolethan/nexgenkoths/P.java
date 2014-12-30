@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.nexgenkoths.Metrics;
 
-import com.mrlolethan.nexgenkoths.commands.KothCommandExecutor;
+import com.mrlolethan.nexgenkoths.commands.proc.KothCommandExecutor;
 import com.mrlolethan.nexgenkoths.customitems.CustomItemsDataHandler;
 import com.mrlolethan.nexgenkoths.integration.Vault;
 import com.mrlolethan.nexgenkoths.itemcollections.ItemCollectionDataHandler;

@@ -1,4 +1,4 @@
-package com.mrlolethan.nexgenkoths.commands;
+package com.mrlolethan.nexgenkoths.commands.proc;
 
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
@@ -8,6 +8,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 
 import com.mrlolethan.nexgenkoths.P;
 import com.mrlolethan.nexgenkoths.Permissions;
@@ -36,9 +38,39 @@ public class KothCommandExecutor implements CommandExecutor {
 		
 		NexGenCmd ngcmd = null;
 		try {
-		    Constructor<?> cmdCtor = cmdClass.getConstructor(CommandSender.class, Command.class, String.class, String[].class);
+		    Constructor<?> cmdCtor = cmdClass.getConstructor(CommandSender.class, Command.class, String.class, String.class, String[].class);
 		    
-		    ngcmd = (NexGenCmd) cmdCtor.newInstance(new Object [] { sender, cmd, label, args });
+		    Cmd cmdAnno = cmdClass.getAnnotation(Cmd.class);
+		    if(cmdAnno == null) {
+		    	sender.sendMessage(ChatColor.RED + "Error performing command: the specified sub-command is not annotated properly.");
+		    	return true;
+			} else {
+				switch(cmdAnno.senderType()) {
+				
+				case PLAYER:
+					if(!(sender instanceof Player)) {
+						sender.sendMessage(ChatColor.RED + "Only players can perform this command.");
+						return true;
+					}
+					break;
+				case CONSOLE:
+					if(!(sender instanceof ConsoleCommandSender)) {
+						sender.sendMessage(ChatColor.RED + "Only the console can perform this command.");
+						return true;
+					}
+					break;
+				case ANY:
+					break;
+				
+				}
+				
+				if((args.length - 1) < cmdAnno.argsRequired() && cmdAnno.argsRequired() != 0) {
+	        		sender.sendMessage(ChatColor.RED + "Invalid command arguments.");
+	        		return true;
+	    		}
+			}
+		    
+		    ngcmd = (NexGenCmd) cmdCtor.newInstance(new Object [] { sender, cmd, command.getCmd(), label, args });
 		} catch(Exception ex) {
 		    ex.printStackTrace();
 		    P.log(Level.SEVERE, String.format("Error executing command \"%s\". Args: \"%s\", Sender: \"%s\"", cmd.getName(), Arrays.asList(args), sender.getName()));

@@ -8,14 +8,18 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 
 import com.mrlolethan.nexgenkoths.P;
+import com.mrlolethan.nexgenkoths.commands.proc.Cmd;
+import com.mrlolethan.nexgenkoths.commands.proc.CommandSenderType;
+import com.mrlolethan.nexgenkoths.commands.proc.NexGenCmd;
 import com.mrlolethan.nexgenkoths.customitems.CustomItemsDataHandler;
 import com.mrlolethan.nexgenkoths.itemcollections.ItemCollectionDataHandler;
 import com.mrlolethan.nexgenkoths.loottables.LootTableDataHandler;
 
+@Cmd(senderType = CommandSenderType.ANY)
 public class ReloadCmd extends NexGenCmd {
     
-	public ReloadCmd(CommandSender sender, Command cmd, String label, String[] args) {
-		super(sender, cmd, label, args);
+	public ReloadCmd(CommandSender sender, Command cmd, String cmdName, String label, String[] args) {
+		super(sender, cmd, cmdName, label, args);
 	}
     
     

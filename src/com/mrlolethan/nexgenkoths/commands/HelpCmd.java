@@ -4,11 +4,16 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import com.mrlolethan.nexgenkoths.Permissions;
+import com.mrlolethan.nexgenkoths.commands.proc.Cmd;
+import com.mrlolethan.nexgenkoths.commands.proc.CommandSenderType;
+import com.mrlolethan.nexgenkoths.commands.proc.NexGenCmd;
+import com.mrlolethan.nexgenkoths.commands.proc.NexGenCommand;
 
+@Cmd(senderType = CommandSenderType.ANY)
 public class HelpCmd extends NexGenCmd {
     
-	public HelpCmd(CommandSender sender, Command cmd, String label, String[] args) {
-		super(sender, cmd, label, args);
+	public HelpCmd(CommandSender sender, Command cmd, String cmdName, String label, String[] args) {
+		super(sender, cmd, cmdName, label, args);
 	}
     
     

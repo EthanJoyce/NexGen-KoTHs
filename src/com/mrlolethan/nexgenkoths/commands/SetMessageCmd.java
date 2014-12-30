@@ -5,24 +5,23 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import com.mrlolethan.nexgenkoths.NexGenKoths;
+import com.mrlolethan.nexgenkoths.commands.proc.Cmd;
+import com.mrlolethan.nexgenkoths.commands.proc.CommandSenderType;
+import com.mrlolethan.nexgenkoths.commands.proc.NexGenCmd;
 import com.mrlolethan.nexgenkoths.koth.Koth;
 import com.mrlolethan.nexgenkoths.koth.KothDataHandler;
 import com.mrlolethan.nexgenkoths.util.NumberUtils;
 
+@Cmd(senderType = CommandSenderType.ANY, argsRequired = 3)
 public class SetMessageCmd extends NexGenCmd {
     
-	public SetMessageCmd(CommandSender sender, Command cmd, String label, String[] args) {
-		super(sender, cmd, label, args);
+	public SetMessageCmd(CommandSender sender, Command cmd, String cmdName, String label, String[] args) {
+		super(sender, cmd, cmdName, label, args);
 	}
     
     
 	@Override
 	public void perform() {
-	    if(!hasArgs(4)) {
-	        sender.sendMessage(ChatColor.RED + "Invalid command arguments.");
-	        return;
-	    }
-	    
 	    String kothName = getArg(1);
 	    Koth koth = NexGenKoths.getKothByName(kothName);
 	    

@@ -4,22 +4,21 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import com.mrlolethan.nexgenkoths.NexGenKoths;
+import com.mrlolethan.nexgenkoths.commands.proc.Cmd;
+import com.mrlolethan.nexgenkoths.commands.proc.CommandSenderType;
+import com.mrlolethan.nexgenkoths.commands.proc.NexGenCmd;
 import com.mrlolethan.nexgenkoths.koth.Koth;
 
+@Cmd(senderType = CommandSenderType.ANY, argsRequired = 1)
 public class ViewTimersCmd extends NexGenCmd {
     
-	public ViewTimersCmd(CommandSender sender, Command cmd, String label, String[] args) {
-		super(sender, cmd, label, args);
+	public ViewTimersCmd(CommandSender sender, Command cmd, String cmdName, String label, String[] args) {
+		super(sender, cmd, cmdName, label, args);
 	}
     
     
 	@Override
 	public void perform() {
-	    if(!hasArgs(2)) {
-	        msg("&cInvalid command arguments.");
-	        return;
-	    }
-	    
 	    String kothName = getArg(1);
 	    Koth koth = NexGenKoths.getKothByName(kothName);
 	    
