@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 import net.gravitydevelopment.updater.nexgenkoths.Updater;
-import net.minecraft.util.org.apache.commons.io.FileUtils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -24,6 +23,7 @@ import com.mrlolethan.nexgenkoths.listeners.KothListener;
 import com.mrlolethan.nexgenkoths.listeners.PlayerListener;
 import com.mrlolethan.nexgenkoths.loottables.LootTableDataHandler;
 import com.mrlolethan.nexgenkoths.scoreboard.ScoreboardHandler;
+import com.mrlolethan.nexgenkoths.util.FileUtils;
 
 public class P extends JavaPlugin {
     
