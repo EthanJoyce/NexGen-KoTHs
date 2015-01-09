@@ -19,13 +19,13 @@
 		<mkdir dir="bin"/>
 	</target>
 	
-	<target name="compile" if="binDoesNotExist" depends="clean,init">
+	<target name="compile" if="binDoesNotExist" depends="init">
 		<javac srcdir="src" destdir="bin" classpath="lib/*.jar">
 			<classpath refid="class.path"/>
 		</javac>
 	</target>
 	
-    <target name="jar" depends="clean,init">
+    <target name="jar" depends="init">
     	<antcall target="compile"/>
     	
         <jar destfile="build/jar/NexGenKoTHs.jar" basedir="bin">
@@ -42,6 +42,10 @@
 	
 	<target name="clean">
 		<delete dir="build"/>
+	</target>
+	
+	<target name="clean-bin">
+		<delete dir="bin"/>
 	</target>
 
 </project>
