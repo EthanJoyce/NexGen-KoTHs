@@ -139,7 +139,7 @@ public class PlayerListener implements Listener {
     	if(NexGenKoths.isUsingScoreboard())
     		NexGenKoths.getScoreboardHandler().addBoard(player);
     	
-    	if(NexGenKoths.getStaffWarning() != null && (player.isOp() || player.hasPermission("nexgenkoths.cmd.main"))) {
+    	if(NexGenKoths.getStaffWarning() != null && (player.isOp() || player.hasPermission("nexgenkoths.update.notify"))) {
     		P.p.performUpdateCheck(NexGenKoths.autoUpdate);
     		
     		new BukkitRunnable() {

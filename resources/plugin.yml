@@ -11,6 +11,9 @@ commands:
                 permission: nexgenkoths.cmd.main
                 aliases: [k, nexgenkoth, koths, nexgenkoths]
 permissions:
+        nexgenkoths.update.notify:
+                description: Allows the player to be notified when an update is available or other staff information.
+                default: op
         nexgenkoths.capturecooldown.bypass:
                 description: Allows the player to bypass the KoTH capture cooldown.
                 default: false
