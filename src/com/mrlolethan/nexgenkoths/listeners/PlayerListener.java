@@ -139,15 +139,16 @@ public class PlayerListener implements Listener {
     	if(NexGenKoths.isUsingScoreboard())
     		NexGenKoths.getScoreboardHandler().addBoard(player);
     	
-    	if(NexGenKoths.getStaffWarning() != null && (player.isOp() || player.hasPermission("nexgenkoths.update.notify"))) {
+    	if(player.isOp() || player.hasPermission("nexgenkoths.update.notify")) {
     		P.p.performUpdateCheck(NexGenKoths.autoUpdate);
     		
-    		new BukkitRunnable() {
-				@Override
-				public void run() {
-					player.sendMessage(NexGenKoths.getStaffWarning());
-				}
-			}.runTaskLater(P.p, 20);
+    		if(NexGenKoths.getStaffWarning() != null) {
+	    		new BukkitRunnable() {
+					public void run() {
+						player.sendMessage(NexGenKoths.getStaffWarning());
+					}
+				}.runTaskLater(P.p, 20);
+    		}
     	}
     }
     
