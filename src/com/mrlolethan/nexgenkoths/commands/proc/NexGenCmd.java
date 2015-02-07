@@ -26,7 +26,7 @@ public abstract class NexGenCmd {
 	
 	
 	public boolean hasArgs(int amt) {
-	    return (args.length + 1) >= amt;
+	    return args.length >= amt;
 	}
 	
 	public String getArg(int i) {
