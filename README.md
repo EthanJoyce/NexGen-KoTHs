@@ -1,4 +1,4 @@
-## A full rewrite of this project is in progress. The current state is very poor.
+## Project no longer maintained
 [![NexGen KoTHs banner](https://i.imgur.com/1iOrO1H.png "NexGen KoTHs")](http://dev.bukkit.org/bukkit-plugins/nexgen-koths/)
 # NexGen KoTHs
 
